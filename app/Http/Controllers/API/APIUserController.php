@@ -79,7 +79,11 @@ class APIUserController extends Controller
      */
     public function show($id)
     {
-        //
+        $user = User::join('roles', 'users.u_role', '=', 'roles.r_id')
+                        ->select('users.*', 'roles.r_id', 'roles.r_category')
+                        ->findOrFail($id);
+
+        return new UserResource($user);
     }
 
     /**

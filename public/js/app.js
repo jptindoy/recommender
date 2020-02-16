@@ -2013,123 +2013,47 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      users: [],
-      user: {
-        u_id: '',
-        u_fname: '',
-        u_lname: '',
-        u_email: '',
-        u_password: '',
-        u_role: ''
+      modules: [],
+      mod: {
+        m_id: '',
+        m_category: '',
+        m_name: '',
+        m_view: '',
+        m_add: '',
+        m_edit: '',
+        m_delete: ''
       },
-      user_id: '',
-      pagination: {},
+      roles: [],
+      role: {
+        r_id: '',
+        r_category: ''
+      },
       edit: false,
-      isHidden: false,
-      add: false
+      module_id: '',
+      role_id: '',
+      pagination: {}
     };
   },
+  props: {
+    userId: Number
+  },
   created: function created() {
-    this.fetchUsers();
+    this.fetchRoles();
   },
   methods: {
-    fetchUsers: function fetchUsers(page_url) {
+    fetchRoles: function fetchRoles(page_url) {
       var _this = this;
 
       var vm = this;
-      page_url = page_url || 'api/users';
+      page_url = page_url || 'api/roles';
       fetch(page_url).then(function (res) {
         return res.json();
       }) //.then(text => console.log(text))
       .then(function (res) {
-        _this.users = res.data;
+        _this.roles = res.data;
         vm.makePagination(res.meta, res.links);
       })["catch"](function (err) {
         return console.log(err);
@@ -2144,61 +2068,57 @@ __webpack_require__.r(__webpack_exports__);
       };
       this.pagination = pagination;
     },
-    deleteUser: function deleteUser(u_id) {
+    // deleteUser(u_id) {
+    //     if(confirm('Are you sure?')) {
+    //         fetch(`api/user/${id}`, {
+    //             method: 'delete'
+    //         })
+    //         .then(res => res.json())
+    //         .then(data => {
+    //             alert('User Removed!');
+    //             this.fetchRoles();
+    //         })
+    //         .catch(err => console.log(err));
+    //     }
+    // },
+    addRole: function addRole() {
       var _this2 = this;
 
-      if (confirm('Are you sure?')) {
-        fetch("api/user/".concat(id), {
-          method: 'delete'
-        }).then(function (res) {
-          return res.json();
-        }).then(function (data) {
-          alert('User Removed!');
-
-          _this2.fetchUsers();
-        })["catch"](function (err) {
-          return console.log(err);
-        });
-      }
-    },
-    addUser: function addUser() {
-      var _this3 = this;
-
       if (this.edit === false) {
-        fetch('api/user', {
+        fetch('api/role', {
           method: 'POST',
-          body: JSON.stringify(this.user),
+          body: JSON.stringify(this.role),
           headers: {
             'Content-type': 'Application/json'
           }
         }).then(function (res) {
           return res.json();
-        }) //.then(text => console.log(text))
+        }) // .then(text => console.log(text))
         .then(function (data) {
-          _this3.clearForm();
+          _this2.role.r_category = '';
 
-          _this3.fetchUsers(); //alert('User Added!');
+          _this2.fetchRoles(); //alert('User Added!');
 
         })["catch"](function (err) {
           return console.log(err);
         });
       }
-    },
-    clearForm: function clearForm() {
-      this.edit = false;
-      this.user.u_id = null;
-      this.user.user_id = null;
-      this.user.u_fname = '';
-      this.user.u_lname = '';
-      this.user.u_email = '';
-      this.user.u_role = '';
-      this.user.u_password = '';
-    },
-    editUser: function editUser() {
-      this.edit = true;
-      this.add = false;
-      this.isHidden = true;
-    }
+    } // clearForm() {
+    //     this.edit = false;
+    //     this.user.u_id = null;
+    //     this.user.user_id = null;
+    //     this.user.u_fname = '';
+    //     this.user.u_lname = '';                 
+    //     this.user.u_email = '';                 
+    //     this.user.u_role = '';                 
+    //     this.user.u_password = '';                  
+    // },
+    // editUser() {
+    //     this.edit = true;
+    //     this.add = false;
+    //     this.isHidden = true;
+    // }
+
   }
 });
 
@@ -2213,6 +2133,9 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
+//
 //
 //
 //
@@ -2452,11 +2375,16 @@ __webpack_require__.r(__webpack_exports__);
       show: false,
       isHidden: false,
       add: false,
-      pass_reset: true
+      pass_reset: true,
+      date_created: ''
     };
+  },
+  props: {
+    userId: Number
   },
   created: function created() {
     this.fetchUsers();
+    this.showProfile(this.userId);
   },
   methods: {
     fetchUsers: function fetchUsers(page_url) {
@@ -2577,6 +2505,28 @@ __webpack_require__.r(__webpack_exports__);
         // alert('Menu Removed');
         _this3.fetchUsers();
       })["catch"](function (err) {
+        return console.log(err);
+      });
+    },
+    showProfile: function showProfile(id) {
+      var _this4 = this;
+
+      fetch("api/user/".concat(id), {
+        method: 'GET'
+      }).then(function (res) {
+        return res.json();
+      }).then(function (res) {
+        _this4.show = true;
+        _this4.user.u_id = res.data.u_id;
+        _this4.user.user_id = res.data.u_id;
+        _this4.user.u_fname = res.data.u_fname;
+        _this4.user.u_lname = res.data.u_lname;
+        _this4.user.u_email = res.data.email;
+        _this4.user.u_image = res.data.u_image;
+        _this4.user.u_role = res.data.r_category;
+        _this4.user.r_id = res.data.r_role;
+        _this4.date_created = res.data.created_at;
+      }).then(function (data) {})["catch"](function (err) {
         return console.log(err);
       });
     }
@@ -20234,11 +20184,30 @@ var render = function() {
   return _c("div", { staticClass: "row" }, [
     _c("div", { staticClass: "col-4" }, [
       _c("div", { staticClass: "card" }, [
-        _c("div", { staticClass: "card-header" }, [
-          _c("h3", { staticClass: "card-title" }, [_vm._v("List of Users")]),
-          _vm._v(" "),
-          _c("div", { staticClass: "float-right" }, [
-            _c("ul", { staticClass: "pagination pagination-sm" }, [
+        _vm._m(0),
+        _vm._v(" "),
+        _c("div", { staticClass: "card-body p-0" }, [
+          _c(
+            "table",
+            { staticClass: "table" },
+            _vm._l(_vm.roles, function(role) {
+              return _c("tbody", { key: role.r_id }, [
+                _c("tr", [
+                  _c("td", [_vm._v(_vm._s(role.r_category))]),
+                  _vm._v(" "),
+                  _vm._m(1, true)
+                ])
+              ])
+            }),
+            0
+          )
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "card-footer text-center" }, [
+          _c(
+            "ul",
+            { staticClass: "pagination pagination-sm m-0 float-right" },
+            [
               _c(
                 "li",
                 {
@@ -20253,7 +20222,7 @@ var render = function() {
                       attrs: { href: "#", "aria-label": "Previous" },
                       on: {
                         click: function($event) {
-                          return _vm.fetchUsers(_vm.pagination.prev_page_url)
+                          return _vm.fetchRoles(_vm.pagination.prev_page_url)
                         }
                       }
                     },
@@ -20294,7 +20263,7 @@ var render = function() {
                       attrs: { href: "#", "aria-label": "Next" },
                       on: {
                         click: function($event) {
-                          return _vm.fetchUsers(_vm.pagination.next_page_url)
+                          return _vm.fetchRoles(_vm.pagination.next_page_url)
                         }
                       }
                     },
@@ -20308,326 +20277,60 @@ var render = function() {
                   )
                 ]
               )
-            ])
-          ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "card-body p-0" }, [
+            ]
+          ),
+          _vm._v(" "),
           _c(
-            "ul",
-            { staticClass: "products-list product-list-in-card pl-2 pr-2" },
-            _vm._l(_vm.users, function(user) {
-              return _c("li", { key: user.u_id, staticClass: "item" }, [
-                _c("div", { staticClass: "product-img" }, [
-                  _c("img", {
-                    staticClass: "img-size-50",
-                    attrs: {
-                      src: "storage/img/" + user.u_image,
-                      alt: "Product Image"
-                    }
-                  })
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "product-info" }, [
-                  _c(
-                    "a",
-                    {
-                      staticClass: "product-title",
-                      attrs: { href: "javascript:void(0)" },
-                      on: {
-                        click: function($event) {
-                          return _vm.editUser()
-                        }
-                      }
-                    },
-                    [
-                      _vm._v(
-                        _vm._s(user.u_fname) +
-                          " " +
-                          _vm._s(user.u_lname) +
-                          "\n                            "
-                      ),
-                      _c(
-                        "span",
-                        { staticClass: "badge badge-success float-right" },
-                        [_vm._v("Active")]
-                      )
-                    ]
-                  ),
-                  _vm._v(" "),
-                  _c("span", { staticClass: "product-description" }, [
-                    _vm._v(
-                      "\n                                " +
-                        _vm._s(user.r_category) +
-                        "\n                            "
-                    )
-                  ])
-                ])
-              ])
-            }),
-            0
-          )
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "card-footer text-center" }, [
-          _c(
-            "a",
+            "form",
             {
-              staticClass: "uppercase",
-              attrs: { href: "javascript:void(0)" },
+              attrs: { role: "form" },
               on: {
-                click: function($event) {
-                  ;(_vm.add = true), (_vm.isHidden = true), (_vm.edit = false)
+                submit: function($event) {
+                  $event.preventDefault()
+                  return _vm.addRole()
                 }
               }
             },
-            [_vm._v("Add new user")]
+            [
+              _c(
+                "div",
+                {
+                  staticClass: "input-group input-group-sm",
+                  staticStyle: { width: "70%" }
+                },
+                [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.role.r_category,
+                        expression: "role.r_category"
+                      }
+                    ],
+                    staticClass: "form-control",
+                    attrs: { type: "text", required: "" },
+                    domProps: { value: _vm.role.r_category },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(_vm.role, "r_category", $event.target.value)
+                      }
+                    }
+                  }),
+                  _vm._v(" "),
+                  _vm._m(2)
+                ]
+              )
+            ]
           )
         ])
       ])
     ]),
     _vm._v(" "),
-    !_vm.isHidden
-      ? _c("div", { staticClass: "col-8" }, [
-          _c(
-            "div",
-            {
-              staticClass:
-                "alert alert-info alert-dismissible fade show text-center",
-              attrs: { role: "alert" }
-            },
-            [
-              _vm._v(
-                "\n            Note: Only Administrator account has the acces to this page. \n        "
-              )
-            ]
-          )
-        ])
-      : _vm._e(),
-    _vm._v(" "),
-    _vm.edit
-      ? _c("div", { staticClass: "col-8" }, [
-          _c("div", { staticClass: "card card-widget widget-user" }, [
-            _vm._m(0),
-            _vm._v(" "),
-            _c("div", { staticClass: "widget-user-image" }, [
-              _c("img", {
-                staticClass: "img-circle elevation-2",
-                attrs: {
-                  src: "storage/img/" + _vm.user.u_image,
-                  alt: "User Avatar"
-                }
-              })
-            ]),
-            _vm._v(" "),
-            _vm._m(1)
-          ])
-        ])
-      : _vm._e(),
-    _vm._v(" "),
-    _vm.add
-      ? _c("div", { staticClass: "col-8" }, [
-          _c("div", { staticClass: "card" }, [
-            _vm._m(2),
-            _vm._v(" "),
-            _c(
-              "form",
-              {
-                attrs: { role: "form" },
-                on: {
-                  submit: function($event) {
-                    $event.preventDefault()
-                    return _vm.addUser($event)
-                  }
-                }
-              },
-              [
-                _c("div", { staticClass: "card-body" }, [
-                  _c("div", { staticClass: "form-group" }, [
-                    _c("label", { attrs: { for: "u-fname" } }, [
-                      _vm._v("Firstname *")
-                    ]),
-                    _vm._v(" "),
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.user.u_fname,
-                          expression: "user.u_fname"
-                        }
-                      ],
-                      staticClass: "form-control",
-                      attrs: {
-                        type: "text",
-                        id: "u-fname",
-                        placeholder: "f name"
-                      },
-                      domProps: { value: _vm.user.u_fname },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(_vm.user, "u_fname", $event.target.value)
-                        }
-                      }
-                    })
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "form-group" }, [
-                    _c("label", { attrs: { for: "u-lname" } }, [
-                      _vm._v("Lastname *")
-                    ]),
-                    _vm._v(" "),
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.user.u_lname,
-                          expression: "user.u_lname"
-                        }
-                      ],
-                      staticClass: "form-control",
-                      attrs: {
-                        type: "text",
-                        id: "u-lname",
-                        placeholder: "l name"
-                      },
-                      domProps: { value: _vm.user.u_lname },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(_vm.user, "u_lname", $event.target.value)
-                        }
-                      }
-                    })
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "form-group" }, [
-                    _c("label", { attrs: { for: "u-email" } }, [
-                      _vm._v("Email address *")
-                    ]),
-                    _vm._v(" "),
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.user.u_email,
-                          expression: "user.u_email"
-                        }
-                      ],
-                      staticClass: "form-control",
-                      attrs: {
-                        type: "email",
-                        id: "u-email",
-                        placeholder: "@email"
-                      },
-                      domProps: { value: _vm.user.u_email },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(_vm.user, "u_email", $event.target.value)
-                        }
-                      }
-                    })
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "form-group" }, [
-                    _c("label", { attrs: { for: "u-role" } }, [
-                      _vm._v("User role *")
-                    ]),
-                    _vm._v(" "),
-                    _c(
-                      "select",
-                      {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.user.u_role,
-                            expression: "user.u_role"
-                          }
-                        ],
-                        staticClass: "form-control",
-                        attrs: { name: "u-role", id: "u-role" },
-                        on: {
-                          change: function($event) {
-                            var $$selectedVal = Array.prototype.filter
-                              .call($event.target.options, function(o) {
-                                return o.selected
-                              })
-                              .map(function(o) {
-                                var val = "_value" in o ? o._value : o.value
-                                return val
-                              })
-                            _vm.$set(
-                              _vm.user,
-                              "u_role",
-                              $event.target.multiple
-                                ? $$selectedVal
-                                : $$selectedVal[0]
-                            )
-                          }
-                        }
-                      },
-                      [
-                        _c("option", { attrs: { value: "1" } }, [
-                          _vm._v("Administrator")
-                        ]),
-                        _vm._v(" "),
-                        _c("option", { attrs: { value: "2" } }, [
-                          _vm._v("Accountant")
-                        ])
-                      ]
-                    )
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "form-group" }, [
-                    _c("label", { attrs: { for: "u-pass1" } }, [
-                      _vm._v("Password *")
-                    ]),
-                    _vm._v(" "),
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.user.u_password,
-                          expression: "user.u_password"
-                        }
-                      ],
-                      staticClass: "form-control",
-                      attrs: {
-                        type: "password",
-                        id: "u-pass1",
-                        placeholder: "Password"
-                      },
-                      domProps: { value: _vm.user.u_password },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(_vm.user, "u_password", $event.target.value)
-                        }
-                      }
-                    })
-                  ])
-                ]),
-                _vm._v(" "),
-                _vm._m(3)
-              ]
-            )
-          ])
-        ])
-      : _vm._e()
+    _vm._m(3)
   ])
 }
 var staticRenderFns = [
@@ -20635,47 +20338,35 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "widget-user-header bg-info" }, [
-      _c("h3", { staticClass: "widget-user-username" }, [
-        _vm._v("Alexander Pierce")
-      ]),
+    return _c("div", { staticClass: "card-header" }, [
+      _c("h3", { staticClass: "card-title" }, [_vm._v("List of Category")]),
       _vm._v(" "),
-      _c("h5", { staticClass: "widget-user-desc" }, [_vm._v("Founder & CEO")])
+      _c("div", { staticClass: "float-right" })
     ])
   },
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card-footer" }, [
-      _c("div", { staticClass: "row" }, [
-        _c("div", { staticClass: "col-sm-4 border-right" }, [
-          _c("div", { staticClass: "description-block" }, [
-            _c("h5", { staticClass: "description-header" }, [_vm._v("3,200")]),
-            _vm._v(" "),
-            _c("span", { staticClass: "description-text" }, [_vm._v("SALES")])
-          ])
-        ]),
+    return _c("td", { staticClass: "text-right py-0 align-middle" }, [
+      _c("div", { staticClass: "btn-group btn-group-sm" }, [
+        _c(
+          "a",
+          {
+            staticClass: "btn btn-info",
+            attrs: { href: "#", title: "click to update info..." }
+          },
+          [_c("i", { staticClass: "fas fa-edit" })]
+        ),
         _vm._v(" "),
-        _c("div", { staticClass: "col-sm-4 border-right" }, [
-          _c("div", { staticClass: "description-block" }, [
-            _c("h5", { staticClass: "description-header" }, [_vm._v("13,000")]),
-            _vm._v(" "),
-            _c("span", { staticClass: "description-text" }, [
-              _vm._v("FOLLOWERS")
-            ])
-          ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "col-sm-4" }, [
-          _c("div", { staticClass: "description-block" }, [
-            _c("h5", { staticClass: "description-header" }, [_vm._v("35")]),
-            _vm._v(" "),
-            _c("span", { staticClass: "description-text" }, [
-              _vm._v("PRODUCTS")
-            ])
-          ])
-        ])
+        _c(
+          "a",
+          {
+            staticClass: "btn btn-danger",
+            attrs: { href: "#", title: "click to delete..." }
+          },
+          [_c("i", { staticClass: "fas fa-trash" })]
+        )
       ])
     ])
   },
@@ -20683,19 +20374,31 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card-header" }, [
-      _c("h3", { staticClass: "card-title" }, [_vm._v("Add User")])
+    return _c("span", { staticClass: "input-group-append" }, [
+      _c(
+        "button",
+        { staticClass: "btn btn-info btn-flat", attrs: { type: "submit" } },
+        [_vm._v("Save")]
+      )
     ])
   },
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card-footer" }, [
+    return _c("div", { staticClass: "col-8" }, [
       _c(
-        "button",
-        { staticClass: "btn btn-primary", attrs: { type: "submit" } },
-        [_vm._v("Submit")]
+        "div",
+        {
+          staticClass:
+            "alert alert-info alert-dismissible fade show text-center",
+          attrs: { role: "alert" }
+        },
+        [
+          _vm._v(
+            "\n            Note: Only Administrator account has the acces to this page. \n        "
+          )
+        ]
       )
     ])
   }
@@ -20724,83 +20427,7 @@ var render = function() {
   return _c("div", { staticClass: "row" }, [
     _c("div", { staticClass: "col-4" }, [
       _c("div", { staticClass: "card" }, [
-        _c("div", { staticClass: "card-header" }, [
-          _c("h3", { staticClass: "card-title" }, [_vm._v("List of Users")]),
-          _vm._v(" "),
-          _c("div", { staticClass: "float-right" }, [
-            _c("ul", { staticClass: "pagination pagination-sm" }, [
-              _c(
-                "li",
-                {
-                  staticClass: "page-item",
-                  class: [{ disabled: !_vm.pagination.prev_page_url }]
-                },
-                [
-                  _c(
-                    "a",
-                    {
-                      staticClass: "page-link",
-                      attrs: { href: "#", "aria-label": "Previous" },
-                      on: {
-                        click: function($event) {
-                          return _vm.fetchUsers(_vm.pagination.prev_page_url)
-                        }
-                      }
-                    },
-                    [
-                      _c("span", { attrs: { "aria-hidden": "true" } }, [
-                        _vm._v("«")
-                      ]),
-                      _vm._v(" "),
-                      _c("span", { staticClass: "sr-only" }, [
-                        _vm._v("Previous")
-                      ])
-                    ]
-                  )
-                ]
-              ),
-              _vm._v(" "),
-              _c("li", { staticClass: "page-item disabled" }, [
-                _c("a", { staticClass: "page-link", attrs: { href: "#" } }, [
-                  _vm._v(
-                    _vm._s(_vm.pagination.current_page) +
-                      " of " +
-                      _vm._s(_vm.pagination.last_page)
-                  )
-                ])
-              ]),
-              _vm._v(" "),
-              _c(
-                "li",
-                {
-                  staticClass: "page-item",
-                  class: [{ disabled: !_vm.pagination.next_page_url }]
-                },
-                [
-                  _c(
-                    "a",
-                    {
-                      staticClass: "page-link",
-                      attrs: { href: "#", "aria-label": "Next" },
-                      on: {
-                        click: function($event) {
-                          return _vm.fetchUsers(_vm.pagination.next_page_url)
-                        }
-                      }
-                    },
-                    [
-                      _c("span", { attrs: { "aria-hidden": "true" } }, [
-                        _vm._v("»")
-                      ]),
-                      _vm._v(" "),
-                      _c("span", { staticClass: "sr-only" }, [_vm._v("Next")])
-                    ]
-                  )
-                ]
-              )
-            ])
-          ])
-        ]),
+        _vm._m(0),
         _vm._v(" "),
         _c("div", { staticClass: "card-body p-0" }, [
           _c(
@@ -20927,6 +20554,82 @@ var render = function() {
         _vm._v(" "),
         _c("div", { staticClass: "card-footer text-center" }, [
           _c(
+            "ul",
+            { staticClass: "pagination pagination-sm m-0 float-right" },
+            [
+              _c(
+                "li",
+                {
+                  staticClass: "page-item",
+                  class: [{ disabled: !_vm.pagination.prev_page_url }]
+                },
+                [
+                  _c(
+                    "a",
+                    {
+                      staticClass: "page-link",
+                      attrs: { href: "#", "aria-label": "Previous" },
+                      on: {
+                        click: function($event) {
+                          return _vm.fetchUsers(_vm.pagination.prev_page_url)
+                        }
+                      }
+                    },
+                    [
+                      _c("span", { attrs: { "aria-hidden": "true" } }, [
+                        _vm._v("«")
+                      ]),
+                      _vm._v(" "),
+                      _c("span", { staticClass: "sr-only" }, [
+                        _vm._v("Previous")
+                      ])
+                    ]
+                  )
+                ]
+              ),
+              _vm._v(" "),
+              _c("li", { staticClass: "page-item disabled" }, [
+                _c("a", { staticClass: "page-link", attrs: { href: "#" } }, [
+                  _vm._v(
+                    _vm._s(_vm.pagination.current_page) +
+                      " of " +
+                      _vm._s(_vm.pagination.last_page)
+                  )
+                ])
+              ]),
+              _vm._v(" "),
+              _c(
+                "li",
+                {
+                  staticClass: "page-item",
+                  class: [{ disabled: !_vm.pagination.next_page_url }]
+                },
+                [
+                  _c(
+                    "a",
+                    {
+                      staticClass: "page-link",
+                      attrs: { href: "#", "aria-label": "Next" },
+                      on: {
+                        click: function($event) {
+                          return _vm.fetchUsers(_vm.pagination.next_page_url)
+                        }
+                      }
+                    },
+                    [
+                      _c("span", { attrs: { "aria-hidden": "true" } }, [
+                        _vm._v("»")
+                      ]),
+                      _vm._v(" "),
+                      _c("span", { staticClass: "sr-only" }, [_vm._v("Next")])
+                    ]
+                  )
+                ]
+              )
+            ]
+          ),
+          _vm._v(" "),
+          _c(
             "a",
             {
               staticClass: "uppercase",
@@ -20947,24 +20650,6 @@ var render = function() {
         ])
       ])
     ]),
-    _vm._v(" "),
-    !_vm.isHidden
-      ? _c("div", { staticClass: "col-8" }, [
-          _c(
-            "div",
-            {
-              staticClass:
-                "alert alert-info alert-dismissible fade show text-center",
-              attrs: { role: "alert" }
-            },
-            [
-              _vm._v(
-                "\n            Note: Only Administrator account has the acces to this page. \n        "
-              )
-            ]
-          )
-        ])
-      : _vm._e(),
     _vm._v(" "),
     _vm.show
       ? _c("div", { staticClass: "col-8" }, [
@@ -21005,7 +20690,7 @@ var render = function() {
                   ])
                 ]),
                 _vm._v(" "),
-                _vm._m(0),
+                _vm._m(1),
                 _vm._v(" "),
                 _c("div", { staticClass: "col-sm-4" }, [
                   _c("div", { staticClass: "description-block" }, [
@@ -21024,11 +20709,11 @@ var render = function() {
               _vm._v(" "),
               _c("hr"),
               _vm._v(" "),
-              _vm._m(1),
-              _vm._v(" "),
               _vm._m(2),
               _vm._v(" "),
-              _vm._m(3)
+              _vm._m(3),
+              _vm._v(" "),
+              _vm._m(4)
             ])
           ])
         ])
@@ -21037,7 +20722,7 @@ var render = function() {
     _vm.add
       ? _c("div", { staticClass: "col-8" }, [
           _c("div", { staticClass: "card" }, [
-            _vm._m(4),
+            _vm._m(5),
             _vm._v(" "),
             _c(
               "form",
@@ -21241,7 +20926,7 @@ var render = function() {
                     : _vm._e()
                 ]),
                 _vm._v(" "),
-                _vm._m(5)
+                _vm._m(6)
               ]
             )
           ])
@@ -21250,6 +20935,16 @@ var render = function() {
   ])
 }
 var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "card-header" }, [
+      _c("h3", { staticClass: "card-title" }, [_vm._v("List of Users")]),
+      _vm._v(" "),
+      _c("div", { staticClass: "float-right" })
+    ])
+  },
   function() {
     var _vm = this
     var _h = _vm.$createElement

@@ -6,21 +6,7 @@
                 <div class="card-header">
                     <h3 class="card-title">List of Users</h3>
                     <div class="float-right">                
-                        <ul class="pagination pagination-sm">
-                            <li class="page-item" v-bind:class="[{disabled: !pagination.prev_page_url}]">
-                            <a class="page-link" href="#" aria-label="Previous" @click="fetchUsers(pagination.prev_page_url)">
-                                <span aria-hidden="true">&laquo;</span>
-                                <span class="sr-only">Previous</span>
-                            </a>
-                            </li>
-                            <li class="page-item disabled"><a class="page-link" href="#">{{pagination.current_page}} of {{pagination.last_page}}</a></li>
-                            <li class="page-item" v-bind:class="[{disabled: !pagination.next_page_url}]">
-                            <a class="page-link" href="#" aria-label="Next" @click="fetchUsers(pagination.next_page_url)">
-                                <span aria-hidden="true">&raquo;</span>
-                                <span class="sr-only">Next</span>
-                            </a>
-                            </li>
-                        </ul>                   
+                                   
                     </div>
                 </div>
                 <!-- /.card-header -->
@@ -62,10 +48,27 @@
                             </div>
                         </li> -->
                     </ul>
+                        
                 </div>
                 <!-- /.card-body -->
+                
+                        
                 <div class="card-footer text-center">
-                    
+                    <ul class="pagination pagination-sm m-0 float-right">
+                        <li class="page-item" v-bind:class="[{disabled: !pagination.prev_page_url}]">
+                        <a class="page-link" href="#" aria-label="Previous" @click="fetchUsers(pagination.prev_page_url)">
+                            <span aria-hidden="true">&laquo;</span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                        </li>
+                        <li class="page-item disabled"><a class="page-link" href="#">{{pagination.current_page}} of {{pagination.last_page}}</a></li>
+                        <li class="page-item" v-bind:class="[{disabled: !pagination.next_page_url}]">
+                        <a class="page-link" href="#" aria-label="Next" @click="fetchUsers(pagination.next_page_url)">
+                            <span aria-hidden="true">&raquo;</span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                        </li>
+                    </ul>
                     <a href="javascript:void(0)" v-on:click="add = true, 
                                                         isHidden = true,
                                                         edit = false,
@@ -81,11 +84,11 @@
 
 
         <!-- Note -->
-        <div class="col-8" v-if="!isHidden">
+        <!-- <div class="col-8" v-if="!isHidden">
             <div class="alert alert-info alert-dismissible fade show text-center" role="alert">
                 Note: Only Administrator account has the acces to this page. 
             </div>
-        </div>
+        </div> -->
 
         <!-- View Profile -->
         <div class="col-8" v-if="show">
@@ -238,13 +241,19 @@
                 show: false,
                 isHidden: false,
                 add: false,
-                pass_reset: true
+                pass_reset: true,
+                date_created: ''
                
             }
         }, 
+        
+        props: {
+            userId: Number,
+        },
 
         created() {
             this.fetchUsers();
+            this.showProfile(this.userId);
         },
         
         methods: {
@@ -366,6 +375,30 @@
                 .then(data => {
                     // alert('Menu Removed');
                     this.fetchUsers();
+                })
+                .catch(err => console.log(err));
+            },
+            
+            showProfile(id) {
+                fetch(`api/user/${id}`, {
+                    method: 'GET'
+                })
+                .then(res => res.json())
+                .then(res => {
+                    this.show = true;
+                    this.user.u_id = res.data.u_id;
+                    this.user.user_id = res.data.u_id;
+                    this.user.u_fname = res.data.u_fname;
+                    this.user.u_lname = res.data.u_lname;
+                    this.user.u_email = res.data.email;
+                    this.user.u_image = res.data.u_image;
+                    this.user.u_role = res.data.r_category;
+                    this.user.r_id = res.data.r_role;
+                    this.date_created = res.data.created_at;
+                })
+                
+                .then(data => {
+                    
                 })
                 .catch(err => console.log(err));
             }

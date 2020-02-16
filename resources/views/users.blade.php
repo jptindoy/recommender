@@ -19,10 +19,10 @@
     <div class="container-fluid">  
 
     <h5 class="mb-2">Users Setting</h5>
-		<users></users>	
+		<users :user-id={{ Auth::user()->u_id }}></users>	
     
     <h5 class="mb-2">Modules Setting</h5>
-    <modules></modules>
+    <modules :user-id={{ Auth::user()->u_id }}></modules>
     </div><!-- /.container-fluid -->
 </div>
 <!-- /.content -->
