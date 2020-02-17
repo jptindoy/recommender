@@ -53,7 +53,7 @@
                 <!-- /.card-body -->
                 
                         
-                <div class="card-footer text-center">
+                <div class="card-footer">
                     <ul class="pagination pagination-sm m-0 float-right">
                         <li class="page-item" v-bind:class="[{disabled: !pagination.prev_page_url}]">
                         <a class="page-link" href="#" aria-label="Previous" @click="fetchUsers(pagination.prev_page_url)">
@@ -69,12 +69,13 @@
                         </a>
                         </li>
                     </ul>
-                    <a href="javascript:void(0)" v-on:click="add = true, 
+                    <button class="btn btn-info btn-sm" v-on:click="add = true, 
                                                         isHidden = true,
                                                         edit = false,
                                                         show = false,
                                                         pass_reset = true,
-                                                        clearForm()" class="uppercase">Add new user</a>
+                                                        clearForm()"> Add new user</button>
+                    
                     
                 </div>
                 <!-- /.card-footer -->

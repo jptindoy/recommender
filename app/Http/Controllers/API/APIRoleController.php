@@ -59,7 +59,9 @@ class APIRoleController extends Controller
      */
     public function show($id)
     {
-        //
+        $role = Role::findOrFail($id);
+
+        return new RoleResource($role);
     }
 
     /**
@@ -93,6 +95,10 @@ class APIRoleController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $role = Role::findOrFail($id);
+
+        if($role->delete()){
+            return new RoleResource($role);
+        }
     }
 }

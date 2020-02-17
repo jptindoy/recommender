@@ -18,7 +18,7 @@ class APIModuleController extends Controller
     {
         $modules = Module::join('roles', 'modules.m_category', '=', 'roles.r_id')
                         ->select('modules.*', 'roles.r_id', 'roles.r_category')
-                        ->groupBy('roles.r_id')
+                        ->groupBy('modules.m_category')
                         ->paginate(5);
         
         return ModuleResource::collection($modules); 
@@ -57,7 +57,13 @@ class APIModuleController extends Controller
      */
     public function show($id)
     {
-        //
+        $modules = Module::join('roles', 'modules.m_category', '=', 'roles.r_id')
+                        ->select('modules.*', 'roles.r_id', 'roles.r_category')
+                        ->where('modules.m_category', $id)
+                        ->paginate(5);
+        
+        return new ModuleResource($modules);
+
     }
 
     /**

@@ -2013,6 +2013,81 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2034,7 +2109,8 @@ __webpack_require__.r(__webpack_exports__);
       edit: false,
       module_id: '',
       role_id: '',
-      pagination: {}
+      pagination: {},
+      r_category: ''
     };
   },
   props: {
@@ -2042,6 +2118,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   created: function created() {
     this.fetchRoles();
+    this.showRole(this.userId);
   },
   methods: {
     fetchRoles: function fetchRoles(page_url) {
@@ -2068,21 +2145,33 @@ __webpack_require__.r(__webpack_exports__);
       };
       this.pagination = pagination;
     },
-    // deleteUser(u_id) {
-    //     if(confirm('Are you sure?')) {
-    //         fetch(`api/user/${id}`, {
-    //             method: 'delete'
-    //         })
-    //         .then(res => res.json())
-    //         .then(data => {
-    //             alert('User Removed!');
-    //             this.fetchRoles();
-    //         })
-    //         .catch(err => console.log(err));
-    //     }
-    // },
-    addRole: function addRole() {
+    deleteRole: function deleteRole(id) {
       var _this2 = this;
+
+      // if(confirm('Are you sure?')) {
+      //     fetch(`api/role/${id}`, {
+      //         method: 'DELETE'
+      //     })
+      //     .then(res => res.json())
+      //     .then(data => {
+      //         alert('User Removed!');
+      //         this.fetchRoles();
+      //     })
+      //     .catch(err => console.log(err));
+      // }
+      fetch("api/role/".concat(id), {
+        method: 'DELETE'
+      }).then(function (res) {
+        return res.json();
+      }).then(function (data) {
+        // alert('User Removed!');
+        _this2.fetchRoles();
+      })["catch"](function (err) {
+        return console.log(err);
+      });
+    },
+    addRole: function addRole() {
+      var _this3 = this;
 
       if (this.edit === false) {
         fetch('api/role', {
@@ -2095,30 +2184,66 @@ __webpack_require__.r(__webpack_exports__);
           return res.json();
         }) // .then(text => console.log(text))
         .then(function (data) {
-          _this2.role.r_category = '';
+          _this3.role.r_category = '';
 
-          _this2.fetchRoles(); //alert('User Added!');
+          _this3.fetchRoles(); //alert('User Added!');
+
+        })["catch"](function (err) {
+          return console.log(err);
+        });
+      } else {
+        // Update
+        fetch('/api/role', {
+          method: 'PUT',
+          body: JSON.stringify(this.role),
+          headers: {
+            'Content-type': 'Application/json'
+          }
+        }).then(function (res) {
+          return res.json();
+        }) //.then(text => console.log(text))
+        .then(function (data) {
+          _this3.edit = false;
+          _this3.role.r_category = '';
+
+          _this3.fetchRoles(); //alert('User Added!');
 
         })["catch"](function (err) {
           return console.log(err);
         });
       }
-    } // clearForm() {
-    //     this.edit = false;
-    //     this.user.u_id = null;
-    //     this.user.user_id = null;
-    //     this.user.u_fname = '';
-    //     this.user.u_lname = '';                 
-    //     this.user.u_email = '';                 
-    //     this.user.u_role = '';                 
-    //     this.user.u_password = '';                  
-    // },
-    // editUser() {
-    //     this.edit = true;
-    //     this.add = false;
-    //     this.isHidden = true;
-    // }
+    },
+    showRole: function showRole(id) {
+      var _this4 = this;
 
+      fetch("api/module/".concat(id), {
+        method: 'GET'
+      }).then(function (res) {
+        return res.json();
+      }) // .then(text => console.log(text))
+      .then(function (res) {
+        _this4.modules = res.data; // this.r_category = res.data.r_category;
+      }).then(function (data) {})["catch"](function (err) {
+        return console.log(err);
+      }); /////////////////////////////////////
+
+      fetch("api/role/".concat(id), {
+        method: 'GET'
+      }).then(function (res) {
+        return res.json();
+      }) // .then(text => console.log(text))
+      .then(function (res) {
+        _this4.r_category = res.data.r_category; // this.r_category = res.data.r_category;
+      }).then(function (data) {})["catch"](function (err) {
+        return console.log(err);
+      });
+    },
+    editRole: function editRole(role) {
+      this.edit = true;
+      this.role.r_id = role.r_id;
+      this.role.role_id = role.r_id;
+      this.role.r_category = role.r_category;
+    }
   }
 });
 
@@ -2133,6 +2258,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
 //
 //
 //
@@ -20195,7 +20321,60 @@ var render = function() {
                 _c("tr", [
                   _c("td", [_vm._v(_vm._s(role.r_category))]),
                   _vm._v(" "),
-                  _vm._m(1, true)
+                  _c("td", { staticClass: "text-right py-0 align-middle" }, [
+                    _c("div", { staticClass: "btn-group btn-group-sm" }, [
+                      _c(
+                        "a",
+                        {
+                          staticClass: "btn btn-success",
+                          attrs: {
+                            href: "javascript:void(0)",
+                            title: "click to update info..."
+                          },
+                          on: {
+                            click: function($event) {
+                              return _vm.editRole(role)
+                            }
+                          }
+                        },
+                        [_c("i", { staticClass: "fas fa-edit" })]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "a",
+                        {
+                          staticClass: "btn btn-info",
+                          attrs: {
+                            href: "javascript:void(0)",
+                            title: "click to show info..."
+                          },
+                          on: {
+                            click: function($event) {
+                              return _vm.showRole(role.r_id)
+                            }
+                          }
+                        },
+                        [_c("i", { staticClass: "fas fa-eye" })]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "a",
+                        {
+                          staticClass: "btn btn-danger",
+                          attrs: {
+                            href: "javascript:void(0)",
+                            title: "click to delete..."
+                          },
+                          on: {
+                            click: function($event) {
+                              return _vm.deleteRole(role.r_id)
+                            }
+                          }
+                        },
+                        [_c("i", { staticClass: "fas fa-trash" })]
+                      )
+                    ])
+                  ])
                 ])
               ])
             }),
@@ -20321,7 +20500,7 @@ var render = function() {
                     }
                   }),
                   _vm._v(" "),
-                  _vm._m(2)
+                  _vm._m(1)
                 ]
               )
             ]
@@ -20330,7 +20509,211 @@ var render = function() {
       ])
     ]),
     _vm._v(" "),
-    _vm._m(3)
+    _c("div", { staticClass: "col-8" }, [
+      _c("div", { staticClass: "card card-widget widget-user" }, [
+        _c("div", { staticClass: "widget-user-header bg-info" }, [
+          _c("h3", { staticClass: "widget-user-username mb-2 mt-3" }, [
+            _vm._v(_vm._s(_vm.r_category) + " Account")
+          ]),
+          _vm._v(" "),
+          _vm._m(2)
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "card-footer" }, [
+          _c("table", { staticClass: "table table-bordered mt-3" }, [
+            _vm._m(3),
+            _vm._v(" "),
+            _c(
+              "tbody",
+              _vm._l(_vm.modules, function(mod) {
+                return _c("tr", { key: mod.m_id }, [
+                  _c("td", [_vm._v(_vm._s(mod.m_name))]),
+                  _vm._v(" "),
+                  _c("td", { staticClass: "text-center" }, [
+                    mod.m_view == true
+                      ? _c(
+                          "div",
+                          {
+                            staticClass:
+                              "custom-control custom-switch custom-switch-on-success custom-switch-off-danger "
+                          },
+                          [
+                            _c("input", {
+                              staticClass: "custom-control-input",
+                              attrs: {
+                                type: "checkbox",
+                                id: "view",
+                                checked: ""
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("label", {
+                              staticClass: "custom-control-label",
+                              attrs: { for: "view" }
+                            })
+                          ]
+                        )
+                      : _c(
+                          "div",
+                          {
+                            staticClass:
+                              "custom-control custom-switch custom-switch-on-success custom-switch-off-danger "
+                          },
+                          [
+                            _c("input", {
+                              staticClass: "custom-control-input",
+                              attrs: { type: "checkbox", id: "view" }
+                            }),
+                            _vm._v(" "),
+                            _c("label", {
+                              staticClass: "custom-control-label",
+                              attrs: { for: "view" }
+                            })
+                          ]
+                        )
+                  ]),
+                  _vm._v(" "),
+                  _c("td", { staticClass: "text-center" }, [
+                    mod.m_add == true
+                      ? _c(
+                          "div",
+                          {
+                            staticClass:
+                              "custom-control custom-switch custom-switch-on-success custom-switch-off-danger "
+                          },
+                          [
+                            _c("input", {
+                              staticClass: "custom-control-input",
+                              attrs: {
+                                type: "checkbox",
+                                id: "view",
+                                checked: ""
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("label", {
+                              staticClass: "custom-control-label",
+                              attrs: { for: "view" }
+                            })
+                          ]
+                        )
+                      : _c(
+                          "div",
+                          {
+                            staticClass:
+                              "custom-control custom-switch custom-switch-on-success custom-switch-off-danger "
+                          },
+                          [
+                            _c("input", {
+                              staticClass: "custom-control-input",
+                              attrs: { type: "checkbox", id: "view" }
+                            }),
+                            _vm._v(" "),
+                            _c("label", {
+                              staticClass: "custom-control-label",
+                              attrs: { for: "view" }
+                            })
+                          ]
+                        )
+                  ]),
+                  _vm._v(" "),
+                  _c("td", { staticClass: "text-center" }, [
+                    mod.m_edit == true
+                      ? _c(
+                          "div",
+                          {
+                            staticClass:
+                              "custom-control custom-switch custom-switch-on-success custom-switch-off-danger "
+                          },
+                          [
+                            _c("input", {
+                              staticClass: "custom-control-input",
+                              attrs: {
+                                type: "checkbox",
+                                id: "view",
+                                checked: ""
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("label", {
+                              staticClass: "custom-control-label",
+                              attrs: { for: "view" }
+                            })
+                          ]
+                        )
+                      : _c(
+                          "div",
+                          {
+                            staticClass:
+                              "custom-control custom-switch custom-switch-on-success custom-switch-off-danger "
+                          },
+                          [
+                            _c("input", {
+                              staticClass: "custom-control-input",
+                              attrs: { type: "checkbox", id: "view" }
+                            }),
+                            _vm._v(" "),
+                            _c("label", {
+                              staticClass: "custom-control-label",
+                              attrs: { for: "view" }
+                            })
+                          ]
+                        )
+                  ]),
+                  _vm._v(" "),
+                  _c("td", { staticClass: "text-center" }, [
+                    mod.m_delete == true
+                      ? _c(
+                          "div",
+                          {
+                            staticClass:
+                              "custom-control custom-switch custom-switch-on-success custom-switch-off-danger "
+                          },
+                          [
+                            _c("input", {
+                              staticClass: "custom-control-input",
+                              attrs: {
+                                type: "checkbox",
+                                id: "view",
+                                checked: ""
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("label", {
+                              staticClass: "custom-control-label",
+                              attrs: { for: "view" }
+                            })
+                          ]
+                        )
+                      : _c(
+                          "div",
+                          {
+                            staticClass:
+                              "custom-control custom-switch custom-switch-on-success custom-switch-off-danger "
+                          },
+                          [
+                            _c("input", {
+                              staticClass: "custom-control-input",
+                              attrs: { type: "checkbox", id: "view" }
+                            }),
+                            _vm._v(" "),
+                            _c("label", {
+                              staticClass: "custom-control-label",
+                              attrs: { for: "view" }
+                            })
+                          ]
+                        )
+                  ])
+                ])
+              }),
+              0
+            )
+          ]),
+          _vm._v(" "),
+          _vm._m(4)
+        ])
+      ])
+    ])
   ])
 }
 var staticRenderFns = [
@@ -20339,35 +20722,9 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "card-header" }, [
-      _c("h3", { staticClass: "card-title" }, [_vm._v("List of Category")]),
+      _c("h3", { staticClass: "card-title" }, [_vm._v("List of User Role")]),
       _vm._v(" "),
       _c("div", { staticClass: "float-right" })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("td", { staticClass: "text-right py-0 align-middle" }, [
-      _c("div", { staticClass: "btn-group btn-group-sm" }, [
-        _c(
-          "a",
-          {
-            staticClass: "btn btn-info",
-            attrs: { href: "#", title: "click to update info..." }
-          },
-          [_c("i", { staticClass: "fas fa-edit" })]
-        ),
-        _vm._v(" "),
-        _c(
-          "a",
-          {
-            staticClass: "btn btn-danger",
-            attrs: { href: "#", title: "click to delete..." }
-          },
-          [_c("i", { staticClass: "fas fa-trash" })]
-        )
-      ])
     ])
   },
   function() {
@@ -20386,21 +20743,68 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-8" }, [
-      _c(
-        "div",
-        {
-          staticClass:
-            "alert alert-info alert-dismissible fade show text-center",
-          attrs: { role: "alert" }
-        },
-        [
-          _vm._v(
-            "\n            Note: Only Administrator account has the acces to this page. \n        "
-          )
-        ]
-      )
+    return _c("h5", { staticClass: "widget-user-desc" }, [
+      _c("i", { staticClass: "fas fa-th-list mr-1" }),
+      _vm._v(" List of Module Management")
     ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", { staticStyle: { width: "30%" } }, [_vm._v("Module")]),
+        _vm._v(" "),
+        _c("th", { staticClass: "text-center" }, [_vm._v("View")]),
+        _vm._v(" "),
+        _c("th", { staticClass: "text-center" }, [_vm._v("Add")]),
+        _vm._v(" "),
+        _c("th", { staticClass: "text-center" }, [_vm._v("Edit")]),
+        _vm._v(" "),
+        _c("th", { staticClass: "text-center" }, [_vm._v("Delete")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "ul",
+      { staticClass: "pagination pagination-sm m-0 float-right" },
+      [
+        _c("li", { staticClass: "page-item" }, [
+          _c("a", { staticClass: "page-link", attrs: { href: "#" } }, [
+            _vm._v("«")
+          ])
+        ]),
+        _vm._v(" "),
+        _c("li", { staticClass: "page-item" }, [
+          _c("a", { staticClass: "page-link", attrs: { href: "#" } }, [
+            _vm._v("1")
+          ])
+        ]),
+        _vm._v(" "),
+        _c("li", { staticClass: "page-item" }, [
+          _c("a", { staticClass: "page-link", attrs: { href: "#" } }, [
+            _vm._v("2")
+          ])
+        ]),
+        _vm._v(" "),
+        _c("li", { staticClass: "page-item" }, [
+          _c("a", { staticClass: "page-link", attrs: { href: "#" } }, [
+            _vm._v("3")
+          ])
+        ]),
+        _vm._v(" "),
+        _c("li", { staticClass: "page-item" }, [
+          _c("a", { staticClass: "page-link", attrs: { href: "#" } }, [
+            _vm._v("»")
+          ])
+        ])
+      ]
+    )
   }
 ]
 render._withStripped = true
@@ -20552,7 +20956,7 @@ var render = function() {
           )
         ]),
         _vm._v(" "),
-        _c("div", { staticClass: "card-footer text-center" }, [
+        _c("div", { staticClass: "card-footer" }, [
           _c(
             "ul",
             { staticClass: "pagination pagination-sm m-0 float-right" },
@@ -20630,10 +21034,9 @@ var render = function() {
           ),
           _vm._v(" "),
           _c(
-            "a",
+            "button",
             {
-              staticClass: "uppercase",
-              attrs: { href: "javascript:void(0)" },
+              staticClass: "btn btn-info btn-sm",
               on: {
                 click: function($event) {
                   ;(_vm.add = true),
@@ -20645,7 +21048,7 @@ var render = function() {
                 }
               }
             },
-            [_vm._v("Add new user")]
+            [_vm._v(" Add new user")]
           )
         ])
       ])

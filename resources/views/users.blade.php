@@ -22,7 +22,7 @@
 		<users :user-id={{ Auth::user()->u_id }}></users>	
     
     <h5 class="mb-2">Modules Setting</h5>
-    <modules :user-id={{ Auth::user()->u_id }}></modules>
+    <modules :user-id={{ Auth::user()->u_role }}></modules>
     </div><!-- /.container-fluid -->
 </div>
 <!-- /.content -->
