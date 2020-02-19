@@ -2220,7 +2220,7 @@ __webpack_require__.r(__webpack_exports__);
         method: 'GET'
       }).then(function (res) {
         return res.json();
-      }) // .then(text => console.log(text))
+      }) //.then(text => console.log(text))
       .then(function (res) {
         _this4.modules = res.data; // this.r_category = res.data.r_category;
       }).then(function (data) {})["catch"](function (err) {
@@ -20586,14 +20586,14 @@ var render = function() {
                               staticClass: "custom-control-input",
                               attrs: {
                                 type: "checkbox",
-                                id: "view",
+                                id: "add",
                                 checked: ""
                               }
                             }),
                             _vm._v(" "),
                             _c("label", {
                               staticClass: "custom-control-label",
-                              attrs: { for: "view" }
+                              attrs: { for: "add" }
                             })
                           ]
                         )
@@ -20606,12 +20606,12 @@ var render = function() {
                           [
                             _c("input", {
                               staticClass: "custom-control-input",
-                              attrs: { type: "checkbox", id: "view" }
+                              attrs: { type: "checkbox", id: "add" }
                             }),
                             _vm._v(" "),
                             _c("label", {
                               staticClass: "custom-control-label",
-                              attrs: { for: "view" }
+                              attrs: { for: "add" }
                             })
                           ]
                         )
@@ -20630,14 +20630,14 @@ var render = function() {
                               staticClass: "custom-control-input",
                               attrs: {
                                 type: "checkbox",
-                                id: "view",
+                                id: "edit",
                                 checked: ""
                               }
                             }),
                             _vm._v(" "),
                             _c("label", {
                               staticClass: "custom-control-label",
-                              attrs: { for: "view" }
+                              attrs: { for: "edit" }
                             })
                           ]
                         )
@@ -20650,12 +20650,12 @@ var render = function() {
                           [
                             _c("input", {
                               staticClass: "custom-control-input",
-                              attrs: { type: "checkbox", id: "view" }
+                              attrs: { type: "checkbox", id: "edit" }
                             }),
                             _vm._v(" "),
                             _c("label", {
                               staticClass: "custom-control-label",
-                              attrs: { for: "view" }
+                              attrs: { for: "edit" }
                             })
                           ]
                         )
@@ -20674,14 +20674,14 @@ var render = function() {
                               staticClass: "custom-control-input",
                               attrs: {
                                 type: "checkbox",
-                                id: "view",
+                                id: "delete",
                                 checked: ""
                               }
                             }),
                             _vm._v(" "),
                             _c("label", {
                               staticClass: "custom-control-label",
-                              attrs: { for: "view" }
+                              attrs: { for: "delete" }
                             })
                           ]
                         )
@@ -20694,12 +20694,12 @@ var render = function() {
                           [
                             _c("input", {
                               staticClass: "custom-control-input",
-                              attrs: { type: "checkbox", id: "view" }
+                              attrs: { type: "checkbox", id: "delete" }
                             }),
                             _vm._v(" "),
                             _c("label", {
                               staticClass: "custom-control-label",
-                              attrs: { for: "view" }
+                              attrs: { for: "delete" }
                             })
                           ]
                         )

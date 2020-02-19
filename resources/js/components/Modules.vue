@@ -98,32 +98,32 @@
                             </td>
                             <td class="text-center">
                                 <div v-if="mod.m_add == true" class="custom-control custom-switch custom-switch-on-success custom-switch-off-danger ">
-                                    <input type="checkbox" class="custom-control-input" id="view" checked>
-                                    <label class="custom-control-label" for="view"></label>
+                                    <input type="checkbox" class="custom-control-input" id="add" checked>
+                                    <label class="custom-control-label" for="add"></label>
                                 </div>
                                 <div v-else class="custom-control custom-switch custom-switch-on-success custom-switch-off-danger ">
-                                    <input type="checkbox" class="custom-control-input" id="view">
-                                    <label class="custom-control-label" for="view"></label>
+                                    <input type="checkbox" class="custom-control-input" id="add">
+                                    <label class="custom-control-label" for="add"></label>
                                 </div>
                             </td>
                             <td class="text-center">
                                 <div v-if="mod.m_edit == true" class="custom-control custom-switch custom-switch-on-success custom-switch-off-danger ">
-                                    <input type="checkbox" class="custom-control-input" id="view" checked>
-                                    <label class="custom-control-label" for="view"></label>
+                                    <input type="checkbox" class="custom-control-input" id="edit" checked>
+                                    <label class="custom-control-label" for="edit"></label>
                                 </div>
                                 <div v-else class="custom-control custom-switch custom-switch-on-success custom-switch-off-danger ">
-                                    <input type="checkbox" class="custom-control-input" id="view">
-                                    <label class="custom-control-label" for="view"></label>
+                                    <input type="checkbox" class="custom-control-input" id="edit">
+                                    <label class="custom-control-label" for="edit"></label>
                                 </div>
                             </td>
                             <td class="text-center">
                                 <div v-if="mod.m_delete == true" class="custom-control custom-switch custom-switch-on-success custom-switch-off-danger ">
-                                    <input type="checkbox" class="custom-control-input" id="view" checked>
-                                    <label class="custom-control-label" for="view"></label>
+                                    <input type="checkbox" class="custom-control-input" id="delete" checked>
+                                    <label class="custom-control-label" for="delete"></label>
                                 </div>
                                 <div v-else class="custom-control custom-switch custom-switch-on-success custom-switch-off-danger ">
-                                    <input type="checkbox" class="custom-control-input" id="view">
-                                    <label class="custom-control-label" for="view"></label>
+                                    <input type="checkbox" class="custom-control-input" id="delete">
+                                    <label class="custom-control-label" for="delete"></label>
                                 </div>
                             </td>
                         
@@ -275,7 +275,7 @@
                     method: 'GET'
                 })
                 .then(res => res.json())
-                // .then(text => console.log(text))
+                //.then(text => console.log(text))
                 .then(res => {
                     this.modules = res.data;
                     // this.r_category = res.data.r_category;
