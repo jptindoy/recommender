@@ -88,41 +88,41 @@
                             <td>{{mod.m_name}}</td>
                             <td class="text-center">
                                 <div v-if="mod.m_view == true" class="custom-control custom-switch custom-switch-on-success custom-switch-off-danger ">
-                                    <input type="checkbox" class="custom-control-input" id="view" checked>
+                                    <input type="checkbox" class="custom-control-input" id="view" @click="editModule(mod)" v-model="mod.m_view" checked>
                                     <label class="custom-control-label" for="view"></label>
                                 </div>
                                 <div v-else class="custom-control custom-switch custom-switch-on-success custom-switch-off-danger ">
-                                    <input type="checkbox" class="custom-control-input" id="view">
+                                    <input type="checkbox" class="custom-control-input" id="view" @click="editModule(mod)" v-model="mod.m_view">
                                     <label class="custom-control-label" for="view"></label>
                                 </div>
                             </td>
                             <td class="text-center">
                                 <div v-if="mod.m_add == true" class="custom-control custom-switch custom-switch-on-success custom-switch-off-danger ">
-                                    <input type="checkbox" class="custom-control-input" id="add" checked>
+                                    <input type="checkbox" class="custom-control-input" id="add" @click="editModule(mod)" v-model="mod.m_add" checked>
                                     <label class="custom-control-label" for="add"></label>
                                 </div>
                                 <div v-else class="custom-control custom-switch custom-switch-on-success custom-switch-off-danger ">
-                                    <input type="checkbox" class="custom-control-input" id="add">
+                                    <input type="checkbox" class="custom-control-input" id="add" @click="editModule(mod)" v-model="mod.m_add">
                                     <label class="custom-control-label" for="add"></label>
                                 </div>
                             </td>
                             <td class="text-center">
                                 <div v-if="mod.m_edit == true" class="custom-control custom-switch custom-switch-on-success custom-switch-off-danger ">
-                                    <input type="checkbox" class="custom-control-input" id="edit" checked>
+                                    <input type="checkbox" class="custom-control-input" id="edit" @click="editModule(mod)" v-model="mod.m_edit" checked>
                                     <label class="custom-control-label" for="edit"></label>
                                 </div>
                                 <div v-else class="custom-control custom-switch custom-switch-on-success custom-switch-off-danger ">
-                                    <input type="checkbox" class="custom-control-input" id="edit">
+                                    <input type="checkbox" class="custom-control-input" id="edit" @click="editModule(mod)" v-model="mod.m_edit">
                                     <label class="custom-control-label" for="edit"></label>
                                 </div>
                             </td>
                             <td class="text-center">
                                 <div v-if="mod.m_delete == true" class="custom-control custom-switch custom-switch-on-success custom-switch-off-danger ">
-                                    <input type="checkbox" class="custom-control-input" id="delete" checked>
+                                    <input type="checkbox" class="custom-control-input" id="delete" @click="editModule(mod)" v-model="mod.m_delete" checked>
                                     <label class="custom-control-label" for="delete"></label>
                                 </div>
                                 <div v-else class="custom-control custom-switch custom-switch-on-success custom-switch-off-danger ">
-                                    <input type="checkbox" class="custom-control-input" id="delete">
+                                    <input type="checkbox" class="custom-control-input" id="delete" @click="editModule(mod)" v-model="mod.m_delete">
                                     <label class="custom-control-label" for="delete"></label>
                                 </div>
                             </td>
@@ -303,6 +303,56 @@
                 this.role.r_id = role.r_id;
                 this.role.role_id = role.r_id;
                 this.role.r_category = role.r_category;
+            },
+
+
+            editModule(mod) {
+                this.edit = true;
+                this.mod.m_id = mod.m_id;
+                this.mod.m_category = mod.m_category;
+                this.mod.m_name = mod.m_name;
+                if (mod.m_view == true) {
+                    this.mod.m_view = false;
+                } else {
+                    this.mod.m_view = true;
+                }
+                if (mod.m_add == true) {
+                    this.mod.m_add = false;
+                } else {
+                    this.mod.m_add = true;
+                }
+                if (mod.m_edit == true) {
+                    this.mod.m_edit = false;
+                } else {
+                    this.mod.m_edit = true;
+                }
+                if (mod.m_delete == true) {
+                    this.mod.m_delete = false;
+                } else {
+                    this.mod.m_delete = true;
+                }
+                
+                this.updateModule();
+            },
+            updateModule() {
+                
+                fetch('/api/module',{
+                    method: 'PUT',
+                    body: JSON.stringify(this.mod),
+                    headers: {
+                        'Content-type' : 'Application/json'
+                    }
+
+                })
+                .then( res => res.text())
+                .then(text => console.log(text))
+                .then( data => {
+                    // this.edit = false;
+                    // this.role.r_category = '';
+                    // this.fetchRoles();
+                    //alert('User Added!');
+                })
+                .catch(err => console.log(err));
             }
         }
     }

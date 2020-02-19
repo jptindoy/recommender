@@ -42,11 +42,9 @@ class APIModuleController extends Controller
      */
     public function store(Request $request)
     {
-        // return $request;
+        // $module = $request->isMethod('PUT') ? Module::
+        return $request;
 
-        // $role = $request->isMethod('PUT') ? Module::findOrFail($request->input('module_id')) : New Module;
-
-        
     }
 
     /**
