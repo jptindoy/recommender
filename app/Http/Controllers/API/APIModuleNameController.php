@@ -4,10 +4,10 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Role;
-use App\Http\Resources\Role as RoleResource;
+use App\ModuleName;
+use App\Http\Resources\ModuleName as ModuleNameResource;
 
-class APIRoleController extends Controller
+class APIModuleNameController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,9 +16,9 @@ class APIRoleController extends Controller
      */
     public function index()
     {
-        $role = Role::paginate(5);
-        
-        return RoleResource::collection($role);
+        $module_name = ModuleName::paginate(5);
+
+        return ModuleNameResource::collection($module_name);
     }
 
     /**
@@ -39,16 +39,7 @@ class APIRoleController extends Controller
      */
     public function store(Request $request)
     {
-        // return $request;
-
-        $role = $request->isMethod('PUT') ? Role::findOrFail($request->input('role_id')) : New Role;
-
-        $role->r_id = $request->input('role_id');
-        $role->r_category = $request->input('r_category');
-
-        if($role->save()) {
-            return new RoleResource($role);
-        }
+        //
     }
 
     /**
@@ -59,10 +50,7 @@ class APIRoleController extends Controller
      */
     public function show($id)
     {
-        $role = Role::findOrFail($id);
-
-        return new RoleResource($role
-    );
+        //
     }
 
     /**
@@ -96,10 +84,6 @@ class APIRoleController extends Controller
      */
     public function destroy($id)
     {
-        $role = Role::findOrFail($id);
-
-        if($role->delete()){
-            return new RoleResource($role);
-        }
+        //
     }
 }

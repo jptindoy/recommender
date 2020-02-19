@@ -18,35 +18,22 @@
                                     <td><a href="javascript:void(0)" @click="showUser(user)" title="click to expand.."><img v-bind:src="'storage/img/' + user.u_image" alt="Product Image" class="img-size-50"></a></td>
                                     <td>
                                         <a href="javascript:void(0)" @click="showUser(user)" class="product-title" title="click to expand...">{{user.u_fname}} {{user.u_lname}}</a>
-                                        <span class="badge badge-success float-right">Active</span>
+                                        <span v-if="user.u_status == true" class="badge badge-success float-right">Active</span>
+                                        <span v-else class="badge badge-danger float-right">In Active</span>
                                         <span class="product-description">
                                             {{user.r_category}}
                                         </span>
                                     </td>
                                     <td class="text-right py-0 align-middle">
                                     <div class="btn-group btn-group-sm">
-                                        <a href="#" class="btn btn-info" @click="editUser(user)" title="click to update info..."><i class="fas fa-edit"></i></a>
-                                        <a href="#" class="btn btn-danger" @click="deleteUser(user.u_id)" title="click to delete..."><i class="fas fa-trash"></i></a>
+                                        <a href="javascript:void(0)" class="btn btn-info" @click="editUser(user)" title="click to update info..."><i class="fas fa-edit"></i></a>
+                                        <a href="javascript:void(0)" class="btn btn-success" @click="showUser(user)" title="click to show info..."><i class="fas fa-eye"></i></a>
+                                        <a href="javascript:void(0)" class="btn btn-danger" @click="deleteUser(user.u_id)" title="click to delete..."><i class="fas fa-trash"></i></a>
                                     </div>
                                     </td>
                                 </tr>
                             </tbody>
                         </table>
-                        <!-- <li class="item" v-for="user in users" v-bind:key="user.u_id">
-
-                            <div class="product-img">
-                               
-                            </div>
-                            <div class="product-info">
-                                <a href="javascript:void(0)" @click="editUser(user)" class="product-title">{{user.u_fname}} {{user.u_lname}}
-                                </a>
-                                <span class="badge badge-success float-right">Active</span>
-                                <span class="product-description">
-                                    {{user.r_category}}
-                                </span>
-                                
-                            </div>
-                        </li> -->
                     </ul>
                         
                 </div>
@@ -118,8 +105,8 @@
                         <div class="description-block">
                         <h5 class="description-header">
                             <div class="custom-control custom-switch custom-switch-on-success custom-switch-off-danger ">
-                                <input type="checkbox" class="custom-control-input" id="customSwitch3" checked>
-                                <label class="custom-control-label" for="customSwitch3">Active</label>
+                                <input type="checkbox" class="custom-control-input" @change="updateUser(user.u_id)" :id="'view' + user.u_status"  v-model="user.u_status" v-bind:value="user.u_status" checked-value="true" unchecked-value="false" >
+                                    <label class="custom-control-label" :for="'view' + user.u_status"></label>
                             </div>
                         </h5>
                         <span class="description-text">Satus</span>
@@ -234,9 +221,12 @@
                     u_email: '',
                     u_password: '',
                     u_role: '',
+                    u_status: '',
                     u_image: ''
+                    
                 },
                 user_id: '',
+                
                 pagination: {},
                 edit: false,
                 show: false,
@@ -349,6 +339,7 @@
                 this.r_category = user.r_category;
                 this.r_id = user.u_role;
                 this.date_created = user.created_at;
+                
             },
 
             showUser(user) {
@@ -365,6 +356,9 @@
                 this.user.u_role = user.r_category;
                 this.user.r_id = user.r_role;
                 this.date_created = user.created_at;
+                this.date_created = user.created_at;
+                this.user.u_status = user.u_status;
+                
             },
 
             deleteUser(id) {
@@ -396,12 +390,32 @@
                     this.user.u_role = res.data.r_category;
                     this.user.r_id = res.data.r_role;
                     this.date_created = res.data.created_at;
+                    this.user.u_status = res.data.u_status;
                 })
                 
                 .then(data => {
                     
                 })
                 .catch(err => console.log(err));
+            },
+
+            updateUser(id) {
+                fetch(`api/user/${id}`,{
+                        method: 'PUT',
+                        body: JSON.stringify(this.user),
+                        headers: {
+                            'Content-type' : 'Application/json'
+                        }
+
+                    })
+                    .then( res => res.json())
+                    //.then(text => console.log(text))
+                    .then( data => {
+                        // this.clearForm();
+                        this.fetchUsers();
+                        //alert('User Added!');
+                    })
+                    .catch(err => console.log(err));
             }
             
 

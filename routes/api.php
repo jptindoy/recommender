@@ -22,6 +22,7 @@ Route::get('users', 'API\APIUserController@index');
 Route::get('user/{id}', 'API\APIUserController@show');
 Route::post('user', 'API\APIUserController@store');
 Route::put('user', 'API\APIUserController@store');
+Route::put('user/{id}', 'API\APIUserController@update');
 Route::delete('user/{id}', 'API\APIUserController@destroy');
 
 // Modules routes
@@ -30,6 +31,13 @@ Route::get('module/{id}', 'API\APIModuleController@show');
 Route::post('module', 'API\APIModuleController@store');
 Route::put('module', 'API\APIModuleController@store');
 Route::delete('module/{id}', 'API\APIModuleController@destroy');
+
+// Modules routes
+Route::get('module-names', 'API\APIModuleNameController@index');
+Route::get('module-name/{id}', 'API\APIModuleNameController@show');
+Route::post('module-name', 'API\APIModuleNameController@store');
+Route::put('module-name', 'API\APIModuleNameController@store');
+Route::delete('module-name/{id}', 'API\APIModuleNameController@destroy');
 
 // Roles routes
 Route::get('roles', 'API\APIRoleController@index');

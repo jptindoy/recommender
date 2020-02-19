@@ -42,8 +42,21 @@ class APIModuleController extends Controller
      */
     public function store(Request $request)
     {
-        // $module = $request->isMethod('PUT') ? Module::
-        return $request;
+        $module = $request->isMethod('PUT') ? Module::findOrFail($request->input('m_id')) : New Module;
+        
+        $module->m_id = $request->input('m_id');
+        $module->m_category = $request->input('m_category');
+        $module->m_name = $request->input('m_name');
+        $module->m_view = $request->input('m_view');
+        $module->m_add = $request->input('m_add');
+        $module->m_edit = $request->input('m_edit');
+        $module->m_delete = $request->input('m_delete');
+
+        if($module->save()) {
+            return New ModuleResource($module);
+        }
+
+        //return $request->input('m_category');
 
     }
 

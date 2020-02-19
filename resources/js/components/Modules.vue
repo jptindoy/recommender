@@ -1,10 +1,10 @@
 <template>
     <div class="row">
         <!-- PRODUCT LIST -->
-        <div class="col-4">
+        <div class="col-3">
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">List of User Role</h3>
+                    <h3 class="card-title">List of User Roles</h3>
                     <div class="float-right">                
                                       
                     </div>
@@ -17,8 +17,8 @@
                                 <td>{{role.r_category}}</td>
                                 <td class="text-right py-0 align-middle">
                                     <div class="btn-group btn-group-sm">
-                                        <a href="javascript:void(0)" class="btn btn-success" @click="editRole(role)" title="click to update info..."><i class="fas fa-edit"></i></a>
-                                        <a href="javascript:void(0)" class="btn btn-info" @click="showRole(role.r_id)" title="click to show info..."><i class="fas fa-eye"></i></a>
+                                        <a href="javascript:void(0)" class="btn btn-info" @click="editRole(role)" title="click to update info..."><i class="fas fa-edit"></i></a>
+                                        <a href="javascript:void(0)" class="btn btn-dark" @click="showRole(role.r_id)" title="click to show info..."><i class="fas fa-eye"></i></a>
                                         <a href="javascript:void(0)" class="btn btn-danger" @click="deleteRole(role.r_id)" title="click to delete..."><i class="fas fa-trash"></i></a>
                                     </div>
                                 </td>
@@ -60,9 +60,8 @@
             <!-- /.card -->
         </div>
 
-
         <!-- Note -->
-        <div class="col-8">
+        <div class="col-6">
             <!-- Widget: user widget style 1 -->
             <div class="card card-widget widget-user">
                 <!-- Add the bg color to the header using any of the bg-* classes -->
@@ -87,43 +86,27 @@
                         <tr v-for="mod in modules" v-bind:key="mod.m_id">
                             <td>{{mod.m_name}}</td>
                             <td class="text-center">
-                                <div v-if="mod.m_view == true" class="custom-control custom-switch custom-switch-on-success custom-switch-off-danger ">
-                                    <input type="checkbox" class="custom-control-input" id="view" @click="editModule(mod)" v-model="mod.m_view" checked>
-                                    <label class="custom-control-label" for="view"></label>
-                                </div>
-                                <div v-else class="custom-control custom-switch custom-switch-on-success custom-switch-off-danger ">
-                                    <input type="checkbox" class="custom-control-input" id="view" @click="editModule(mod)" v-model="mod.m_view">
-                                    <label class="custom-control-label" for="view"></label>
+                                <div class="custom-control custom-switch custom-switch-on-success custom-switch-off-danger ">
+                                    <input type="checkbox" class="custom-control-input" :id="'view' + mod.m_id" @change="editModule(mod)" v-model="mod.m_view" v-bind:value="mod.m_view" checked-value="true" unchecked-value="false" >
+                                    <label class="custom-control-label" :for="'view' + mod.m_id"></label>
                                 </div>
                             </td>
                             <td class="text-center">
-                                <div v-if="mod.m_add == true" class="custom-control custom-switch custom-switch-on-success custom-switch-off-danger ">
-                                    <input type="checkbox" class="custom-control-input" id="add" @click="editModule(mod)" v-model="mod.m_add" checked>
-                                    <label class="custom-control-label" for="add"></label>
-                                </div>
-                                <div v-else class="custom-control custom-switch custom-switch-on-success custom-switch-off-danger ">
-                                    <input type="checkbox" class="custom-control-input" id="add" @click="editModule(mod)" v-model="mod.m_add">
-                                    <label class="custom-control-label" for="add"></label>
+                                 <div class="custom-control custom-switch custom-switch-on-success custom-switch-off-danger ">
+                                    <input type="checkbox" class="custom-control-input" :id="'add' + mod.m_id" @change="editModule(mod)" v-model="mod.m_add" value="true" unchecked-value="false" >
+                                    <label class="custom-control-label" :for="'add' + mod.m_id"></label>
                                 </div>
                             </td>
                             <td class="text-center">
-                                <div v-if="mod.m_edit == true" class="custom-control custom-switch custom-switch-on-success custom-switch-off-danger ">
-                                    <input type="checkbox" class="custom-control-input" id="edit" @click="editModule(mod)" v-model="mod.m_edit" checked>
-                                    <label class="custom-control-label" for="edit"></label>
-                                </div>
-                                <div v-else class="custom-control custom-switch custom-switch-on-success custom-switch-off-danger ">
-                                    <input type="checkbox" class="custom-control-input" id="edit" @click="editModule(mod)" v-model="mod.m_edit">
-                                    <label class="custom-control-label" for="edit"></label>
+                                 <div class="custom-control custom-switch custom-switch-on-success custom-switch-off-danger ">
+                                    <input type="checkbox" class="custom-control-input" :id="'edit' + mod.m_id" @change="editModule(mod)" v-model="mod.m_edit" value="false" unchecked-value="true" >
+                                    <label class="custom-control-label" :for="'edit' + mod.m_id"></label>
                                 </div>
                             </td>
                             <td class="text-center">
-                                <div v-if="mod.m_delete == true" class="custom-control custom-switch custom-switch-on-success custom-switch-off-danger ">
-                                    <input type="checkbox" class="custom-control-input" id="delete" @click="editModule(mod)" v-model="mod.m_delete" checked>
-                                    <label class="custom-control-label" for="delete"></label>
-                                </div>
-                                <div v-else class="custom-control custom-switch custom-switch-on-success custom-switch-off-danger ">
-                                    <input type="checkbox" class="custom-control-input" id="delete" @click="editModule(mod)" v-model="mod.m_delete">
-                                    <label class="custom-control-label" for="delete"></label>
+                                 <div class="custom-control custom-switch custom-switch-on-success custom-switch-off-danger ">
+                                    <input type="checkbox" class="custom-control-input" :id="'delete' + mod.m_id" @change="editModule(mod)" v-model="mod.m_delete" value="true" unchecked-value="false" >
+                                    <label class="custom-control-label" :for="'delete' + mod.m_id"></label>
                                 </div>
                             </td>
                         
@@ -140,6 +123,66 @@
                 </div>
             </div>
             <!-- /.widget-user -->
+        </div>
+
+        
+        <div class="col-3">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">List of Modules</h3>
+                    <div class="float-right">                
+                                      
+                    </div>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body p-0">
+                    <table class="table">
+                        <tbody v-for="module_name in module_names" v-bind:key="module_name.id">
+                            <tr>
+                                <td>{{module_name.module_name}}</td>
+                                <td class="text-right py-0 align-middle">
+                                    <div class="btn-group btn-group-sm">
+                                        <a href="javascript:void(0)" class="btn btn-info" @click="editModuleName(module_name)" title="click to update info..."><i class="fas fa-edit"></i></a>
+                                       
+                                        <a href="javascript:void(0)" class="btn btn-danger" @click="deleteModuleName(module_name.id)" title="click to delete..."><i class="fas fa-trash"></i></a>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- /.card-body -->
+                            
+                <div class="card-footer text-center">      
+                    
+                    <ul class="pagination pagination-sm m-0 float-right">
+                        <li class="page-item" v-bind:class="[{disabled: !pagination.prev_page_url}]">
+                        <a class="page-link" href="#" aria-label="Previous" @click="fetchRoles(pagination.prev_page_url)">
+                            <span aria-hidden="true">&laquo;</span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                        </li>
+                        <li class="page-item disabled"><a class="page-link" href="#">{{pagination.current_page}} of {{pagination.last_page}}</a></li>
+                        <li class="page-item" v-bind:class="[{disabled: !pagination.next_page_url}]">
+                        <a class="page-link" href="#" aria-label="Next" @click="fetchRoles(pagination.next_page_url)">
+                            <span aria-hidden="true">&raquo;</span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                        </li>
+                    </ul> 
+                    <form @submit.prevent="addModuleName()" role="form">       
+                        <div class="input-group input-group-sm" style="width:70%;">
+                            <input type="text" class="form-control" v-model="module_name.module_name" required>
+                            <span class="input-group-append">
+                                <button type="submit" class="btn btn-info btn-flat">Save</button>
+                            </span>
+                        </div> 
+                    </form>            
+                    
+                </div>
+                <!-- /.card-footer -->
+            </div>
+            <!-- /.card -->
         </div>
     </div>
     
@@ -164,6 +207,11 @@
                     r_id: '',
                     r_category: ''
                 },
+                module_names: [],
+                module_name:{
+                    id: '',
+                    module_name: ''
+                },
                 edit: false,
                 module_id: '',
                 role_id: '',
@@ -179,6 +227,7 @@
         created() {
             this.fetchRoles();
             this.showRole(this.userId);
+            this.fetchModules();
         },
         
         methods: {
@@ -190,6 +239,19 @@
                 //.then(text => console.log(text))
                 .then(res => {
                     this.roles = res.data;
+                    vm.makePagination(res.meta, res.links);
+                })
+                .catch(err => console.log(err));
+            },
+
+            fetchModules(page_url) {
+                let vm = this;
+                page_url = page_url || 'api/module-names'
+                fetch(page_url)
+                .then(res => res.json())
+                //.then(text => console.log(text))
+                .then(res => {
+                    this.module_names = res.data;
                     vm.makePagination(res.meta, res.links);
                 })
                 .catch(err => console.log(err));
@@ -311,29 +373,14 @@
                 this.mod.m_id = mod.m_id;
                 this.mod.m_category = mod.m_category;
                 this.mod.m_name = mod.m_name;
-                if (mod.m_view == true) {
-                    this.mod.m_view = false;
-                } else {
-                    this.mod.m_view = true;
-                }
-                if (mod.m_add == true) {
-                    this.mod.m_add = false;
-                } else {
-                    this.mod.m_add = true;
-                }
-                if (mod.m_edit == true) {
-                    this.mod.m_edit = false;
-                } else {
-                    this.mod.m_edit = true;
-                }
-                if (mod.m_delete == true) {
-                    this.mod.m_delete = false;
-                } else {
-                    this.mod.m_delete = true;
-                }
-                
+                this.mod.m_view = mod.m_view;
+                this.mod.m_add = mod.m_add;
+                this.mod.m_edit = mod.m_edit;
+                this.mod.m_delete = mod.m_delete;
+                                
                 this.updateModule();
             },
+
             updateModule() {
                 
                 fetch('/api/module',{
@@ -344,15 +391,27 @@
                     }
 
                 })
-                .then( res => res.text())
-                .then(text => console.log(text))
+                .then( res => res.json())
+                //.then(text => console.log(text))
                 .then( data => {
-                    // this.edit = false;
+                    this.edit = false;
                     // this.role.r_category = '';
                     // this.fetchRoles();
                     //alert('User Added!');
                 })
                 .catch(err => console.log(err));
+            },
+
+            editModuleName() {
+
+            },
+
+            deleteModuleName() {
+
+            },
+
+            addModuleName() {
+
             }
         }
     }

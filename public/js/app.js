@@ -2088,6 +2088,49 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2106,6 +2149,11 @@ __webpack_require__.r(__webpack_exports__);
         r_id: '',
         r_category: ''
       },
+      module_names: [],
+      module_name: {
+        id: '',
+        module_name: ''
+      },
       edit: false,
       module_id: '',
       role_id: '',
@@ -2119,6 +2167,7 @@ __webpack_require__.r(__webpack_exports__);
   created: function created() {
     this.fetchRoles();
     this.showRole(this.userId);
+    this.fetchModules();
   },
   methods: {
     fetchRoles: function fetchRoles(page_url) {
@@ -2136,6 +2185,21 @@ __webpack_require__.r(__webpack_exports__);
         return console.log(err);
       });
     },
+    fetchModules: function fetchModules(page_url) {
+      var _this2 = this;
+
+      var vm = this;
+      page_url = page_url || 'api/module-names';
+      fetch(page_url).then(function (res) {
+        return res.json();
+      }) //.then(text => console.log(text))
+      .then(function (res) {
+        _this2.module_names = res.data;
+        vm.makePagination(res.meta, res.links);
+      })["catch"](function (err) {
+        return console.log(err);
+      });
+    },
     makePagination: function makePagination(meta, links) {
       var pagination = {
         current_page: meta.current_page,
@@ -2146,7 +2210,7 @@ __webpack_require__.r(__webpack_exports__);
       this.pagination = pagination;
     },
     deleteRole: function deleteRole(id) {
-      var _this2 = this;
+      var _this3 = this;
 
       // if(confirm('Are you sure?')) {
       //     fetch(`api/role/${id}`, {
@@ -2165,13 +2229,13 @@ __webpack_require__.r(__webpack_exports__);
         return res.json();
       }).then(function (data) {
         // alert('User Removed!');
-        _this2.fetchRoles();
+        _this3.fetchRoles();
       })["catch"](function (err) {
         return console.log(err);
       });
     },
     addRole: function addRole() {
-      var _this3 = this;
+      var _this4 = this;
 
       if (this.edit === false) {
         fetch('api/role', {
@@ -2184,9 +2248,9 @@ __webpack_require__.r(__webpack_exports__);
           return res.json();
         }) // .then(text => console.log(text))
         .then(function (data) {
-          _this3.role.r_category = '';
+          _this4.role.r_category = '';
 
-          _this3.fetchRoles(); //alert('User Added!');
+          _this4.fetchRoles(); //alert('User Added!');
 
         })["catch"](function (err) {
           return console.log(err);
@@ -2203,10 +2267,10 @@ __webpack_require__.r(__webpack_exports__);
           return res.json();
         }) //.then(text => console.log(text))
         .then(function (data) {
-          _this3.edit = false;
-          _this3.role.r_category = '';
+          _this4.edit = false;
+          _this4.role.r_category = '';
 
-          _this3.fetchRoles(); //alert('User Added!');
+          _this4.fetchRoles(); //alert('User Added!');
 
         })["catch"](function (err) {
           return console.log(err);
@@ -2214,7 +2278,7 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     showRole: function showRole(id) {
-      var _this4 = this;
+      var _this5 = this;
 
       fetch("api/module/".concat(id), {
         method: 'GET'
@@ -2222,7 +2286,7 @@ __webpack_require__.r(__webpack_exports__);
         return res.json();
       }) //.then(text => console.log(text))
       .then(function (res) {
-        _this4.modules = res.data; // this.r_category = res.data.r_category;
+        _this5.modules = res.data; // this.r_category = res.data.r_category;
       }).then(function (data) {})["catch"](function (err) {
         return console.log(err);
       }); /////////////////////////////////////
@@ -2233,7 +2297,7 @@ __webpack_require__.r(__webpack_exports__);
         return res.json();
       }) // .then(text => console.log(text))
       .then(function (res) {
-        _this4.r_category = res.data.r_category; // this.r_category = res.data.r_category;
+        _this5.r_category = res.data.r_category; // this.r_category = res.data.r_category;
       }).then(function (data) {})["catch"](function (err) {
         return console.log(err);
       });
@@ -2249,34 +2313,15 @@ __webpack_require__.r(__webpack_exports__);
       this.mod.m_id = mod.m_id;
       this.mod.m_category = mod.m_category;
       this.mod.m_name = mod.m_name;
-
-      if (mod.m_view == true) {
-        this.mod.m_view = false;
-      } else {
-        this.mod.m_view = true;
-      }
-
-      if (mod.m_add == true) {
-        this.mod.m_add = false;
-      } else {
-        this.mod.m_add = true;
-      }
-
-      if (mod.m_edit == true) {
-        this.mod.m_edit = false;
-      } else {
-        this.mod.m_edit = true;
-      }
-
-      if (mod.m_delete == true) {
-        this.mod.m_delete = false;
-      } else {
-        this.mod.m_delete = true;
-      }
-
+      this.mod.m_view = mod.m_view;
+      this.mod.m_add = mod.m_add;
+      this.mod.m_edit = mod.m_edit;
+      this.mod.m_delete = mod.m_delete;
       this.updateModule();
     },
     updateModule: function updateModule() {
+      var _this6 = this;
+
       fetch('/api/module', {
         method: 'PUT',
         body: JSON.stringify(this.mod),
@@ -2284,17 +2329,19 @@ __webpack_require__.r(__webpack_exports__);
           'Content-type': 'Application/json'
         }
       }).then(function (res) {
-        return res.text();
-      }).then(function (text) {
-        return console.log(text);
-      }).then(function (data) {// this.edit = false;
-        // this.role.r_category = '';
+        return res.json();
+      }) //.then(text => console.log(text))
+      .then(function (data) {
+        _this6.edit = false; // this.role.r_category = '';
         // this.fetchRoles();
         //alert('User Added!');
       })["catch"](function (err) {
         return console.log(err);
       });
-    }
+    },
+    editModuleName: function editModuleName() {},
+    deleteModuleName: function deleteModuleName() {},
+    addModuleName: function addModuleName() {}
   }
 });
 
@@ -2520,19 +2567,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2544,6 +2578,7 @@ __webpack_require__.r(__webpack_exports__);
         u_email: '',
         u_password: '',
         u_role: '',
+        u_status: '',
         u_image: ''
       },
       user_id: '',
@@ -2669,6 +2704,8 @@ __webpack_require__.r(__webpack_exports__);
       this.user.u_role = user.r_category;
       this.user.r_id = user.r_role;
       this.date_created = user.created_at;
+      this.date_created = user.created_at;
+      this.user.u_status = user.u_status;
     },
     deleteUser: function deleteUser(id) {
       var _this3 = this;
@@ -2703,7 +2740,28 @@ __webpack_require__.r(__webpack_exports__);
         _this4.user.u_role = res.data.r_category;
         _this4.user.r_id = res.data.r_role;
         _this4.date_created = res.data.created_at;
+        _this4.user.u_status = res.data.u_status;
       }).then(function (data) {})["catch"](function (err) {
+        return console.log(err);
+      });
+    },
+    updateUser: function updateUser(id) {
+      var _this5 = this;
+
+      fetch("api/user/".concat(id), {
+        method: 'PUT',
+        body: JSON.stringify(this.user),
+        headers: {
+          'Content-type': 'Application/json'
+        }
+      }).then(function (res) {
+        return res.json();
+      }) //.then(text => console.log(text))
+      .then(function (data) {
+        // this.clearForm();
+        _this5.fetchUsers(); //alert('User Added!');
+
+      })["catch"](function (err) {
         return console.log(err);
       });
     }
@@ -20359,7 +20417,7 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "row" }, [
-    _c("div", { staticClass: "col-4" }, [
+    _c("div", { staticClass: "col-3" }, [
       _c("div", { staticClass: "card" }, [
         _vm._m(0),
         _vm._v(" "),
@@ -20377,7 +20435,7 @@ var render = function() {
                       _c(
                         "a",
                         {
-                          staticClass: "btn btn-success",
+                          staticClass: "btn btn-info",
                           attrs: {
                             href: "javascript:void(0)",
                             title: "click to update info..."
@@ -20394,7 +20452,7 @@ var render = function() {
                       _c(
                         "a",
                         {
-                          staticClass: "btn btn-info",
+                          staticClass: "btn btn-dark",
                           attrs: {
                             href: "javascript:void(0)",
                             title: "click to show info..."
@@ -20560,7 +20618,7 @@ var render = function() {
       ])
     ]),
     _vm._v(" "),
-    _c("div", { staticClass: "col-8" }, [
+    _c("div", { staticClass: "col-6" }, [
       _c("div", { staticClass: "card card-widget widget-user" }, [
         _c("div", { staticClass: "widget-user-header bg-info" }, [
           _c("h3", { staticClass: "widget-user-username mb-2 mt-3" }, [
@@ -20581,547 +20639,288 @@ var render = function() {
                   _c("td", [_vm._v(_vm._s(mod.m_name))]),
                   _vm._v(" "),
                   _c("td", { staticClass: "text-center" }, [
-                    mod.m_view == true
-                      ? _c(
-                          "div",
-                          {
-                            staticClass:
-                              "custom-control custom-switch custom-switch-on-success custom-switch-off-danger "
+                    _c(
+                      "div",
+                      {
+                        staticClass:
+                          "custom-control custom-switch custom-switch-on-success custom-switch-off-danger "
+                      },
+                      [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: mod.m_view,
+                              expression: "mod.m_view"
+                            }
+                          ],
+                          staticClass: "custom-control-input",
+                          attrs: {
+                            type: "checkbox",
+                            id: "view" + mod.m_id,
+                            "checked-value": "true",
+                            "unchecked-value": "false"
                           },
-                          [
-                            _c("input", {
-                              directives: [
-                                {
-                                  name: "model",
-                                  rawName: "v-model",
-                                  value: mod.m_view,
-                                  expression: "mod.m_view"
-                                }
-                              ],
-                              staticClass: "custom-control-input",
-                              attrs: {
-                                type: "checkbox",
-                                id: "view",
-                                checked: ""
-                              },
-                              domProps: {
-                                checked: Array.isArray(mod.m_view)
-                                  ? _vm._i(mod.m_view, null) > -1
-                                  : mod.m_view
-                              },
-                              on: {
-                                click: function($event) {
-                                  return _vm.editModule(mod)
-                                },
-                                change: function($event) {
-                                  var $$a = mod.m_view,
-                                    $$el = $event.target,
-                                    $$c = $$el.checked ? true : false
-                                  if (Array.isArray($$a)) {
-                                    var $$v = null,
-                                      $$i = _vm._i($$a, $$v)
-                                    if ($$el.checked) {
-                                      $$i < 0 &&
-                                        _vm.$set(
-                                          mod,
-                                          "m_view",
-                                          $$a.concat([$$v])
-                                        )
-                                    } else {
-                                      $$i > -1 &&
-                                        _vm.$set(
-                                          mod,
-                                          "m_view",
-                                          $$a
-                                            .slice(0, $$i)
-                                            .concat($$a.slice($$i + 1))
-                                        )
-                                    }
-                                  } else {
-                                    _vm.$set(mod, "m_view", $$c)
-                                  }
-                                }
-                              }
-                            }),
-                            _vm._v(" "),
-                            _c("label", {
-                              staticClass: "custom-control-label",
-                              attrs: { for: "view" }
-                            })
-                          ]
-                        )
-                      : _c(
-                          "div",
-                          {
-                            staticClass:
-                              "custom-control custom-switch custom-switch-on-success custom-switch-off-danger "
+                          domProps: {
+                            value: mod.m_view,
+                            checked: Array.isArray(mod.m_view)
+                              ? _vm._i(mod.m_view, mod.m_view) > -1
+                              : mod.m_view
                           },
-                          [
-                            _c("input", {
-                              directives: [
-                                {
-                                  name: "model",
-                                  rawName: "v-model",
-                                  value: mod.m_view,
-                                  expression: "mod.m_view"
-                                }
-                              ],
-                              staticClass: "custom-control-input",
-                              attrs: { type: "checkbox", id: "view" },
-                              domProps: {
-                                checked: Array.isArray(mod.m_view)
-                                  ? _vm._i(mod.m_view, null) > -1
-                                  : mod.m_view
-                              },
-                              on: {
-                                click: function($event) {
-                                  return _vm.editModule(mod)
-                                },
-                                change: function($event) {
-                                  var $$a = mod.m_view,
-                                    $$el = $event.target,
-                                    $$c = $$el.checked ? true : false
-                                  if (Array.isArray($$a)) {
-                                    var $$v = null,
-                                      $$i = _vm._i($$a, $$v)
-                                    if ($$el.checked) {
-                                      $$i < 0 &&
-                                        _vm.$set(
-                                          mod,
-                                          "m_view",
-                                          $$a.concat([$$v])
-                                        )
-                                    } else {
-                                      $$i > -1 &&
-                                        _vm.$set(
-                                          mod,
-                                          "m_view",
-                                          $$a
-                                            .slice(0, $$i)
-                                            .concat($$a.slice($$i + 1))
-                                        )
-                                    }
+                          on: {
+                            change: [
+                              function($event) {
+                                var $$a = mod.m_view,
+                                  $$el = $event.target,
+                                  $$c = $$el.checked ? true : false
+                                if (Array.isArray($$a)) {
+                                  var $$v = mod.m_view,
+                                    $$i = _vm._i($$a, $$v)
+                                  if ($$el.checked) {
+                                    $$i < 0 &&
+                                      _vm.$set(mod, "m_view", $$a.concat([$$v]))
                                   } else {
-                                    _vm.$set(mod, "m_view", $$c)
+                                    $$i > -1 &&
+                                      _vm.$set(
+                                        mod,
+                                        "m_view",
+                                        $$a
+                                          .slice(0, $$i)
+                                          .concat($$a.slice($$i + 1))
+                                      )
                                   }
+                                } else {
+                                  _vm.$set(mod, "m_view", $$c)
                                 }
+                              },
+                              function($event) {
+                                return _vm.editModule(mod)
                               }
-                            }),
-                            _vm._v(" "),
-                            _c("label", {
-                              staticClass: "custom-control-label",
-                              attrs: { for: "view" }
-                            })
-                          ]
-                        )
+                            ]
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c("label", {
+                          staticClass: "custom-control-label",
+                          attrs: { for: "view" + mod.m_id }
+                        })
+                      ]
+                    )
                   ]),
                   _vm._v(" "),
                   _c("td", { staticClass: "text-center" }, [
-                    mod.m_add == true
-                      ? _c(
-                          "div",
-                          {
-                            staticClass:
-                              "custom-control custom-switch custom-switch-on-success custom-switch-off-danger "
+                    _c(
+                      "div",
+                      {
+                        staticClass:
+                          "custom-control custom-switch custom-switch-on-success custom-switch-off-danger "
+                      },
+                      [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: mod.m_add,
+                              expression: "mod.m_add"
+                            }
+                          ],
+                          staticClass: "custom-control-input",
+                          attrs: {
+                            type: "checkbox",
+                            id: "add" + mod.m_id,
+                            value: "true",
+                            "unchecked-value": "false"
                           },
-                          [
-                            _c("input", {
-                              directives: [
-                                {
-                                  name: "model",
-                                  rawName: "v-model",
-                                  value: mod.m_add,
-                                  expression: "mod.m_add"
-                                }
-                              ],
-                              staticClass: "custom-control-input",
-                              attrs: {
-                                type: "checkbox",
-                                id: "add",
-                                checked: ""
-                              },
-                              domProps: {
-                                checked: Array.isArray(mod.m_add)
-                                  ? _vm._i(mod.m_add, null) > -1
-                                  : mod.m_add
-                              },
-                              on: {
-                                click: function($event) {
-                                  return _vm.editModule(mod)
-                                },
-                                change: function($event) {
-                                  var $$a = mod.m_add,
-                                    $$el = $event.target,
-                                    $$c = $$el.checked ? true : false
-                                  if (Array.isArray($$a)) {
-                                    var $$v = null,
-                                      $$i = _vm._i($$a, $$v)
-                                    if ($$el.checked) {
-                                      $$i < 0 &&
-                                        _vm.$set(
-                                          mod,
-                                          "m_add",
-                                          $$a.concat([$$v])
-                                        )
-                                    } else {
-                                      $$i > -1 &&
-                                        _vm.$set(
-                                          mod,
-                                          "m_add",
-                                          $$a
-                                            .slice(0, $$i)
-                                            .concat($$a.slice($$i + 1))
-                                        )
-                                    }
-                                  } else {
-                                    _vm.$set(mod, "m_add", $$c)
-                                  }
-                                }
-                              }
-                            }),
-                            _vm._v(" "),
-                            _c("label", {
-                              staticClass: "custom-control-label",
-                              attrs: { for: "add" }
-                            })
-                          ]
-                        )
-                      : _c(
-                          "div",
-                          {
-                            staticClass:
-                              "custom-control custom-switch custom-switch-on-success custom-switch-off-danger "
+                          domProps: {
+                            checked: Array.isArray(mod.m_add)
+                              ? _vm._i(mod.m_add, "true") > -1
+                              : mod.m_add
                           },
-                          [
-                            _c("input", {
-                              directives: [
-                                {
-                                  name: "model",
-                                  rawName: "v-model",
-                                  value: mod.m_add,
-                                  expression: "mod.m_add"
-                                }
-                              ],
-                              staticClass: "custom-control-input",
-                              attrs: { type: "checkbox", id: "add" },
-                              domProps: {
-                                checked: Array.isArray(mod.m_add)
-                                  ? _vm._i(mod.m_add, null) > -1
-                                  : mod.m_add
-                              },
-                              on: {
-                                click: function($event) {
-                                  return _vm.editModule(mod)
-                                },
-                                change: function($event) {
-                                  var $$a = mod.m_add,
-                                    $$el = $event.target,
-                                    $$c = $$el.checked ? true : false
-                                  if (Array.isArray($$a)) {
-                                    var $$v = null,
-                                      $$i = _vm._i($$a, $$v)
-                                    if ($$el.checked) {
-                                      $$i < 0 &&
-                                        _vm.$set(
-                                          mod,
-                                          "m_add",
-                                          $$a.concat([$$v])
-                                        )
-                                    } else {
-                                      $$i > -1 &&
-                                        _vm.$set(
-                                          mod,
-                                          "m_add",
-                                          $$a
-                                            .slice(0, $$i)
-                                            .concat($$a.slice($$i + 1))
-                                        )
-                                    }
+                          on: {
+                            change: [
+                              function($event) {
+                                var $$a = mod.m_add,
+                                  $$el = $event.target,
+                                  $$c = $$el.checked ? true : false
+                                if (Array.isArray($$a)) {
+                                  var $$v = "true",
+                                    $$i = _vm._i($$a, $$v)
+                                  if ($$el.checked) {
+                                    $$i < 0 &&
+                                      _vm.$set(mod, "m_add", $$a.concat([$$v]))
                                   } else {
-                                    _vm.$set(mod, "m_add", $$c)
+                                    $$i > -1 &&
+                                      _vm.$set(
+                                        mod,
+                                        "m_add",
+                                        $$a
+                                          .slice(0, $$i)
+                                          .concat($$a.slice($$i + 1))
+                                      )
                                   }
+                                } else {
+                                  _vm.$set(mod, "m_add", $$c)
                                 }
+                              },
+                              function($event) {
+                                return _vm.editModule(mod)
                               }
-                            }),
-                            _vm._v(" "),
-                            _c("label", {
-                              staticClass: "custom-control-label",
-                              attrs: { for: "add" }
-                            })
-                          ]
-                        )
+                            ]
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c("label", {
+                          staticClass: "custom-control-label",
+                          attrs: { for: "add" + mod.m_id }
+                        })
+                      ]
+                    )
                   ]),
                   _vm._v(" "),
                   _c("td", { staticClass: "text-center" }, [
-                    mod.m_edit == true
-                      ? _c(
-                          "div",
-                          {
-                            staticClass:
-                              "custom-control custom-switch custom-switch-on-success custom-switch-off-danger "
+                    _c(
+                      "div",
+                      {
+                        staticClass:
+                          "custom-control custom-switch custom-switch-on-success custom-switch-off-danger "
+                      },
+                      [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: mod.m_edit,
+                              expression: "mod.m_edit"
+                            }
+                          ],
+                          staticClass: "custom-control-input",
+                          attrs: {
+                            type: "checkbox",
+                            id: "edit" + mod.m_id,
+                            value: "false",
+                            "unchecked-value": "true"
                           },
-                          [
-                            _c("input", {
-                              directives: [
-                                {
-                                  name: "model",
-                                  rawName: "v-model",
-                                  value: mod.m_edit,
-                                  expression: "mod.m_edit"
-                                }
-                              ],
-                              staticClass: "custom-control-input",
-                              attrs: {
-                                type: "checkbox",
-                                id: "edit",
-                                checked: ""
-                              },
-                              domProps: {
-                                checked: Array.isArray(mod.m_edit)
-                                  ? _vm._i(mod.m_edit, null) > -1
-                                  : mod.m_edit
-                              },
-                              on: {
-                                click: function($event) {
-                                  return _vm.editModule(mod)
-                                },
-                                change: function($event) {
-                                  var $$a = mod.m_edit,
-                                    $$el = $event.target,
-                                    $$c = $$el.checked ? true : false
-                                  if (Array.isArray($$a)) {
-                                    var $$v = null,
-                                      $$i = _vm._i($$a, $$v)
-                                    if ($$el.checked) {
-                                      $$i < 0 &&
-                                        _vm.$set(
-                                          mod,
-                                          "m_edit",
-                                          $$a.concat([$$v])
-                                        )
-                                    } else {
-                                      $$i > -1 &&
-                                        _vm.$set(
-                                          mod,
-                                          "m_edit",
-                                          $$a
-                                            .slice(0, $$i)
-                                            .concat($$a.slice($$i + 1))
-                                        )
-                                    }
-                                  } else {
-                                    _vm.$set(mod, "m_edit", $$c)
-                                  }
-                                }
-                              }
-                            }),
-                            _vm._v(" "),
-                            _c("label", {
-                              staticClass: "custom-control-label",
-                              attrs: { for: "edit" }
-                            })
-                          ]
-                        )
-                      : _c(
-                          "div",
-                          {
-                            staticClass:
-                              "custom-control custom-switch custom-switch-on-success custom-switch-off-danger "
+                          domProps: {
+                            checked: Array.isArray(mod.m_edit)
+                              ? _vm._i(mod.m_edit, "false") > -1
+                              : mod.m_edit
                           },
-                          [
-                            _c("input", {
-                              directives: [
-                                {
-                                  name: "model",
-                                  rawName: "v-model",
-                                  value: mod.m_edit,
-                                  expression: "mod.m_edit"
-                                }
-                              ],
-                              staticClass: "custom-control-input",
-                              attrs: { type: "checkbox", id: "edit" },
-                              domProps: {
-                                checked: Array.isArray(mod.m_edit)
-                                  ? _vm._i(mod.m_edit, null) > -1
-                                  : mod.m_edit
-                              },
-                              on: {
-                                click: function($event) {
-                                  return _vm.editModule(mod)
-                                },
-                                change: function($event) {
-                                  var $$a = mod.m_edit,
-                                    $$el = $event.target,
-                                    $$c = $$el.checked ? true : false
-                                  if (Array.isArray($$a)) {
-                                    var $$v = null,
-                                      $$i = _vm._i($$a, $$v)
-                                    if ($$el.checked) {
-                                      $$i < 0 &&
-                                        _vm.$set(
-                                          mod,
-                                          "m_edit",
-                                          $$a.concat([$$v])
-                                        )
-                                    } else {
-                                      $$i > -1 &&
-                                        _vm.$set(
-                                          mod,
-                                          "m_edit",
-                                          $$a
-                                            .slice(0, $$i)
-                                            .concat($$a.slice($$i + 1))
-                                        )
-                                    }
+                          on: {
+                            change: [
+                              function($event) {
+                                var $$a = mod.m_edit,
+                                  $$el = $event.target,
+                                  $$c = $$el.checked ? true : false
+                                if (Array.isArray($$a)) {
+                                  var $$v = "false",
+                                    $$i = _vm._i($$a, $$v)
+                                  if ($$el.checked) {
+                                    $$i < 0 &&
+                                      _vm.$set(mod, "m_edit", $$a.concat([$$v]))
                                   } else {
-                                    _vm.$set(mod, "m_edit", $$c)
+                                    $$i > -1 &&
+                                      _vm.$set(
+                                        mod,
+                                        "m_edit",
+                                        $$a
+                                          .slice(0, $$i)
+                                          .concat($$a.slice($$i + 1))
+                                      )
                                   }
+                                } else {
+                                  _vm.$set(mod, "m_edit", $$c)
                                 }
+                              },
+                              function($event) {
+                                return _vm.editModule(mod)
                               }
-                            }),
-                            _vm._v(" "),
-                            _c("label", {
-                              staticClass: "custom-control-label",
-                              attrs: { for: "edit" }
-                            })
-                          ]
-                        )
+                            ]
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c("label", {
+                          staticClass: "custom-control-label",
+                          attrs: { for: "edit" + mod.m_id }
+                        })
+                      ]
+                    )
                   ]),
                   _vm._v(" "),
                   _c("td", { staticClass: "text-center" }, [
-                    mod.m_delete == true
-                      ? _c(
-                          "div",
-                          {
-                            staticClass:
-                              "custom-control custom-switch custom-switch-on-success custom-switch-off-danger "
+                    _c(
+                      "div",
+                      {
+                        staticClass:
+                          "custom-control custom-switch custom-switch-on-success custom-switch-off-danger "
+                      },
+                      [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: mod.m_delete,
+                              expression: "mod.m_delete"
+                            }
+                          ],
+                          staticClass: "custom-control-input",
+                          attrs: {
+                            type: "checkbox",
+                            id: "delete" + mod.m_id,
+                            value: "true",
+                            "unchecked-value": "false"
                           },
-                          [
-                            _c("input", {
-                              directives: [
-                                {
-                                  name: "model",
-                                  rawName: "v-model",
-                                  value: mod.m_delete,
-                                  expression: "mod.m_delete"
-                                }
-                              ],
-                              staticClass: "custom-control-input",
-                              attrs: {
-                                type: "checkbox",
-                                id: "delete",
-                                checked: ""
-                              },
-                              domProps: {
-                                checked: Array.isArray(mod.m_delete)
-                                  ? _vm._i(mod.m_delete, null) > -1
-                                  : mod.m_delete
-                              },
-                              on: {
-                                click: function($event) {
-                                  return _vm.editModule(mod)
-                                },
-                                change: function($event) {
-                                  var $$a = mod.m_delete,
-                                    $$el = $event.target,
-                                    $$c = $$el.checked ? true : false
-                                  if (Array.isArray($$a)) {
-                                    var $$v = null,
-                                      $$i = _vm._i($$a, $$v)
-                                    if ($$el.checked) {
-                                      $$i < 0 &&
-                                        _vm.$set(
-                                          mod,
-                                          "m_delete",
-                                          $$a.concat([$$v])
-                                        )
-                                    } else {
-                                      $$i > -1 &&
-                                        _vm.$set(
-                                          mod,
-                                          "m_delete",
-                                          $$a
-                                            .slice(0, $$i)
-                                            .concat($$a.slice($$i + 1))
-                                        )
-                                    }
-                                  } else {
-                                    _vm.$set(mod, "m_delete", $$c)
-                                  }
-                                }
-                              }
-                            }),
-                            _vm._v(" "),
-                            _c("label", {
-                              staticClass: "custom-control-label",
-                              attrs: { for: "delete" }
-                            })
-                          ]
-                        )
-                      : _c(
-                          "div",
-                          {
-                            staticClass:
-                              "custom-control custom-switch custom-switch-on-success custom-switch-off-danger "
+                          domProps: {
+                            checked: Array.isArray(mod.m_delete)
+                              ? _vm._i(mod.m_delete, "true") > -1
+                              : mod.m_delete
                           },
-                          [
-                            _c("input", {
-                              directives: [
-                                {
-                                  name: "model",
-                                  rawName: "v-model",
-                                  value: mod.m_delete,
-                                  expression: "mod.m_delete"
-                                }
-                              ],
-                              staticClass: "custom-control-input",
-                              attrs: { type: "checkbox", id: "delete" },
-                              domProps: {
-                                checked: Array.isArray(mod.m_delete)
-                                  ? _vm._i(mod.m_delete, null) > -1
-                                  : mod.m_delete
-                              },
-                              on: {
-                                click: function($event) {
-                                  return _vm.editModule(mod)
-                                },
-                                change: function($event) {
-                                  var $$a = mod.m_delete,
-                                    $$el = $event.target,
-                                    $$c = $$el.checked ? true : false
-                                  if (Array.isArray($$a)) {
-                                    var $$v = null,
-                                      $$i = _vm._i($$a, $$v)
-                                    if ($$el.checked) {
-                                      $$i < 0 &&
-                                        _vm.$set(
-                                          mod,
-                                          "m_delete",
-                                          $$a.concat([$$v])
-                                        )
-                                    } else {
-                                      $$i > -1 &&
-                                        _vm.$set(
-                                          mod,
-                                          "m_delete",
-                                          $$a
-                                            .slice(0, $$i)
-                                            .concat($$a.slice($$i + 1))
-                                        )
-                                    }
+                          on: {
+                            change: [
+                              function($event) {
+                                var $$a = mod.m_delete,
+                                  $$el = $event.target,
+                                  $$c = $$el.checked ? true : false
+                                if (Array.isArray($$a)) {
+                                  var $$v = "true",
+                                    $$i = _vm._i($$a, $$v)
+                                  if ($$el.checked) {
+                                    $$i < 0 &&
+                                      _vm.$set(
+                                        mod,
+                                        "m_delete",
+                                        $$a.concat([$$v])
+                                      )
                                   } else {
-                                    _vm.$set(mod, "m_delete", $$c)
+                                    $$i > -1 &&
+                                      _vm.$set(
+                                        mod,
+                                        "m_delete",
+                                        $$a
+                                          .slice(0, $$i)
+                                          .concat($$a.slice($$i + 1))
+                                      )
                                   }
+                                } else {
+                                  _vm.$set(mod, "m_delete", $$c)
                                 }
+                              },
+                              function($event) {
+                                return _vm.editModule(mod)
                               }
-                            }),
-                            _vm._v(" "),
-                            _c("label", {
-                              staticClass: "custom-control-label",
-                              attrs: { for: "delete" }
-                            })
-                          ]
-                        )
+                            ]
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c("label", {
+                          staticClass: "custom-control-label",
+                          attrs: { for: "delete" + mod.m_id }
+                        })
+                      ]
+                    )
                   ])
                 ])
               }),
@@ -21130,6 +20929,194 @@ var render = function() {
           ]),
           _vm._v(" "),
           _vm._m(4)
+        ])
+      ])
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "col-3" }, [
+      _c("div", { staticClass: "card" }, [
+        _vm._m(5),
+        _vm._v(" "),
+        _c("div", { staticClass: "card-body p-0" }, [
+          _c(
+            "table",
+            { staticClass: "table" },
+            _vm._l(_vm.module_names, function(module_name) {
+              return _c("tbody", { key: module_name.id }, [
+                _c("tr", [
+                  _c("td", [_vm._v(_vm._s(module_name.module_name))]),
+                  _vm._v(" "),
+                  _c("td", { staticClass: "text-right py-0 align-middle" }, [
+                    _c("div", { staticClass: "btn-group btn-group-sm" }, [
+                      _c(
+                        "a",
+                        {
+                          staticClass: "btn btn-info",
+                          attrs: {
+                            href: "javascript:void(0)",
+                            title: "click to update info..."
+                          },
+                          on: {
+                            click: function($event) {
+                              return _vm.editModuleName(module_name)
+                            }
+                          }
+                        },
+                        [_c("i", { staticClass: "fas fa-edit" })]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "a",
+                        {
+                          staticClass: "btn btn-danger",
+                          attrs: {
+                            href: "javascript:void(0)",
+                            title: "click to delete..."
+                          },
+                          on: {
+                            click: function($event) {
+                              return _vm.deleteModuleName(module_name.id)
+                            }
+                          }
+                        },
+                        [_c("i", { staticClass: "fas fa-trash" })]
+                      )
+                    ])
+                  ])
+                ])
+              ])
+            }),
+            0
+          )
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "card-footer text-center" }, [
+          _c(
+            "ul",
+            { staticClass: "pagination pagination-sm m-0 float-right" },
+            [
+              _c(
+                "li",
+                {
+                  staticClass: "page-item",
+                  class: [{ disabled: !_vm.pagination.prev_page_url }]
+                },
+                [
+                  _c(
+                    "a",
+                    {
+                      staticClass: "page-link",
+                      attrs: { href: "#", "aria-label": "Previous" },
+                      on: {
+                        click: function($event) {
+                          return _vm.fetchRoles(_vm.pagination.prev_page_url)
+                        }
+                      }
+                    },
+                    [
+                      _c("span", { attrs: { "aria-hidden": "true" } }, [
+                        _vm._v("«")
+                      ]),
+                      _vm._v(" "),
+                      _c("span", { staticClass: "sr-only" }, [
+                        _vm._v("Previous")
+                      ])
+                    ]
+                  )
+                ]
+              ),
+              _vm._v(" "),
+              _c("li", { staticClass: "page-item disabled" }, [
+                _c("a", { staticClass: "page-link", attrs: { href: "#" } }, [
+                  _vm._v(
+                    _vm._s(_vm.pagination.current_page) +
+                      " of " +
+                      _vm._s(_vm.pagination.last_page)
+                  )
+                ])
+              ]),
+              _vm._v(" "),
+              _c(
+                "li",
+                {
+                  staticClass: "page-item",
+                  class: [{ disabled: !_vm.pagination.next_page_url }]
+                },
+                [
+                  _c(
+                    "a",
+                    {
+                      staticClass: "page-link",
+                      attrs: { href: "#", "aria-label": "Next" },
+                      on: {
+                        click: function($event) {
+                          return _vm.fetchRoles(_vm.pagination.next_page_url)
+                        }
+                      }
+                    },
+                    [
+                      _c("span", { attrs: { "aria-hidden": "true" } }, [
+                        _vm._v("»")
+                      ]),
+                      _vm._v(" "),
+                      _c("span", { staticClass: "sr-only" }, [_vm._v("Next")])
+                    ]
+                  )
+                ]
+              )
+            ]
+          ),
+          _vm._v(" "),
+          _c(
+            "form",
+            {
+              attrs: { role: "form" },
+              on: {
+                submit: function($event) {
+                  $event.preventDefault()
+                  return _vm.addModuleName()
+                }
+              }
+            },
+            [
+              _c(
+                "div",
+                {
+                  staticClass: "input-group input-group-sm",
+                  staticStyle: { width: "70%" }
+                },
+                [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.module_name.module_name,
+                        expression: "module_name.module_name"
+                      }
+                    ],
+                    staticClass: "form-control",
+                    attrs: { type: "text", required: "" },
+                    domProps: { value: _vm.module_name.module_name },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(
+                          _vm.module_name,
+                          "module_name",
+                          $event.target.value
+                        )
+                      }
+                    }
+                  }),
+                  _vm._v(" "),
+                  _vm._m(6)
+                ]
+              )
+            ]
+          )
         ])
       ])
     ])
@@ -21141,7 +21128,7 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "card-header" }, [
-      _c("h3", { staticClass: "card-title" }, [_vm._v("List of User Role")]),
+      _c("h3", { staticClass: "card-title" }, [_vm._v("List of User Roles")]),
       _vm._v(" "),
       _c("div", { staticClass: "float-right" })
     ])
@@ -21224,6 +21211,28 @@ var staticRenderFns = [
         ])
       ]
     )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "card-header" }, [
+      _c("h3", { staticClass: "card-title" }, [_vm._v("List of Modules")]),
+      _vm._v(" "),
+      _c("div", { staticClass: "float-right" })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("span", { staticClass: "input-group-append" }, [
+      _c(
+        "button",
+        { staticClass: "btn btn-info btn-flat", attrs: { type: "submit" } },
+        [_vm._v("Save")]
+      )
+    ])
   }
 ]
 render._withStripped = true
@@ -21310,11 +21319,19 @@ var render = function() {
                           ]
                         ),
                         _vm._v(" "),
-                        _c(
-                          "span",
-                          { staticClass: "badge badge-success float-right" },
-                          [_vm._v("Active")]
-                        ),
+                        user.u_status == true
+                          ? _c(
+                              "span",
+                              {
+                                staticClass: "badge badge-success float-right"
+                              },
+                              [_vm._v("Active")]
+                            )
+                          : _c(
+                              "span",
+                              { staticClass: "badge badge-danger float-right" },
+                              [_vm._v("In Active")]
+                            ),
                         _vm._v(" "),
                         _c("span", { staticClass: "product-description" }, [
                           _vm._v(
@@ -21335,7 +21352,7 @@ var render = function() {
                               {
                                 staticClass: "btn btn-info",
                                 attrs: {
-                                  href: "#",
+                                  href: "javascript:void(0)",
                                   title: "click to update info..."
                                 },
                                 on: {
@@ -21350,9 +21367,26 @@ var render = function() {
                             _c(
                               "a",
                               {
+                                staticClass: "btn btn-success",
+                                attrs: {
+                                  href: "javascript:void(0)",
+                                  title: "click to show info..."
+                                },
+                                on: {
+                                  click: function($event) {
+                                    return _vm.showUser(user)
+                                  }
+                                }
+                              },
+                              [_c("i", { staticClass: "fas fa-eye" })]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "a",
+                              {
                                 staticClass: "btn btn-danger",
                                 attrs: {
-                                  href: "#",
+                                  href: "javascript:void(0)",
                                   title: "click to delete..."
                                 },
                                 on: {
@@ -21512,7 +21546,89 @@ var render = function() {
                   ])
                 ]),
                 _vm._v(" "),
-                _vm._m(1),
+                _c("div", { staticClass: "col-sm-4 border-right" }, [
+                  _c("div", { staticClass: "description-block" }, [
+                    _c("h5", { staticClass: "description-header" }, [
+                      _c(
+                        "div",
+                        {
+                          staticClass:
+                            "custom-control custom-switch custom-switch-on-success custom-switch-off-danger "
+                        },
+                        [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.user.u_status,
+                                expression: "user.u_status"
+                              }
+                            ],
+                            staticClass: "custom-control-input",
+                            attrs: {
+                              type: "checkbox",
+                              id: "view" + _vm.user.u_status,
+                              "checked-value": "true",
+                              "unchecked-value": "false"
+                            },
+                            domProps: {
+                              value: _vm.user.u_status,
+                              checked: Array.isArray(_vm.user.u_status)
+                                ? _vm._i(_vm.user.u_status, _vm.user.u_status) >
+                                  -1
+                                : _vm.user.u_status
+                            },
+                            on: {
+                              change: [
+                                function($event) {
+                                  var $$a = _vm.user.u_status,
+                                    $$el = $event.target,
+                                    $$c = $$el.checked ? true : false
+                                  if (Array.isArray($$a)) {
+                                    var $$v = _vm.user.u_status,
+                                      $$i = _vm._i($$a, $$v)
+                                    if ($$el.checked) {
+                                      $$i < 0 &&
+                                        _vm.$set(
+                                          _vm.user,
+                                          "u_status",
+                                          $$a.concat([$$v])
+                                        )
+                                    } else {
+                                      $$i > -1 &&
+                                        _vm.$set(
+                                          _vm.user,
+                                          "u_status",
+                                          $$a
+                                            .slice(0, $$i)
+                                            .concat($$a.slice($$i + 1))
+                                        )
+                                    }
+                                  } else {
+                                    _vm.$set(_vm.user, "u_status", $$c)
+                                  }
+                                },
+                                function($event) {
+                                  return _vm.updateUser(_vm.user.u_id)
+                                }
+                              ]
+                            }
+                          }),
+                          _vm._v(" "),
+                          _c("label", {
+                            staticClass: "custom-control-label",
+                            attrs: { for: "view" + _vm.user.u_status }
+                          })
+                        ]
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("span", { staticClass: "description-text" }, [
+                      _vm._v("Satus")
+                    ])
+                  ])
+                ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "col-sm-4" }, [
                   _c("div", { staticClass: "description-block" }, [
@@ -21531,11 +21647,11 @@ var render = function() {
               _vm._v(" "),
               _c("hr"),
               _vm._v(" "),
+              _vm._m(1),
+              _vm._v(" "),
               _vm._m(2),
               _vm._v(" "),
-              _vm._m(3),
-              _vm._v(" "),
-              _vm._m(4)
+              _vm._m(3)
             ])
           ])
         ])
@@ -21544,7 +21660,7 @@ var render = function() {
     _vm.add
       ? _c("div", { staticClass: "col-8" }, [
           _c("div", { staticClass: "card" }, [
-            _vm._m(5),
+            _vm._m(4),
             _vm._v(" "),
             _c(
               "form",
@@ -21748,7 +21864,7 @@ var render = function() {
                     : _vm._e()
                 ]),
                 _vm._v(" "),
-                _vm._m(6)
+                _vm._m(5)
               ]
             )
           ])
@@ -21765,41 +21881,6 @@ var staticRenderFns = [
       _c("h3", { staticClass: "card-title" }, [_vm._v("List of Users")]),
       _vm._v(" "),
       _c("div", { staticClass: "float-right" })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-sm-4 border-right" }, [
-      _c("div", { staticClass: "description-block" }, [
-        _c("h5", { staticClass: "description-header" }, [
-          _c(
-            "div",
-            {
-              staticClass:
-                "custom-control custom-switch custom-switch-on-success custom-switch-off-danger "
-            },
-            [
-              _c("input", {
-                staticClass: "custom-control-input",
-                attrs: { type: "checkbox", id: "customSwitch3", checked: "" }
-              }),
-              _vm._v(" "),
-              _c(
-                "label",
-                {
-                  staticClass: "custom-control-label",
-                  attrs: { for: "customSwitch3" }
-                },
-                [_vm._v("Active")]
-              )
-            ]
-          )
-        ]),
-        _vm._v(" "),
-        _c("span", { staticClass: "description-text" }, [_vm._v("Satus")])
-      ])
     ])
   },
   function() {

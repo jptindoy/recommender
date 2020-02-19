@@ -44,7 +44,7 @@ class APIUserController extends Controller
     public function store(Request $request)
     {   
 
-        // return $this->$request;
+         return $this->$request;
 
         // $this->validate($request,[
         //     'u_fname' => ['required', 'string', 'max:255'],
@@ -54,21 +54,21 @@ class APIUserController extends Controller
         //     'u_password' => ['required', 'string', 'min:8', 'confirmed'],
         // ]);
 
-        $user = $request->isMethod('PUT') ? User::findOrFail($request->input('user_id')) : New User;
+        // $user = $request->isMethod('PUT') ? User::findOrFail($request->input('user_id')) : New User;
         
-        $user->u_id         = $request->input('user_id');
-        $user->u_fname      = $request->input('u_fname');
-        $user->u_lname      = $request->input('u_lname');
-        $user->email        = $request->input('u_email');
-        $user->u_role       = $request->input('u_role');
-        $user->u_image      = 'blank-img.png';
-        $user->password     = Hash::make($request->input('u_password'));
-        $user->api_token    = Str::random(60);
+        // $user->u_id         = $request->input('user_id');
+        // $user->u_fname      = $request->input('u_fname');
+        // $user->u_lname      = $request->input('u_lname');
+        // $user->email        = $request->input('u_email');
+        // $user->u_role       = $request->input('u_role');
+        // $user->u_image      = 'blank-img.png';
+        // $user->password     = Hash::make($request->input('u_password'));
+        // $user->api_token    = Str::random(60);
         // $user->u_status     = 'Active';
 
-        if($user->save()) {
-            return new UserResource($user);
-        }
+        // if($user->save()) {
+        //     return new UserResource($user);
+        // }
     }
 
     /**
@@ -106,7 +106,13 @@ class APIUserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $user = User::findOrFail($id);
+
+        $user->u_status = $request->input('u_status');
+        
+        if($user->save()){
+            return new UserResource($user);
+        }
     }
 
     /**
