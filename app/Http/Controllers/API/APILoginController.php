@@ -4,10 +4,10 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\ModuleName;
-use App\Http\Resources\ModuleName as ModuleNameResource;
+use App\User;
+use App\Http\Resources\Login as LoginResource;
 
-class APIModuleNameController extends Controller
+class APILoginController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,9 +16,7 @@ class APIModuleNameController extends Controller
      */
     public function index()
     {
-        $module_name = ModuleName::paginate(5);
-
-        return ModuleNameResource::collection($module_name);
+        //
     }
 
     /**
@@ -39,15 +37,7 @@ class APIModuleNameController extends Controller
      */
     public function store(Request $request)
     {
-        //return $request;
-        $module_name = $request->isMethod('PUT') ? ModuleName::findOrFail($request->input('id')) : new ModuleName;
-
-        $module_name->id = $request->input('id');
-        $module_name->module_name = $request->input('module_name');
-
-        if($module_name->save()){
-            return new ModuleNameResource($module_name);
-        }
+        //
     }
 
     /**
@@ -58,7 +48,18 @@ class APIModuleNameController extends Controller
      */
     public function show($id)
     {
-        //
+        $emails = User::where('email', '=', $id)->get();
+        foreach($emails as $email){
+            $msg_success = ['msg' => '', 'err' => false, 'img'=> $email->u_image];
+        }
+
+        
+        $msg_err =  ['msg' => 'Email does not exist!', 'err' => true];
+        if(count($emails) > 0) {
+            return new LoginResource($msg_success);
+        } else {
+            return new LoginResource($msg_err);
+        }
     }
 
     /**
@@ -92,10 +93,6 @@ class APIModuleNameController extends Controller
      */
     public function destroy($id)
     {
-        $module_name = ModuleName::findOrFail($id);
-
-        if($module_name->delete()) {
-            return new ModuleNameResource($module_name);
-        }
+        //
     }
 }

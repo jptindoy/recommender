@@ -17,7 +17,8 @@ class APIModuleController extends Controller
     public function index()
     {
         $modules = Module::join('roles', 'modules.m_category', '=', 'roles.r_id')
-                        ->select('modules.*', 'roles.r_id', 'roles.r_category')
+                        ->join('module_names', 'modules.m_id', '=', 'module_names.id')
+                        ->select('modules.*', 'module_names.module_name', 'roles.r_category')
                         ->groupBy('modules.m_category')
                         ->paginate(5);
         
@@ -69,7 +70,8 @@ class APIModuleController extends Controller
     public function show($id)
     {
         $modules = Module::join('roles', 'modules.m_category', '=', 'roles.r_id')
-                        ->select('modules.*', 'roles.r_id', 'roles.r_category')
+                        ->join('module_names', 'modules.m_id', '=', 'module_names.id')
+                        ->select('modules.*', 'module_names.module_name', 'roles.r_category')
                         ->where('modules.m_category', $id)
                         ->paginate(5);
         

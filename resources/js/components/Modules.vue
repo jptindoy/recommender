@@ -31,15 +31,15 @@
                 <div class="card-footer text-center">      
                     
                     <ul class="pagination pagination-sm m-0 float-right">
-                        <li class="page-item" v-bind:class="[{disabled: !pagination.prev_page_url}]">
-                        <a class="page-link" href="#" aria-label="Previous" @click="fetchRoles(pagination.prev_page_url)">
+                        <li class="page-item" v-bind:class="[{disabled: !role_pagination.prev_page_url}]">
+                        <a class="page-link" href="javascript:void(0)" aria-label="Previous" @click="fetchRoles(role_pagination.prev_page_url)">
                             <span aria-hidden="true">&laquo;</span>
                             <span class="sr-only">Previous</span>
                         </a>
                         </li>
-                        <li class="page-item disabled"><a class="page-link" href="#">{{pagination.current_page}} of {{pagination.last_page}}</a></li>
-                        <li class="page-item" v-bind:class="[{disabled: !pagination.next_page_url}]">
-                        <a class="page-link" href="#" aria-label="Next" @click="fetchRoles(pagination.next_page_url)">
+                        <li class="page-item disabled"><a class="page-link" href="javascript:void(0)">{{role_pagination.current_page}} of {{role_pagination.last_page}}</a></li>
+                        <li class="page-item" v-bind:class="[{disabled: !role_pagination.next_page_url}]">
+                        <a class="page-link" href="javascript:void(0)" aria-label="Next" @click="fetchRoles(role_pagination.next_page_url)">
                             <span aria-hidden="true">&raquo;</span>
                             <span class="sr-only">Next</span>
                         </a>
@@ -84,7 +84,7 @@
                     </thead>
                     <tbody>
                         <tr v-for="mod in modules" v-bind:key="mod.m_id">
-                            <td>{{mod.m_name}}</td>
+                            <td>{{mod.module_name}}</td>
                             <td class="text-center">
                                 <div class="custom-control custom-switch custom-switch-on-success custom-switch-off-danger ">
                                     <input type="checkbox" class="custom-control-input" :id="'view' + mod.m_id" @change="editModule(mod)" v-model="mod.m_view" v-bind:value="mod.m_view" checked-value="true" unchecked-value="false" >
@@ -156,15 +156,15 @@
                 <div class="card-footer text-center">      
                     
                     <ul class="pagination pagination-sm m-0 float-right">
-                        <li class="page-item" v-bind:class="[{disabled: !pagination.prev_page_url}]">
-                        <a class="page-link" href="#" aria-label="Previous" @click="fetchRoles(pagination.prev_page_url)">
+                        <li class="page-item" v-bind:class="[{disabled: !module_name_pagination.prev_page_url}]">
+                        <a class="page-link" href="javascript:void(0)" aria-label="Prev" @click="fetchModules(module_name_pagination.prev_page_url)">
                             <span aria-hidden="true">&laquo;</span>
                             <span class="sr-only">Previous</span>
                         </a>
                         </li>
-                        <li class="page-item disabled"><a class="page-link" href="#">{{pagination.current_page}} of {{pagination.last_page}}</a></li>
-                        <li class="page-item" v-bind:class="[{disabled: !pagination.next_page_url}]">
-                        <a class="page-link" href="#" aria-label="Next" @click="fetchRoles(pagination.next_page_url)">
+                        <li class="page-item disabled"><a class="page-link" href="javascript:void(0)">{{module_name_pagination.current_page}} of {{module_name_pagination.last_page}}</a></li>
+                        <li class="page-item" v-bind:class="[{disabled: !module_name_pagination.next_page_url}]">
+                        <a class="page-link" href="javascript:void(0)" aria-label="Nex" @click="fetchModules(module_name_pagination.next_page_url)">
                             <span aria-hidden="true">&raquo;</span>
                             <span class="sr-only">Next</span>
                         </a>
@@ -202,16 +202,19 @@
                     m_edit: '',
                     m_delete: ''
                 },
+                module_pagination: {},
                 roles: [],
                 role: {
                     r_id: '',
                     r_category: ''
                 },
+                role_pagination: {},
                 module_names: [],
                 module_name:{
                     id: '',
                     module_name: ''
                 },
+                module_name_pagination: {},
                 edit: false,
                 module_id: '',
                 role_id: '',
@@ -239,33 +242,44 @@
                 //.then(text => console.log(text))
                 .then(res => {
                     this.roles = res.data;
-                    vm.makePagination(res.meta, res.links);
+                    vm.rolePagination(res.meta, res.links);
                 })
                 .catch(err => console.log(err));
             },
 
-            fetchModules(page_url) {
-                let vm = this;
-                page_url = page_url || 'api/module-names'
-                fetch(page_url)
-                .then(res => res.json())
-                //.then(text => console.log(text))
-                .then(res => {
-                    this.module_names = res.data;
-                    vm.makePagination(res.meta, res.links);
-                })
-                .catch(err => console.log(err));
-            },
-
-            makePagination(meta, links) {
-                let pagination = {
+            rolePagination(meta, links) {
+                let role_pagination = {
                     current_page: meta.current_page,
                     last_page: meta.last_page,
                     next_page_url: links.next,
                     prev_page_url: links.prev
                 };
 
-                this.pagination = pagination;    
+                this.role_pagination = role_pagination;    
+            },
+
+            fetchModules(page_url_module) {
+                let vm = this;
+                page_url_module = page_url_module || 'api/module-names'
+                fetch(page_url_module)
+                .then(res => res.json())
+                //.then(text => console.log(text))
+                .then(res => {
+                    this.module_names = res.data;
+                    vm.module_name_Pagination(res.meta, res.links);
+                })
+                .catch(err => console.log(err));
+            },
+
+            module_name_Pagination(meta, links) {
+                let module_name_pagination = {
+                    current_page: meta.current_page,
+                    last_page: meta.last_page,
+                    next_page_url: links.next,
+                    prev_page_url: links.prev
+                };
+
+                this.module_name_pagination = module_name_pagination;    
             },
 
             deleteRole(id) {
@@ -324,6 +338,7 @@
                     //.then(text => console.log(text))
                     .then( data => {
                         this.edit = false;
+                        this.role.r_id = '';
                         this.role.r_category = '';
                         this.fetchRoles();
                         //alert('User Added!');
@@ -358,6 +373,17 @@
                 })
                 .then(data => {})
                 .catch(err => console.log(err));
+            },
+
+            showPagination(meta, links) {
+                let modulepagination = {
+                    current_page: meta.current_page,
+                    last_page: meta.last_page,
+                    next_page_url: links.next,
+                    prev_page_url: links.prev
+                };
+
+                this.pagination = pagination;    
             },
 
             editRole(role) {
@@ -402,16 +428,66 @@
                 .catch(err => console.log(err));
             },
 
-            editModuleName() {
-
+            editModuleName(module_name) {
+                console.log(module_name)
+                this.edit = true;
+                this.module_name.id = module_name.id;
+                this.module_name.module_name = module_name.module_name;
             },
 
-            deleteModuleName() {
+            deleteModuleName(id) {
+                fetch(`api/module-name/${id}`, {
+                        method: 'DELETE'
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        // alert('User Removed!');
+                        this.fetchModules();
+                    })
+                    .catch(err => console.log(err));
 
             },
 
             addModuleName() {
+                if(this.edit === false) {
+                    fetch('/api/module-name',{
+                        method: 'POST',
+                        body: JSON.stringify(this.module_name),
+                        headers: {
+                            'Content-type' : 'Application/json'
+                        }
 
+                    })
+                    .then( res => res.json())
+                    // .then(text => console.log(text))
+                    .then( data => {
+                        this.module_name.id = null;
+                        this.module_name.module_name = '';
+                        this.fetchModules();
+                        //alert('User Added!');
+                    })
+                    .catch(err => console.log(err));
+                } else {
+                    // Update
+                    fetch('/api/module-name',{
+                        method: 'PUT',
+                        body: JSON.stringify(this.module_name),
+                        headers: {
+                            'Content-type' : 'Application/json'
+                        }
+
+                    })
+                    .then( res => res.json())
+                    //.then(text => console.log(text))
+                    .then( data => {
+                        this.edit = false;
+                        this.module_name.id = null;
+                        this.module_name.module_name = '';
+                        this.fetchModules();
+                        //alert('User Added!');
+                    })
+                    .catch(err => console.log(err));
+                }
             }
         }
     }
