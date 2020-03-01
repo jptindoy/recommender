@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Resources\Login as LoginResource;
 
-class HomeController extends Controller
+class LoginController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -15,14 +16,10 @@ class HomeController extends Controller
     {
         $this->middleware('auth');
     }
+    
+    public function index() {
 
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
-     */
-    public function index()
-    {           
-        return view('home');
+        $login = ['err' => false, 'msg' => 'Long in succesful!'];        
+        return new LoginResource($login);
     }
 }

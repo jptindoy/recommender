@@ -2035,7 +2035,11 @@ __webpack_require__.r(__webpack_exports__);
       },
       show_pass_input: false,
       hasError: false,
-      msg: ''
+      msg: '',
+      login_info: {
+        id: '',
+        token: ''
+      }
     };
   },
   methods: {
@@ -2060,16 +2064,42 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     login: function login() {
-      fetch('/api/login', {
+      var _this2 = this;
+
+      fetch('/login', {
         method: 'POST',
         body: JSON.stringify(this.user_credential),
         headers: {
           'Content-type': 'Application/json'
         }
       }).then(function (res) {
-        return res.text();
+        return res.json();
       }).then(function (res) {
-        return console.log(res);
+        if (res.data.err == false) {
+          // console.log(res.data.session.login_web_59ba36addc2b2f9401580f014c7f58ea4e30989d)
+          _this2.login_info.id = res.data.session.login_web_59ba36addc2b2f9401580f014c7f58ea4e30989d;
+          _this2.login_info.token = res.data.session._token;
+
+          _this2.logInfo();
+
+          window.location = '/home';
+        } else {
+          _this2.hasError = true;
+          _this2.msg = res.data.msg;
+        }
+      }).then(function (data) {})["catch"](function (err) {
+        return console.log(err);
+      });
+    },
+    logInfo: function logInfo() {
+      fetch('api/log', {
+        method: 'POST',
+        body: JSON.stringify(this.login_info),
+        headers: {
+          'Content-type': 'Application/json'
+        }
+      }).then(function (res) {
+        return res.json();
       }).then(function (data) {})["catch"](function (err) {
         return console.log(err);
       });
@@ -20689,7 +20719,8 @@ var render = function() {
                     attrs: {
                       type: "email",
                       placeholder: "@email",
-                      required: ""
+                      required: "",
+                      autofocus: ""
                     },
                     domProps: { value: _vm.user_credential.email },
                     on: {
@@ -20772,7 +20803,9 @@ var render = function() {
                     attrs: {
                       type: "password",
                       placeholder: "password",
-                      required: ""
+                      id: "password",
+                      required: "",
+                      autofocus: ""
                     },
                     domProps: { value: _vm.user_credential.password },
                     on: {
@@ -20816,9 +20849,9 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "lockscreen-logo" }, [
-      _c("a", { attrs: { href: "../../index2.html" } }, [
-        _c("b", [_vm._v("Admin")]),
-        _vm._v("LTE")
+      _c("a", { attrs: { href: "javascript:void(0)" } }, [
+        _c("b", [_vm._v("AUP")]),
+        _vm._v(" STORE")
       ])
     ])
   },
@@ -20837,9 +20870,11 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "input-group-append" }, [
-      _c("button", { staticClass: "btn", attrs: { type: "submit" } }, [
-        _c("i", { staticClass: "fas fa-arrow-right text-muted" })
-      ])
+      _c(
+        "button",
+        { staticClass: "btn", attrs: { type: "submit", id: "submit" } },
+        [_c("i", { staticClass: "fas fa-arrow-right text-muted" })]
+      )
     ])
   },
   function() {
@@ -20857,12 +20892,12 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "lockscreen-footer text-center" }, [
-      _vm._v("\n            Copyright © 2014-2019 "),
+      _vm._v("\n            Copyright © 2019-2020 "),
       _c("b", [
         _c(
           "a",
-          { staticClass: "text-black", attrs: { href: "http://adminlte.io" } },
-          [_vm._v("AdminLTE.io")]
+          { staticClass: "text-black", attrs: { href: "javascript:void(0)" } },
+          [_vm._v("AUPStore")]
         )
       ]),
       _c("br"),

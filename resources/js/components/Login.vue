@@ -1,7 +1,7 @@
 <template>
     <div class="lockscreen-wrapper">
         <div class="lockscreen-logo">
-            <a href="../../index2.html"><b>Admin</b>LTE</a>
+            <a href="javascript:void(0)"><b>AUP</b> STORE</a>
         </div>
         <div v-if="!show_pass_input" class="form" id="login">
             <!-- User name -->
@@ -19,10 +19,10 @@
                 <form @submit.prevent="fetchEmail" class="lockscreen-credentials">
                     <input type="hidden" name="_token" :value="user_credential._token">
                     <div class="input-group">
-                        <input type="email" class="form-control" placeholder="@email" v-model="user_credential.email" v-bind:class="{ 'is-invalid': hasError }" required>
+                        <input type="email" class="form-control" placeholder="@email" v-model="user_credential.email" v-bind:class="{ 'is-invalid': hasError }" required autofocus>
                         
                         <div class="input-group-append">
-                        <button type="submit" class="btn"><i class="fas fa-arrow-right text-muted"></i></button>
+                        <button type="submit" id="submit" class="btn"><i class="fas fa-arrow-right text-muted"></i></button>
                         </div>
                     </div>
                     
@@ -52,7 +52,7 @@
                 <form @submit.prevent="login()" class="lockscreen-credentials">
                      <input type="hidden" name="_token" :value="user_credential._token">
                     <div class="input-group">
-                        <input type="password" class="form-control" placeholder="password" v-model="user_credential.password" v-bind:class="{ 'is-invalid': hasError }" required>
+                        <input type="password" class="form-control" placeholder="password" id="password" v-model="user_credential.password" v-bind:class="{ 'is-invalid': hasError }" required autofocus>
                         
                         <div class="input-group-append">
                         <button type="submit" class="btn"><i class="fas fa-arrow-right text-muted"></i></button>
@@ -73,7 +73,7 @@
             
             
             <div class="lockscreen-footer text-center">
-                Copyright &copy; 2014-2019 <b><a href="http://adminlte.io" class="text-black">AdminLTE.io</a></b><br>
+                Copyright &copy; 2019-2020 <b><a href="javascript:void(0)" class="text-black">AUPStore</a></b><br>
                 All rights reserved
             </div>
     </div>
@@ -96,6 +96,10 @@
                 show_pass_input: false,
                 hasError: false,
                 msg:'',
+                login_info:{
+                    id:'',
+                    token: '',
+                },
                 
             }
         },
@@ -124,15 +128,41 @@
             },
 
             login(){
-                fetch('/api/login', {
+                fetch('/login', {
                     method: 'POST',
                     body: JSON.stringify(this.user_credential),
                     headers: {
                         'Content-type' : 'Application/json'
                     }
                 })
-                .then(res => res.text())
-                .then(res =>console.log(res))
+                .then(res => res.json())
+                .then(res =>{
+                    if (res.data.err == false) {
+                        // console.log(res.data.session.login_web_59ba36addc2b2f9401580f014c7f58ea4e30989d)
+                        this.login_info.id = res.data.session.login_web_59ba36addc2b2f9401580f014c7f58ea4e30989d;
+                        this.login_info.token = res.data.session._token;
+                        this.logInfo();
+                        window.location = '/home';
+                    } else {
+                        this.hasError = true;
+                        this.msg = res.data.msg;
+                    }
+                })
+                .then(data => {
+                    
+                })
+                .catch(err => console.log(err));
+            },
+
+            logInfo(){
+                fetch('api/log',{
+                    method: 'POST',
+                    body: JSON.stringify(this.login_info),
+                    headers: {
+                        'Content-type' : 'Application/json'
+                    }
+                })
+                .then(res => res.json())
                 .then(data => {})
                 .catch(err => console.log(err));
             }

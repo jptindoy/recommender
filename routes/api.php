@@ -49,10 +49,11 @@ Route::delete('role/{id}', 'API\APIRoleController@destroy');
 // Login 
 Route::get('email/{id}', 'API\APILoginController@show');
 Auth::routes();
-
 Route::group(['middleware' => ['auth']], function () {
     Route::post('login', 'Auth\LoginController@login');
 
 });
 
+// User Log
+Route::post('/log', 'API\APILogInfoController@store');
 
