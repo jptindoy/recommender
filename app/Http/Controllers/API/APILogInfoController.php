@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\UserLog;
+use App\Http\Resources\UserLog as UserLogresource;
 
 class APILogInfoController extends Controller
 {
@@ -54,7 +55,9 @@ class APILogInfoController extends Controller
      */
     public function show($id)
     {
-        //
+        $logs = UserLog::where('ul_uid', '=', $id)->orderBy('created_at','desc')->get();
+
+        return new UserLogResource($logs);
     }
 
     /**

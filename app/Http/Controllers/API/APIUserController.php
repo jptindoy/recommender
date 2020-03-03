@@ -12,6 +12,16 @@ use Illuminate\Support\Facades\Hash;
 class APIUserController extends Controller
 {
     /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+    
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -44,31 +54,31 @@ class APIUserController extends Controller
     public function store(Request $request)
     {   
 
-         return $this->$request;
+        //  return $this->$request;
 
         // $this->validate($request,[
         //     'u_fname' => ['required', 'string', 'max:255'],
         //     'u_lname' => ['required', 'string', 'max:255'],            
-        //     'u_email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+        //     'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
         //     'u_role' => ['required', 'string', 'max:255'],
         //     'u_password' => ['required', 'string', 'min:8', 'confirmed'],
         // ]);
 
-        // $user = $request->isMethod('PUT') ? User::findOrFail($request->input('user_id')) : New User;
+        $user = $request->isMethod('PUT') ? User::findOrFail($request->input('user_id')) : New User;
         
-        // $user->u_id         = $request->input('user_id');
-        // $user->u_fname      = $request->input('u_fname');
-        // $user->u_lname      = $request->input('u_lname');
-        // $user->email        = $request->input('u_email');
-        // $user->u_role       = $request->input('u_role');
-        // $user->u_image      = 'blank-img.png';
-        // $user->password     = Hash::make($request->input('u_password'));
-        // $user->api_token    = Str::random(60);
-        // $user->u_status     = 'Active';
+        $user->u_id         = $request->input('user_id');
+        $user->u_fname      = $request->input('u_fname');
+        $user->u_lname      = $request->input('u_lname');
+        $user->email        = $request->input('u_email');
+        $user->u_role       = $request->input('u_role');
+        $user->u_image      = 'blank-img.png';
+        $user->password     = Hash::make($request->input('u_password'));
+        $user->api_token    = Str::random(60);
+        $user->u_status     = true;
 
-        // if($user->save()) {
-        //     return new UserResource($user);
-        // }
+        if($user->save()) {
+            return new UserResource($user);
+        }
     }
 
     /**

@@ -116,7 +116,7 @@
                     <!-- /.col -->
                     <div class="col-sm-4">
                         <div class="description-block">
-                        <h5 class="description-header">{{date_created}}</h5>
+                        <h5 class="description-header">{{moment(date_created).format('MMMM Do YYYY, h:mm:ss a')}}</h5>
                         <span class="description-text">Date Created</span>
                         </div>
                         <!-- /.description-block -->
@@ -140,10 +140,9 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td>1.</td>
-                      <td>Update software</td>
-                      
+                    <tr v-for="log in logs" v-bind:key="log.ul_id">
+                      <td>{{moment(log.created_at).format('MMMM Do YYYY, h:mm:ss a')}}</td>
+                      <td>{{log.ul_session_id}}</td>                      
                     </tr>
                   </tbody>                  
                 </table>
@@ -186,9 +185,8 @@
                         <div class="form-group">
                             <label for="u-role">User role *</label>
                             <select class="form-control" name="u-role" id="u-role" v-model="user.u_role">
-                                <option v-bind:value="r_id">{{r_category}}</option>
-                                <option value="1">Administrator</option>
-                                <option value="2">Accountant</option>
+                                <option v-for="role in roles" v-bind:key="role.r_id" :value="role.r_id">{{role.r_category}}</option>
+                                
                             </select>
                         </div>
 
@@ -210,6 +208,9 @@
 </template>
 
 <script>
+
+    import moment from 'moment'
+
     export default {
         data() {
             return {
@@ -225,16 +226,16 @@
                     u_image: ''
                     
                 },
-                user_id: '',
-                
+                user_id: '',                
                 pagination: {},
                 edit: false,
                 show: false,
                 isHidden: false,
                 add: false,
                 pass_reset: true,
-                date_created: ''
-               
+                date_created: '',
+                logs: '',
+                roles: '',
             }
         }, 
         
@@ -245,9 +246,13 @@
         created() {
             this.fetchUsers();
             this.showProfile(this.userId);
+            this.getUserLog(this.userId);
+            this.getRole();
         },
         
         methods: {
+            moment,
+
             fetchUsers(page_url) {
                 let vm = this;
                 page_url = page_url || 'api/users'
@@ -304,7 +309,7 @@
                     .then( res => res.json())
                     //.then(text => console.log(text))
                     .then( data => {
-                        // this.clearForm();
+                        this.clearForm();
                         this.fetchUsers();
                         //alert('User Added!');
                     })
@@ -358,6 +363,7 @@
                 this.date_created = user.created_at;
                 this.date_created = user.created_at;
                 this.user.u_status = user.u_status;
+                this.getUserLog(user.u_id);
                 
             },
 
@@ -416,8 +422,31 @@
                         //alert('User Added!');
                     })
                     .catch(err => console.log(err));
-            }
+            },
             
+            getUserLog(id) {
+                fetch(`api/log/${id}`, {
+                    method: 'GET'
+                })
+                .then(res => res.json())
+                .then(res =>{
+                    this.logs = res.data;
+                })
+                .then(data => {})
+                .catch(err => console.log(err));
+            },
+
+            getRole(){
+                fetch('api/getrole',{
+                    method: 'GET'
+                })
+                .then(res => res.json())
+                .then(res => {
+                    this.roles = res.data;
+                })
+                .then(data => {})
+                .catch(err => console.log(err));
+            },
 
         }
     }

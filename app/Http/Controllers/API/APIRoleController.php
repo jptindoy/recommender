@@ -8,7 +8,16 @@ use App\Role;
 use App\Http\Resources\Role as RoleResource;
 
 class APIRoleController extends Controller
-{
+{   
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -17,6 +26,13 @@ class APIRoleController extends Controller
     public function index()
     {
         $role = Role::paginate(5);
+        
+        return RoleResource::collection($role);
+    }
+
+    public function getrole()
+    {
+        $role = Role::all();
         
         return RoleResource::collection($role);
     }
@@ -41,9 +57,9 @@ class APIRoleController extends Controller
     {
         // return $request;
 
-        $role = $request->isMethod('PUT') ? Role::findOrFail($request->input('role_id')) : New Role;
+        $role = $request->isMethod('PUT') ? Role::findOrFail($request->input('r_id')) : New Role;
 
-        $role->r_id = $request->input('role_id');
+        $role->r_id = $request->input('r_id');
         $role->r_category = $request->input('r_category');
 
         if($role->save()) {

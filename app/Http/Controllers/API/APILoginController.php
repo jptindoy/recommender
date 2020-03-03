@@ -9,6 +9,7 @@ use App\Http\Resources\Login as LoginResource;
 
 class APILoginController extends Controller
 {
+    
     /**
      * Display a listing of the resource.
      *

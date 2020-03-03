@@ -8,7 +8,16 @@ use App\ModuleName;
 use App\Http\Resources\ModuleName as ModuleNameResource;
 
 class APIModuleNameController extends Controller
-{
+{   
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *

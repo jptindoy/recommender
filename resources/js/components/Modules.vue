@@ -338,10 +338,10 @@
                     //.then(text => console.log(text))
                     .then( data => {
                         this.edit = false;
-                        this.role.r_id = '';
+                        this.role.r_id = null;
                         this.role.r_category = '';
                         this.fetchRoles();
-                        //alert('User Added!');
+                        alert(this.role.r_id);
                     })
                     .catch(err => console.log(err));
                 }

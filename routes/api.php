@@ -45,6 +45,7 @@ Route::get('role/{id}', 'API\APIRoleController@show');
 Route::post('role', 'API\APIRoleController@store');
 Route::put('role', 'API\APIRoleController@store');
 Route::delete('role/{id}', 'API\APIRoleController@destroy');
+Route::get('getrole', 'API\APIRoleController@getrole');
 
 // Login 
 Route::get('email/{id}', 'API\APILoginController@show');
@@ -56,4 +57,5 @@ Route::group(['middleware' => ['auth']], function () {
 
 // User Log
 Route::post('/log', 'API\APILogInfoController@store');
+Route::get('/log/{id}', 'API\APILogInfoController@show');
 
