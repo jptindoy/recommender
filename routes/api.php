@@ -22,6 +22,7 @@ Route::get('users', 'API\APIUserController@index');
 Route::get('user/{id}', 'API\APIUserController@show');
 Route::post('user', 'API\APIUserController@store');
 Route::put('user', 'API\APIUserController@store');
+Route::put('user-edit/{id}', 'API\APIUserController@edit');
 Route::put('user/{id}', 'API\APIUserController@update');
 Route::delete('user/{id}', 'API\APIUserController@destroy');
 

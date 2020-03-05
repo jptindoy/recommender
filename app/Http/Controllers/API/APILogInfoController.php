@@ -55,7 +55,7 @@ class APILogInfoController extends Controller
      */
     public function show($id)
     {
-        $logs = UserLog::where('ul_uid', '=', $id)->orderBy('created_at','desc')->get();
+        $logs = UserLog::where('ul_uid', '=', $id)->orderBy('created_at','desc')->paginate(5);
 
         return new UserLogResource($logs);
     }

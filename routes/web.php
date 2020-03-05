@@ -12,10 +12,14 @@
 */
 
 
-Auth::routes(['register' => false]);
+Auth::routes(['register' => false,
+                'reset' => false,
+                'verify' => false,]);
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/', 'HomeController@index')->name('home');
 Route::get('/users', 'UserController@index');
+
+Route::get('/profile','PageController@profilePage');
 
 // Route::resource('','PageController');

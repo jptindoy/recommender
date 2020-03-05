@@ -102,9 +102,9 @@ class APIUserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request, $id)
     {
-        //
+        return $request;
     }
 
     /**

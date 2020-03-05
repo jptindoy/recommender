@@ -155,7 +155,7 @@
                         <span class="float-right text-muted text-sm">3 mins</span>
                     </a>
                     <div class="dropdown-divider"></div>
-                    <a href="#" class="dropdown-item">
+                    <a href="profile" class="dropdown-item">
                         <i class="fas fa-user mr-2"></i> Profile
                         <span class="float-right text-muted text-sm">12 hours</span>
                     </a>
