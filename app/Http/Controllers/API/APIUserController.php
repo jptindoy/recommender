@@ -103,10 +103,12 @@ class APIUserController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit(Request $request, $id)
-    {
-        return $request;
+    {   
+        $params = array();
+       
+        new ParseInputStream( $params );
     }
-
+    
     /**
      * Update the specified resource in storage.
      *

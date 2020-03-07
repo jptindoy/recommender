@@ -131,9 +131,9 @@
                                         
                                     </div>
                                 </div>
-                                
+                                 <p>{{progress}}</p>
                                 <div class="progress">
-                                    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 75%">{{progress}}</div>
+                                    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" :style="{width: progress +'%'}">{{progress}}</div>
                                 </div>
                             </div>
                            
@@ -141,6 +141,7 @@
                                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                                 <button type="submit" class="btn btn-primary" >Save changes</button>
                             </div>
+                           
                         </div>
                         <!-- /.modal-content -->
                     </div>
@@ -215,22 +216,30 @@
                 reader.readAsDataURL(image);
                 reader.onload = e => {
                     this.avatar = e.target.result;
-                    this.update.file = e.target.result;
+                    
                 }
-
+                this.update.file = e.target.files[0];
             },
 
             saveProfile(){
-                fetch(`/api/user-edit/${this.userId}`, {
-                    method: 'PUT',
-                    body: JSON.stringify(this.update),
+
+                let formData = new FormData();
+
+                /*
+                    Add the form data we need to submit
+                */
+                formData.append('file', this.update.file);
+                axios.put(`/api/user-edit/${this.userId}`, formData, {
                     headers: {
                         'Content-type' : 'Application/json'
-                    }
+                    },
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    },
+                    onUploadProgress: function( progressEvent ) {
+                        this.progress = parseInt( Math.round( ( progressEvent.loaded / progressEvent.total ) * 100 ));
+                    }.bind(this)
                     
-                },
-                {
-                    onUploadProgress: e => this.progress = Math.round(e.loaded * 100 / e.total)
                 })
                 .then(res => res.json())
                 .then(data => {})

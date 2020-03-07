@@ -2620,6 +2620,9 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
 /* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_0__);
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+//
 //
 //
 //
@@ -2835,23 +2838,28 @@ __webpack_require__.r(__webpack_exports__);
 
       reader.onload = function (e) {
         _this3.avatar = e.target.result;
-        _this3.update.file = e.target.result;
       };
+
+      this.update.file = e.target.files[0];
     },
     saveProfile: function saveProfile() {
-      var _this4 = this;
+      var _axios$put;
 
-      fetch("/api/user-edit/".concat(this.userId), {
-        method: 'PUT',
-        body: JSON.stringify(this.update),
+      var formData = new FormData();
+      /*
+          Add the form data we need to submit
+      */
+
+      formData.append('file', this.update.file);
+      axios.put("/api/user-edit/".concat(this.userId), formData, (_axios$put = {
         headers: {
           'Content-type': 'Application/json'
         }
-      }, {
-        onUploadProgress: function onUploadProgress(e) {
-          return _this4.progress = Math.round(e.loaded * 100 / e.total);
-        }
-      }).then(function (res) {
+      }, _defineProperty(_axios$put, "headers", {
+        'Content-Type': 'multipart/form-data'
+      }), _defineProperty(_axios$put, "onUploadProgress", function (progressEvent) {
+        this.progress = parseInt(Math.round(progressEvent.loaded / progressEvent.total * 100));
+      }.bind(this)), _axios$put)).then(function (res) {
         return res.json();
       }).then(function (data) {})["catch"](function (err) {
         return console.log(err);
@@ -40560,13 +40568,15 @@ var render = function() {
                       ])
                     ]),
                     _vm._v(" "),
+                    _c("p", [_vm._v(_vm._s(_vm.progress))]),
+                    _vm._v(" "),
                     _c("div", { staticClass: "progress" }, [
                       _c(
                         "div",
                         {
                           staticClass:
                             "progress-bar progress-bar-striped progress-bar-animated",
-                          staticStyle: { width: "75%" },
+                          style: { width: _vm.progress + "%" },
                           attrs: {
                             role: "progressbar",
                             "aria-valuenow": "75",
