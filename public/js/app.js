@@ -2620,8 +2620,6 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
 /* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_0__);
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 //
 //
 //
@@ -2782,6 +2780,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+  props: {
+    userId: Number
+  },
   data: function data() {
     return {
       profile: [],
@@ -2790,12 +2791,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       avatar: null,
       update: {
         id: this.userId,
-        file: ''
+        file: null
       }
     };
-  },
-  props: {
-    userId: Number
   },
   created: function created() {
     this.fetchProfile(this.userId);
@@ -2838,28 +2836,27 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
       reader.onload = function (e) {
         _this3.avatar = e.target.result;
+        console.log(_this3.avatar);
       };
 
       this.update.file = e.target.files[0];
     },
     saveProfile: function saveProfile() {
-      var _axios$put;
-
       var formData = new FormData();
       /*
           Add the form data we need to submit
       */
 
       formData.append('file', this.update.file);
-      axios.put("/api/user-edit/".concat(this.userId), formData, (_axios$put = {
+      formData.append('id', this.update.id);
+      axios.post('api/save', formData, {
         headers: {
-          'Content-type': 'Application/json'
-        }
-      }, _defineProperty(_axios$put, "headers", {
-        'Content-Type': 'multipart/form-data'
-      }), _defineProperty(_axios$put, "onUploadProgress", function (progressEvent) {
-        this.progress = parseInt(Math.round(progressEvent.loaded / progressEvent.total * 100));
-      }.bind(this)), _axios$put)).then(function (res) {
+          'Content-Type': 'multipart/form-data'
+        },
+        onUploadProgress: function (progressEvent) {
+          this.progress = parseInt(Math.round(progressEvent.loaded / progressEvent.total * 100));
+        }.bind(this)
+      }).then(function (res) {
         return res.json();
       }).then(function (data) {})["catch"](function (err) {
         return console.log(err);

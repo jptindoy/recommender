@@ -104,11 +104,18 @@ class APIUserController extends Controller
      */
     public function edit(Request $request, $id)
     {   
-        $params = array();
-       
-        new ParseInputStream( $params );
+        $input = file_get_contents('php://input');
+        
+        return $input;
+      
+      //return $request->all();
     }
-    
+
+    public function save(Request $request){
+
+        return $request->all();
+        
+    }
     /**
      * Update the specified resource in storage.
      *
@@ -141,4 +148,5 @@ class APIUserController extends Controller
             return new UserResource($user);
         } 
     }
+
 }

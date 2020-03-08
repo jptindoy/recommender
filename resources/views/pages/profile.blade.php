@@ -17,7 +17,8 @@
   <!-- Main content -->
   <div class="content">
     <div class="container-fluid">  
-
+     
+      
     {{-- <h5 class="mb-2">Users Setting</h5> --}}
 		<show-profile :user-id={{ Auth::user()->u_id }}></show-profile>
     </div><!-- /.container-fluid -->

@@ -160,6 +160,10 @@
     import moment from 'moment'
 
     export default {
+        props: {
+            userId: Number,
+        },
+
         data() {
             return {
                 profile: [],
@@ -168,14 +172,12 @@
                 avatar: null,
                 update: {
                     id: this.userId,
-                    file: '',
+                    file: null,
                 }
             }
         },
 
-        props: {
-            userId: Number,
-        },
+        
 
         created(){
             this.fetchProfile(this.userId);
@@ -212,11 +214,11 @@
             getImage(e) {
                 let image = e.target.files[0];
                 let reader = new FileReader();
-
+                
                 reader.readAsDataURL(image);
                 reader.onload = e => {
                     this.avatar = e.target.result;
-                    
+                    console.log(this.avatar)
                 }
                 this.update.file = e.target.files[0];
             },
@@ -229,10 +231,9 @@
                     Add the form data we need to submit
                 */
                 formData.append('file', this.update.file);
-                axios.put(`/api/user-edit/${this.userId}`, formData, {
-                    headers: {
-                        'Content-type' : 'Application/json'
-                    },
+                formData.append('id', this.update.id);
+                
+                axios.post('api/save', formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data'
                     },
