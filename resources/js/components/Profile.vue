@@ -1,6 +1,6 @@
 <template>
     <div class="row">
-        <div class="col-8">
+        <div v-if="show" class="col-8">
             <!-- Widget: user widget style 1 -->
             <div class="card card-widget widget-user">
                 <!-- Add the bg color to the header using any of the bg-* classes -->
@@ -9,7 +9,7 @@
                     <h5 class="widget-user-desc">{{profile.r_category}}</h5>
                 </div>
                 <div class="widget-user-image">
-                    <img v-bind:src="'/storage/img/' + profile.u_image" class="img-circle elevation-2" alt="User Avatar">
+                    <img v-bind:src="'/storage/img/profile-img/' + profile.u_image" class="img-circle elevation-2" alt="User Avatar">
                 </div>
                 <div class="card-footer">
 
@@ -91,18 +91,18 @@
                 <div class="card-body p-0">
                     <ul class="nav nav-pills flex-column">
                         <li class="nav-item active">
-                            <a href="#modal-default" data-toggle="modal" class="nav-link">
-                                <i class="fas fa-inbox"></i> Chage Profile Picture
+                            <a href="#modal-default" @click="profile_form = true, password_form = false" data-toggle="modal" class="nav-link">
+                                <i class="fas fa-user-circle"></i> Chage Profile Picture
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="far fa-envelope"></i> Change Password
+                            <a href="#modal-default" @click="profile_form = false, password_form = true" data-toggle="modal" class="nav-link">
+                                <i class="fas fa-key"></i> Change Password
                             </a>
                         </li>                        
                         <li class="nav-item">
                             <a href="#" class="nav-link">
-                                <i class="fas fa-filter"></i> Notifications
+                                <i class="fas fa-bell"></i> Notifications
                                 <span class="badge bg-danger float-right">65</span>
                             </a>
                         </li>
@@ -121,22 +121,34 @@
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
-                            </div>
+                            </div>                            
                             <div class="modal-body mx-auto">
-                                <h5>Drag or select image</h5>
-                                <div class="dropzone">
-                                    <div class="form-group">
-                                        <img v-if="avatar" :src="avatar" alt="" class="img-fluid">
-                                        <input type="file" class="input-file" name="" id="" @change="getImage">
-                                        
+                                <div v-if="profile_form" class="profile">
+                                    <h5>Drag or select image</h5>
+                                    <div class="dropzone">
+                                        <div class="form-group">
+                                            <img v-if="avatar" :src="avatar" alt="" class="img-fluid">
+                                            <input type="file" class="input-file" name="" id="" @change="getImage" required>
+                                            
+                                        </div>
+                                    </div>
+                                    <div v-if="uploading" class="progress">
+                                        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" :style="{width: progress +'%'}">{{progress}}%</div>
                                     </div>
                                 </div>
-                                 <p>{{progress}}</p>
-                                <div class="progress">
-                                    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" :style="{width: progress +'%'}">{{progress}}</div>
-                                </div>
+                                
+                                 <div v-if="password_form" class="password">
+                                    <div class="form-group">
+                                        <label for="password">New password</label>
+                                        <input type="password" name="password" id="password" class="form-control" v-model="update_password.password" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="password-confirm">Confirm password</label>
+                                        <input type="password" name="password-confirm" class="form-control" v-model="update_password.password_confirm" required>
+                                    </div>
+                                </div>      
                             </div>
-                           
+                                          
                             <div class="modal-footer justify-content-between">
                                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                                 <button type="submit" class="btn btn-primary" >Save changes</button>
@@ -173,6 +185,15 @@
                 update: {
                     id: this.userId,
                     file: null,
+                },
+                uploading: false,
+                show: false,
+                profile_form: false,
+                password_form: false,
+                update_password: {
+                    id: this.userId,
+                    password: '',
+                    password_confirm: '',
                 }
             }
         },
@@ -195,7 +216,9 @@
                 .then(res => {
                     this.profile = res.data;
                 })
-                .then(data => {})
+                .then(data => {
+                    this.show = true;
+                })
                 .catch(err => console.log(err));
             },
 
@@ -218,33 +241,65 @@
                 reader.readAsDataURL(image);
                 reader.onload = e => {
                     this.avatar = e.target.result;
-                    console.log(this.avatar)
                 }
                 this.update.file = e.target.files[0];
             },
 
             saveProfile(){
+                if(this.profile_form === true){
+                    let formData = new FormData();
 
-                let formData = new FormData();
-
-                /*
-                    Add the form data we need to submit
-                */
-                formData.append('file', this.update.file);
-                formData.append('id', this.update.id);
-                
-                axios.post('api/save', formData, {
-                    headers: {
-                        'Content-Type': 'multipart/form-data'
-                    },
-                    onUploadProgress: function( progressEvent ) {
-                        this.progress = parseInt( Math.round( ( progressEvent.loaded / progressEvent.total ) * 100 ));
-                    }.bind(this)
+                    /*
+                        Add the form data we need to submit
+                    */
+                    formData.append('file', this.update.file);
+                    formData.append('id', this.update.id);
                     
+                    axios.post('api/profile', formData, {
+                        headers: {
+                            'Content-Type': 'multipart/form-data'
+                        },
+                        onUploadProgress: function( progressEvent ) {
+                            this.uploading = true;
+                            this.progress = parseInt( Math.round( ( progressEvent.loaded / progressEvent.total ) * 100 ));
+                        }.bind(this)
+                        
+                    })
+                    // .then(res => res.json())
+                    .then(res => {
+                        if(res.status === 200 || res.status === 201){
+                            this.uploading = false;
+                            this.fetchProfile(this.userId);
+                            toastr.success('Profile change!')           
+                        }
+                    })
+                    .catch(err => toastr.error(err));
+                } else {
+                    this.changePassword();
+                }
+                
+            },
+            
+            changePassword(){
+                fetch('api/password', {
+                    method: 'PUT',
+                    body: JSON.stringify(this.update_password),
+                    headers: {
+                        'Content-Type' : 'Application/json'
+                    }
                 })
                 .then(res => res.json())
-                .then(data => {})
-                .catch(err => console.log(err));
+                .then(res => {
+                    if(res.err === true){
+                        toastr[res.errType](res.msg)        
+                    } else {                        
+                        toastr.success('Password change!')           
+                        this.update_password.password = '';
+                        this.update_password.password_confirm = '';
+                    }
+                    
+                })
+                .catch(err => toastr.error(err));
             }
         }
     }

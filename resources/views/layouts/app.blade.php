@@ -17,6 +17,8 @@
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="{{asset('admin-lte/plugins/fontawesome-free/css/all.min.css')}}">
+    <!-- Toastr -->
+    <link rel="stylesheet" href="{{asset('admin-lte/plugins/toastr/toastr.min.css')}}">
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     
@@ -199,7 +201,7 @@
             <!-- Sidebar user panel (optional) -->
             <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                 <div class="image">
-                    <img src="storage/img/{{ Auth::user()->u_image }}" class="img-circle elevation-2" alt="User Image">
+                    <img src="storage/img/profile-img/{{ Auth::user()->u_image }}" class="img-circle elevation-2" alt="User Image">
                 </div>
                 <div class="info">
                     <a href="#" class="d-block">{{ Auth::user()->u_fname }} {{ Auth::user()->u_lname }}</a>
@@ -368,6 +370,8 @@
     <!-- Bootstrap 4 -->
     <script src="{{ asset('js/app.js') }}" ></script>
     <script src="{{asset('admin-lte/plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+    <!-- Toastr -->
+    <script src="{{asset('admin-lte/plugins/toastr/toastr.min.js')}}"></script>
     <!-- AdminLTE App -->
     <script src="{{asset('admin-lte/dist/js/adminlte.min.js')}}"></script>    
     

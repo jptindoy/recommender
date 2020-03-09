@@ -17,6 +17,8 @@
     <link rel="stylesheet" href="{{asset('admin-lte/plugins/fontawesome-free/css/all.min.css')}}">
     <!-- Ionicons -->
     <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- Toastr -->
+    <link rel="stylesheet" href="{{asset('admin-lte/plugins/toastr/toastr.min.css')}}">
     <!-- Theme style -->
     <link rel="stylesheet" href="{{asset('admin-lte/dist/css/adminlte.min.css')}}">
     <!-- Google Font: Source Sans Pro -->
@@ -86,5 +88,7 @@
     <script src="{{asset('admin-lte/plugins/jquery/jquery.min.js')}}"></script>
     <!-- Bootstrap 4 -->
     <script src="{{asset('admin-lte/plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+    <!-- Toastr -->
+    <script src="{{asset('admin-lte/plugins/toastr/toastr.min.js')}}"></script>
 </body>
 </html>

@@ -34,3 +34,7 @@ Vue.component('show-profile', require('./components/Profile.vue').default);
 const app = new Vue({
     el: '#app',
 });
+
+
+// Alert jQuery
+

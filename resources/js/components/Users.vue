@@ -15,7 +15,7 @@
                         <table class="table">
                             <tbody>
                                 <tr v-for="user in users" v-bind:key="user.u_id">
-                                    <td><a href="javascript:void(0)" @click="showUser(user)" title="click to expand.."><img v-bind:src="'storage/img/' + user.u_image" alt="Product Image" class="img-size-50"></a></td>
+                                    <td><a href="javascript:void(0)" @click="showUser(user)" title="click to expand.."><img v-bind:src="'storage/img/profile-img/' + user.u_image" alt="Product Image" class="img-size-50"></a></td>
                                     <td>
                                         <a href="javascript:void(0)" @click="showUser(user)" class="product-title" title="click to expand...">{{user.u_fname}} {{user.u_lname}}</a>
                                         <span v-if="user.u_status == true" class="badge badge-success float-right">Active</span>
@@ -88,7 +88,7 @@
                     <h5 class="widget-user-desc">{{user.u_role}}</h5>
                 </div>
                 <div class="widget-user-image">
-                    <img v-bind:src="'storage/img/' + user.u_image" class="img-circle elevation-2" alt="User Avatar">
+                    <img v-bind:src="'storage/img/profile-img/' + user.u_image" class="img-circle elevation-2" alt="User Avatar">
                 </div>
                 <div class="card-footer">
 

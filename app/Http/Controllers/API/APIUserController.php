@@ -8,6 +8,7 @@ use App\Http\Resources\User as UserResource;
 use App\User;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class APIUserController extends Controller
 {
@@ -104,16 +105,53 @@ class APIUserController extends Controller
      */
     public function edit(Request $request, $id)
     {   
-        $input = file_get_contents('php://input');
-        
-        return $input;
-      
-      //return $request->all();
+        //
     }
 
-    public function save(Request $request){
+    public function updateProfile(Request $request)
+    {
 
-        return $request->all();
+        if($request->hasFile('file')){
+            $originalFileName = $request->file('file')->getClientOriginalName();
+
+            $fileExt = $request->file('file')->getClientOriginalExtension();
+
+            $fileName = $request->file($originalFileName, PATHINFO_FILENAME);
+
+            $fileNametToStore = $fileName.'_'.time().'.'.$fileExt;
+            
+            $path = Storage::putFileAs('public/img/profile-img', $request->file('file'), $fileNametToStore);
+
+            $profile = User::findOrFail($request->id);
+
+            $profile->u_id = $request->id;
+            $profile->u_image = $fileNametToStore;
+
+            if($profile->save()){
+                return new UserResource($profile);
+            }
+        }
+        
+    }
+
+    public function updatePassword(Request $request)
+    {
+        if($request->password === $request->password_confirm){
+            $password = User::findOrFail($request->id);
+
+            $password->u_id = $request->id;
+            $password->password = Hash::make($request->password);
+
+            if($password->save()){
+                return new UserResource($password);
+            }
+        } else {
+            return json_encode([
+                'err' => true,
+                'errType' => 'error',
+                'msg' => 'Password didn\'t match!' 
+            ]);
+        }
         
     }
     /**

@@ -44,7 +44,7 @@
             <div class="lockscreen-item">
                 <!-- lockscreen image -->
                 <div class="lockscreen-image">
-                    <img :src="'/storage/img/' + user_info.img" alt="User Image">
+                    <img :src="'/storage/img/profile-img/' + user_info.img" alt="User Image">
                 </div>
                 <!-- /.lockscreen-image -->
 
