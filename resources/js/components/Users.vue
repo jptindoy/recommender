@@ -170,29 +170,28 @@
                     <div class="card-body">
                          <div class="form-group">
                             <label for="u-fname">Firstname *</label>
-                            <input type="text" class="form-control" id="u-fname" placeholder="f name"   v-model="user.u_fname">
+                            <input type="text" class="form-control" id="u-fname" placeholder="f name"   v-model="user.u_fname" required>
                             
                         </div>
                         <div class="form-group">
                             <label for="u-lname">Lastname *</label>
-                            <input type="text" class="form-control" id="u-lname" placeholder="l name" v-model="user.u_lname">
+                            <input type="text" class="form-control" id="u-lname" placeholder="l name" v-model="user.u_lname" required>
                         </div>
                         <div class="form-group">
                             <label for="u-email">Email address *</label>
-                            <input type="email" class="form-control" id="u-email" placeholder="@email" v-model="user.u_email">
+                            <input type="email" class="form-control" id="u-email" placeholder="@email" v-model="user.u_email" required>
                         </div>
 
                         <div class="form-group">
                             <label for="u-role">User role *</label>
-                            <select class="form-control" name="u-role" id="u-role" v-model="user.u_role">
-                                <option v-for="role in roles" v-bind:key="role.r_id" :value="role.r_id">{{role.r_category}}</option>
-                                
+                            <select class="form-control" name="u-role" id="u-role" v-model="user.u_role" required>
+                                <option v-for="role in roles" v-bind:key="role.r_id" :value="role.r_id">{{role.r_category}}</option>                                
                             </select>
                         </div>
 
                         <div class="form-group" v-if="pass_reset">
                             <label for="u-pass1">Password *</label>
-                            <input type="password" class="form-control" id="u-pass1" placeholder="Password" v-model="user.u_password">
+                            <input type="password" class="form-control" id="u-pass1" placeholder="Password" v-model="user.u_password" required>
                         </div>
                     </div>
                     <!-- /.card-body -->
@@ -263,7 +262,7 @@
                     this.users = res.data;
                     vm.makePagination(res.meta, res.links);
                 })
-                .catch(err => console.log(err));
+                .catch(err => toastr.error(err));
             },
 
             makePagination(meta, links) {
@@ -295,8 +294,9 @@
                         this.clearForm();
                         this.fetchUsers();
                         //alert('User Added!');
+                        toastr.success("User aded!");
                     })
-                    .catch(err => console.log(err));
+                    .catch(err => toastr.error(err));
                 } else {
                     fetch('api/user',{
                         method: 'PUT',
@@ -312,8 +312,9 @@
                         this.clearForm();
                         this.fetchUsers();
                         //alert('User Added!');
+                        toastr.success("Record updated!");
                     })
-                    .catch(err => console.log(err));
+                    .catch(err => toastr.error(err));
                 }   
             },
 
@@ -376,8 +377,9 @@
                 .then(data => {
                     // alert('Menu Removed');
                     this.fetchUsers();
+                    toastr.success("User deleted!");
                 })
-                .catch(err => console.log(err));
+                .catch(err => toastr.error(err));
             },
             
             showProfile(id) {
@@ -420,8 +422,9 @@
                         // this.clearForm();
                         this.fetchUsers();
                         //alert('User Added!');
+                        toastr.success("Status updated!");
                     })
-                    .catch(err => console.log(err));
+                    .catch(err => toastr.error(err));
             },
             
             getUserLog(id) {
@@ -433,7 +436,7 @@
                     this.logs = res.data;
                 })
                 .then(data => {})
-                .catch(err => console.log(err));
+                .catch(err => toastr.error(err));
             },
 
             getRole(){
@@ -445,7 +448,7 @@
                     this.roles = res.data;
                 })
                 .then(data => {})
-                .catch(err => console.log(err));
+                .catch(err => toastr.error(err));
             },
 
         }

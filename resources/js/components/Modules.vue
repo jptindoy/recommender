@@ -244,7 +244,7 @@
                     this.roles = res.data;
                     vm.rolePagination(res.meta, res.links);
                 })
-                .catch(err => console.log(err));
+                .catch(err => toastr.error(err));
             },
 
             rolePagination(meta, links) {
@@ -268,7 +268,7 @@
                     this.module_names = res.data;
                     vm.module_name_Pagination(res.meta, res.links);
                 })
-                .catch(err => console.log(err));
+                .catch(err => toastr.error(err));
             },
 
             module_name_Pagination(meta, links) {
@@ -302,8 +302,9 @@
                     .then(data => {
                         // alert('User Removed!');
                         this.fetchRoles();
+                        toastr.success("Role deleted!");
                     })
-                    .catch(err => console.log(err));
+                    .catch(err => toastr.error(err));
             },
 
             addRole() {
@@ -322,8 +323,9 @@
                         this.role.r_category = '';
                         this.fetchRoles();
                         //alert('User Added!');
+                        toastr.success("Role added!");
                     })
-                    .catch(err => console.log(err));
+                    .catch(err => toastr.error(err));
                 } else {
                     // Update
                     fetch('/api/role',{
@@ -341,9 +343,9 @@
                         this.role.r_id = null;
                         this.role.r_category = '';
                         this.fetchRoles();
-                        alert(this.role.r_id);
+                        toastr.success("Role Updated!");
                     })
-                    .catch(err => console.log(err));
+                    .catch(err => toastr.error(err));
                 }
             },
 
@@ -358,7 +360,7 @@
                     // this.r_category = res.data.r_category;
                 })
                 .then(data => {})
-                .catch(err => console.log(err));
+                .catch(err => toastr.error(err));
 
                 /////////////////////////////////////
 
@@ -372,7 +374,7 @@
                     // this.r_category = res.data.r_category;
                 })
                 .then(data => {})
-                .catch(err => console.log(err));
+                .catch(err => toastr.error(err));
             },
 
             showPagination(meta, links) {
@@ -424,12 +426,13 @@
                     // this.role.r_category = '';
                     // this.fetchRoles();
                     //alert('User Added!');
+                    toastr.success("Module updated!");
                 })
-                .catch(err => console.log(err));
+                .catch(err => toastr.error(err));
             },
 
             editModuleName(module_name) {
-                console.log(module_name)
+                
                 this.edit = true;
                 this.module_name.id = module_name.id;
                 this.module_name.module_name = module_name.module_name;
@@ -443,8 +446,9 @@
                     .then(data => {
                         // alert('User Removed!');
                         this.fetchModules();
+                        toastr.success("Module deleted!");
                     })
-                    .catch(err => console.log(err));
+                    .catch(err => toastr.error(err));
 
             },
 
@@ -465,8 +469,9 @@
                         this.module_name.module_name = '';
                         this.fetchModules();
                         //alert('User Added!');
+                        toastr.success("Module added!");
                     })
-                    .catch(err => console.log(err));
+                    .catch(err => toastr.error(err));
                 } else {
                     // Update
                     fetch('/api/module-name',{
@@ -485,8 +490,9 @@
                         this.module_name.module_name = '';
                         this.fetchModules();
                         //alert('User Added!');
+                        toastr.success("Module updated!");
                     })
-                    .catch(err => console.log(err));
+                    .catch(err => toastr.error(err));
                 }
             }
         }

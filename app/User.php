@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use App\Role;
 
 class User extends Authenticatable
 {
@@ -39,6 +40,12 @@ class User extends Authenticatable
 
     protected $primaryKey = 'u_id';
     
+    public function user(){
+        return $this->hasMany(Role::class, 'u_role');
+    }
 
+    public function isAdmin($user){
+        return $user == 1;
+    }
 }
 

@@ -2362,7 +2362,7 @@ __webpack_require__.r(__webpack_exports__);
         _this.roles = res.data;
         vm.rolePagination(res.meta, res.links);
       })["catch"](function (err) {
-        return console.log(err);
+        return toastr.error(err);
       });
     },
     rolePagination: function rolePagination(meta, links) {
@@ -2386,7 +2386,7 @@ __webpack_require__.r(__webpack_exports__);
         _this2.module_names = res.data;
         vm.module_name_Pagination(res.meta, res.links);
       })["catch"](function (err) {
-        return console.log(err);
+        return toastr.error(err);
       });
     },
     module_name_Pagination: function module_name_Pagination(meta, links) {
@@ -2419,8 +2419,10 @@ __webpack_require__.r(__webpack_exports__);
       }).then(function (data) {
         // alert('User Removed!');
         _this3.fetchRoles();
+
+        toastr.success("Role deleted!");
       })["catch"](function (err) {
-        return console.log(err);
+        return toastr.error(err);
       });
     },
     addRole: function addRole() {
@@ -2441,8 +2443,10 @@ __webpack_require__.r(__webpack_exports__);
 
           _this4.fetchRoles(); //alert('User Added!');
 
+
+          toastr.success("Role added!");
         })["catch"](function (err) {
-          return console.log(err);
+          return toastr.error(err);
         });
       } else {
         // Update
@@ -2462,9 +2466,9 @@ __webpack_require__.r(__webpack_exports__);
 
           _this4.fetchRoles();
 
-          alert(_this4.role.r_id);
+          toastr.success("Role Updated!");
         })["catch"](function (err) {
-          return console.log(err);
+          return toastr.error(err);
         });
       }
     },
@@ -2479,7 +2483,7 @@ __webpack_require__.r(__webpack_exports__);
       .then(function (res) {
         _this5.modules = res.data; // this.r_category = res.data.r_category;
       }).then(function (data) {})["catch"](function (err) {
-        return console.log(err);
+        return toastr.error(err);
       }); /////////////////////////////////////
 
       fetch("api/role/".concat(id), {
@@ -2490,7 +2494,7 @@ __webpack_require__.r(__webpack_exports__);
       .then(function (res) {
         _this5.r_category = res.data.r_category; // this.r_category = res.data.r_category;
       }).then(function (data) {})["catch"](function (err) {
-        return console.log(err);
+        return toastr.error(err);
       });
     },
     showPagination: function showPagination(meta, links) {
@@ -2535,12 +2539,13 @@ __webpack_require__.r(__webpack_exports__);
         _this6.edit = false; // this.role.r_category = '';
         // this.fetchRoles();
         //alert('User Added!');
+
+        toastr.success("Module updated!");
       })["catch"](function (err) {
-        return console.log(err);
+        return toastr.error(err);
       });
     },
     editModuleName: function editModuleName(module_name) {
-      console.log(module_name);
       this.edit = true;
       this.module_name.id = module_name.id;
       this.module_name.module_name = module_name.module_name;
@@ -2555,8 +2560,10 @@ __webpack_require__.r(__webpack_exports__);
       }).then(function (data) {
         // alert('User Removed!');
         _this7.fetchModules();
+
+        toastr.success("Module deleted!");
       })["catch"](function (err) {
-        return console.log(err);
+        return toastr.error(err);
       });
     },
     addModuleName: function addModuleName() {
@@ -2578,8 +2585,10 @@ __webpack_require__.r(__webpack_exports__);
 
           _this8.fetchModules(); //alert('User Added!');
 
+
+          toastr.success("Module added!");
         })["catch"](function (err) {
-          return console.log(err);
+          return toastr.error(err);
         });
       } else {
         // Update
@@ -2599,8 +2608,10 @@ __webpack_require__.r(__webpack_exports__);
 
           _this8.fetchModules(); //alert('User Added!');
 
+
+          toastr.success("Module updated!");
         })["catch"](function (err) {
-          return console.log(err);
+          return toastr.error(err);
         });
       }
     }
@@ -3145,7 +3156,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -3196,7 +3206,7 @@ __webpack_require__.r(__webpack_exports__);
         _this.users = res.data;
         vm.makePagination(res.meta, res.links);
       })["catch"](function (err) {
-        return console.log(err);
+        return toastr.error(err);
       });
     },
     makePagination: function makePagination(meta, links) {
@@ -3226,8 +3236,10 @@ __webpack_require__.r(__webpack_exports__);
 
           _this2.fetchUsers(); //alert('User Added!');
 
+
+          toastr.success("User aded!");
         })["catch"](function (err) {
-          return console.log(err);
+          return toastr.error(err);
         });
       } else {
         fetch('api/user', {
@@ -3244,8 +3256,10 @@ __webpack_require__.r(__webpack_exports__);
 
           _this2.fetchUsers(); //alert('User Added!');
 
+
+          toastr.success("Record updated!");
         })["catch"](function (err) {
-          return console.log(err);
+          return toastr.error(err);
         });
       }
     },
@@ -3305,8 +3319,10 @@ __webpack_require__.r(__webpack_exports__);
       .then(function (data) {
         // alert('Menu Removed');
         _this3.fetchUsers();
+
+        toastr.success("User deleted!");
       })["catch"](function (err) {
-        return console.log(err);
+        return toastr.error(err);
       });
     },
     showProfile: function showProfile(id) {
@@ -3348,8 +3364,10 @@ __webpack_require__.r(__webpack_exports__);
         // this.clearForm();
         _this5.fetchUsers(); //alert('User Added!');
 
+
+        toastr.success("Status updated!");
       })["catch"](function (err) {
-        return console.log(err);
+        return toastr.error(err);
       });
     },
     getUserLog: function getUserLog(id) {
@@ -3362,7 +3380,7 @@ __webpack_require__.r(__webpack_exports__);
       }).then(function (res) {
         _this6.logs = res.data;
       }).then(function (data) {})["catch"](function (err) {
-        return console.log(err);
+        return toastr.error(err);
       });
     },
     getRole: function getRole() {
@@ -3375,7 +3393,7 @@ __webpack_require__.r(__webpack_exports__);
       }).then(function (res) {
         _this7.roles = res.data;
       }).then(function (data) {})["catch"](function (err) {
-        return console.log(err);
+        return toastr.error(err);
       });
     }
   }
@@ -41423,7 +41441,8 @@ var render = function() {
                       attrs: {
                         type: "text",
                         id: "u-fname",
-                        placeholder: "f name"
+                        placeholder: "f name",
+                        required: ""
                       },
                       domProps: { value: _vm.user.u_fname },
                       on: {
@@ -41455,7 +41474,8 @@ var render = function() {
                       attrs: {
                         type: "text",
                         id: "u-lname",
-                        placeholder: "l name"
+                        placeholder: "l name",
+                        required: ""
                       },
                       domProps: { value: _vm.user.u_lname },
                       on: {
@@ -41487,7 +41507,8 @@ var render = function() {
                       attrs: {
                         type: "email",
                         id: "u-email",
-                        placeholder: "@email"
+                        placeholder: "@email",
+                        required: ""
                       },
                       domProps: { value: _vm.user.u_email },
                       on: {
@@ -41518,7 +41539,7 @@ var render = function() {
                           }
                         ],
                         staticClass: "form-control",
-                        attrs: { name: "u-role", id: "u-role" },
+                        attrs: { name: "u-role", id: "u-role", required: "" },
                         on: {
                           change: function($event) {
                             var $$selectedVal = Array.prototype.filter
@@ -41569,7 +41590,8 @@ var render = function() {
                           attrs: {
                             type: "password",
                             id: "u-pass1",
-                            placeholder: "Password"
+                            placeholder: "Password",
+                            required: ""
                           },
                           domProps: { value: _vm.user.u_password },
                           on: {
