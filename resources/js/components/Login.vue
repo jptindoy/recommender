@@ -33,12 +33,14 @@
             <p v-if="hasError" class="text-danger text-center">{{msg}}</p>
             <!-- /.lockscreen-item -->
             <div class="help-block text-center">
-                Enter your email to verify your account </div>
+                Enter your email to verify your account! </div>
         </div>
 
         <div v-if="show_pass_input" class="form" id="pass">
             <!-- User name -->
-            <div class="lockscreen-name mb-4">{{user_credential.email}}</div>
+            <div class="lockscreen-name">{{user_credential.email}}</div>
+            <div class="lockscreen-name mb-4"><small><a href="javasrcipt:void(0)" @click="changeEmail">use deffirent account</a></small></div>
+              
 
             <!-- START LOCK SCREEN ITEM -->
             <div class="lockscreen-item">
@@ -91,6 +93,7 @@
                     _token: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
                     email: '',
                     password: '',
+                    status: false,
                     
                 },
                 show_pass_input: false,
@@ -107,7 +110,10 @@
         methods: {
             fetchEmail() {
                 fetch(`api/email/${this.user_credential.email}`, {
-                    method: 'GET'
+                    method: 'GET',
+                    headers: {
+                        'Content-type': 'Application/json'
+                    }
                 })
                 .then(res => res.json())
                 .then(res => {
@@ -119,12 +125,13 @@
                         this.user_info = res.data;
                         this.hasError = false;
                         this.show_pass_input = true;
+                        this.user_credential.status = true;
                     }
                 })
                 .then(data => {
                     
                 })
-                .catch(err => console.log(err));
+                .catch(err => toastr.error(err));
             },
 
             login(){
@@ -132,7 +139,7 @@
                     method: 'POST',
                     body: JSON.stringify(this.user_credential),
                     headers: {
-                        'Content-type' : 'Application/json'
+                        'Content-Type' : 'Application/json'
                     }
                 })
                 .then(res => res.json())
@@ -151,7 +158,7 @@
                 .then(data => {
                     
                 })
-                .catch(err => console.log(err));
+                .catch(err => toastr.error(err));
             },
 
             logInfo(){
@@ -165,6 +172,12 @@
                 .then(res => res.json())
                 .then(data => {})
                 .catch(err => console.log(err));
+            },
+
+            changeEmail() {
+                this.user_credential.email = '';
+                this.show_pass_input = false;
+                this.user_credential.status = false;
             }
         }
     }

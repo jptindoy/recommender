@@ -5,7 +5,6 @@ namespace App;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use App\Role;
 
 class User extends Authenticatable
 {
@@ -17,7 +16,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'u_fname', 'u_lname', 'email', 'u_role', 'password', 'u_image', 'api_token',
+        'role_id', 'fname', 'lname', 'email', 'password','api_token',
     ];
 
     /**
@@ -38,14 +37,33 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    protected $primaryKey = 'u_id';
-    
-    public function user(){
-        return $this->hasMany(Role::class, 'u_role');
+    public function role(){
+        return $this->belongsTo(\App\Role::class);
     }
 
-    public function isAdmin($user){
-        return $user == 1;
+    public function moduleRights(){
+        return $this->hasMany(\App\ModuleRight::class, 'role_id');
+    }
+
+    public function hasAccess($role, $module){
+        
+        if($this->role->hasAccess($role, $module)){
+            return true;
+        }
+        return false;
+        
+        // return $module == "User Management";
+    }
+
+    public function isAdmin(){
+        return $this->role_id == 1 && $this->active == true;
+    }
+
+    public function isAccountant(){
+        return $this->role_id == 2 && $this->active == true;
+    }
+
+    public function isMerchant(){
+        return $this->role_id == 3 && $this->active == true;
     }
 }
-

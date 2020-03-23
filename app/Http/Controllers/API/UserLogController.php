@@ -4,12 +4,29 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\User;
-use App\Http\Resources\Login as LoginResource;
+use App\UserLog;
+use App\Http\Resources\UserLog as UserLogresource;
 
-class APILoginController extends Controller
-{
-    
+class UserLogController extends Controller
+{   
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    // public function __construct()
+    // {
+    //     $this->middleware('auth');
+    // }
     /**
      * Display a listing of the resource.
      *
@@ -38,7 +55,18 @@ class APILoginController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $logs = new UserLog;
+
+        $logs->user_id = $request->input('id');
+        $logs->session_id = $request->input('token');
+
+        if($logs->save()){
+            return json_encode([
+                'err' => false,
+                'msg' => 'Welcome!',
+                'errType'=> 'success', 
+            ]);
+        }
     }
 
     /**
@@ -49,18 +77,9 @@ class APILoginController extends Controller
      */
     public function show($id)
     {
-        $emails = User::where('email', '=', $id)->get();
-        foreach($emails as $email){
-            $msg_success = ['msg' => '', 'err' => false, 'img'=> $email->u_image];
-        }
+        $logs = UserLog::where('user_id', '=', $id)->orderBy('created_at','desc')->paginate(5);
 
-        
-        $msg_err =  ['msg' => 'Email does not exist!', 'err' => true];
-        if(count($emails) > 0) {
-            return new LoginResource($msg_success);
-        } else {
-            return new LoginResource($msg_err);
-        }
+        return new UserLogResource($logs);
     }
 
     /**

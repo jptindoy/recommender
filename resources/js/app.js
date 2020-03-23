@@ -7,6 +7,7 @@
 require('./bootstrap');
 
 window.Vue = require('vue');
+window.Event = new Vue();
 
 /**
  * The following block of code may be used to automatically register your
@@ -18,12 +19,16 @@ window.Vue = require('vue');
 
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
-
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
-Vue.component('users', require('./components/Users.vue').default);
-Vue.component('modules', require('./components/Modules.vue').default);
 Vue.component('login-page', require('./components/Login.vue').default);
-Vue.component('show-profile', require('./components/Profile.vue').default);
+Vue.component('profile-page', require('./components/Profile.vue').default);
+Vue.component('change-profile', require('./components/ChangeProfile.vue').default);
+Vue.component('change-password', require('./components/ChangePassword.vue').default);
+Vue.component('users-page', require('./components/Users.vue').default);
+Vue.component('module-page', require('./components/Modules.vue').default);
+Vue.component('import-data', require('./components/FileImport.vue').default);
+Vue.component('sales-report', require('./components/Sales.vue').default);
+
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

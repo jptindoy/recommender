@@ -3,11 +3,15 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Response;
 use App\User;
-use Illuminate\Support\Facades\DB;
+use App\ModuleRight;
 
 class UserController extends Controller
-{
+{   
+
     /**
      * Create a new controller instance.
      *
@@ -23,10 +27,19 @@ class UserController extends Controller
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
+     * 
      */
     public function index()
-    {
-        return view('users');
+    {   
+        // $role_id = Auth::user()->role_id;
+        // $module = 'User Management';
+
+        if (Gate::check('canAccessPage', [Auth::user()->role_id, 'User Management'])) {
+            return view('pages.users');
+        }else{
+            return "it look's like you don't have access to this page!";
+        }
+
     }
 
     /**
@@ -57,8 +70,18 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show($id)
-    {
-        //
+    {   
+
+        if (Gate::check('canAccessPage', [Auth::user()->role_id, 'Profile Management'])) {
+            
+            $this->authorize('viewAny', [ModuleRight::class, 'Profile Management']);
+            $profile = User::findOrFail($id);
+
+            return view('pages.profile')->with('profile', $profile);
+
+        }else{
+            return "it look's like you don't have access to this page!";
+        }
     }
 
     /**

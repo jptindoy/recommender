@@ -11,7 +11,7 @@
 
     <!-- Scripts -->
     {{-- icon --}}
-    <link rel="shortcut icon" href="{{asset('storage/img/aup-logo.png')}}" type="image/ico">
+    {{-- <link rel="shortcut icon" href="{{asset('storage/img/aup-logo.png')}}" type="image/ico"> --}}
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
@@ -37,88 +37,16 @@
                 <a class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a>
             </li>
             <li class="nav-item d-none d-sm-inline-block">
-                <a href="#" class="nav-link">{{ Auth::user()->u_role }} Account</a>
+                <a href="#" class="nav-link">{{ Auth::user()->role->role }} Account</a>
             </li>
-            {{-- <li class="nav-item d-none d-sm-inline-block">
-                <a href="#" class="nav-link">Contact</a>
-            </li> --}}
         </ul>
-    
-        <!-- SEARCH FORM -->
-        {{-- <form class="form-inline ml-3">
-            <div class="input-group input-group-sm">
-                <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
-                <div class="input-group-append">
-                    <button class="btn btn-navbar" type="submit">
-                        <i class="fas fa-search"></i>
-                    </button>
-                </div>
-            </div>
-        </form> --}}
     
         <!-- Right navbar links -->
         <ul class="navbar-nav ml-auto">
-            <!-- Messages Dropdown Menu -->
-            {{-- <li class="nav-item dropdown">
-                <a class="nav-link" data-toggle="dropdown" href="#">
-                    <i class="far fa-comments"></i>
-                    <span class="badge badge-danger navbar-badge">3</span>
-                </a>
-                <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                    <a href="#" class="dropdown-item">
-                    <!-- Message Start -->
-                    <div class="media">
-                        <img src="dist/img/user1-128x128.jpg" alt="User Avatar" class="img-size-50 mr-3 img-circle">
-                        <div class="media-body">
-                        <h3 class="dropdown-item-title">
-                            Brad Diesel
-                            <span class="float-right text-sm text-danger"><i class="fas fa-star"></i></span>
-                        </h3>
-                        <p class="text-sm">Call me whenever you can...</p>
-                        <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
-                        </div>
-                    </div>
-                    <!-- Message End -->
-                    </a>
-                    <div class="dropdown-divider"></div>
-                    <a href="#" class="dropdown-item">
-                    <!-- Message Start -->
-                    <div class="media">
-                        <img src="dist/img/user8-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
-                        <div class="media-body">
-                        <h3 class="dropdown-item-title">
-                            John Pierce
-                            <span class="float-right text-sm text-muted"><i class="fas fa-star"></i></span>
-                        </h3>
-                        <p class="text-sm">I got your message bro</p>
-                        <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
-                        </div>
-                    </div>
-                    <!-- Message End -->
-                    </a>
-                    <div class="dropdown-divider"></div>
-                    <a href="#" class="dropdown-item">
-                    <!-- Message Start -->
-                    <div class="media">
-                        <img src="dist/img/user3-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
-                        <div class="media-body">
-                        <h3 class="dropdown-item-title">
-                            Nora Silvester
-                            <span class="float-right text-sm text-warning"><i class="fas fa-star"></i></span>
-                        </h3>
-                        <p class="text-sm">The subject goes here</p>
-                        <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
-                        </div>
-                    </div>
-                    <!-- Message End -->
-                    </a>
-                    <div class="dropdown-divider"></div>
-                    <a href="#" class="dropdown-item dropdown-footer">See All Messages</a>
-                </div>
-            </li> --}}
+            
                 <!-- Notifications Dropdown Menu -->
             <li class="nav-item dropdown">
-                <a class="nav-link" data-toggle="dropdown" href="#">
+                <a class="nav-link" data-toggle="dropdown" href="javascript:void(0)">
                     <i class="far fa-bell"></i>
                     <span class="badge badge-warning navbar-badge">15</span>
                 </a>
@@ -146,21 +74,40 @@
             </li>
 
             <li class="nav-item dropdown">
-                <a class="nav-link" data-toggle="dropdown" href="#">
+                <a class="nav-link" data-toggle="dropdown" href="javascript:void(0)">
                     <i class="fas fa-cogs"></i>
                 </a>
                 <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
                     <span class="dropdown-header"><strong></i> Settings</strong></span>
                     <div class="dropdown-divider"></div>
-                    <a href="users" class="dropdown-item">
-                        <i class="fas fa-cog mr-2"></i> System Management
-                        <span class="float-right text-muted text-sm">3 mins</span>
-                    </a>
-                    <div class="dropdown-divider"></div>
-                    <a href="profile" class="dropdown-item">
-                        <i class="fas fa-user mr-2"></i> Profile
-                        <span class="float-right text-muted text-sm">12 hours</span>
-                    </a>
+
+                    @can('isAdmin', User::class)
+                        <a href="users" class="dropdown-item">
+                            <i class="fas fa-cog mr-2"></i> System Management
+                            {{-- <span class="float-right text-muted text-sm">3 mins</span> --}}
+                        </a>
+                    @endcan
+                    
+                    @can('viewAny', [\App\ModuleRight::class, 'Profile Management'])
+                        <div class="dropdown-divider"></div>
+                        <a href="profile" class="dropdown-item">
+                            <i class="fas fa-user mr-2"></i> Profile
+                            {{-- <span class="float-right text-muted text-sm">12 hours</span> --}}
+                        </a>
+                    @endcan
+                    @can('isAdmin', User::class)
+                        <div class="dropdown-divider"></div>
+                        <a href="import-data" class="dropdown-item">
+                            <i class="fas fa-file-import mr-2"></i> Import Data
+                            {{-- <span class="float-right text-muted text-sm">3 mins</span> --}}
+                        </a>
+                    @elsecan('isMerchant', User::class)
+                        <div class="dropdown-divider"></div>
+                        <a href="import-data" class="dropdown-item">
+                            <i class="fas fa-file-import mr-2"></i> Import Data
+                            {{-- <span class="float-right text-muted text-sm">3 mins</span> --}}
+                        </a>
+                    @endcan
                     <div class="dropdown-divider"></div>
                     {{-- <a href="#" class="dropdown-item">
                         <i class="fas fa-file mr-2"></i> 3 new reports
@@ -190,7 +137,7 @@
         <!-- Main Sidebar Container -->
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
         <!-- Brand Logo -->
-        <a href="#" class="brand-link">
+        <a href="javascript:void(0)" class="brand-link">
             <img src="{{asset('storage/img/aup-logo.png')}}" alt="AUP Logo" class="brand-image img-circle elevation-3"
                 style="opacity: .8">
             <span class="brand-text font-weight-light">{{ config('app.name', 'Laravel') }}</span>
@@ -201,10 +148,10 @@
             <!-- Sidebar user panel (optional) -->
             <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                 <div class="image">
-                    <img src="storage/img/profile-img/{{ Auth::user()->u_image }}" class="img-circle elevation-2" alt="User Image">
+                    <img src="storage/img/profile-img/{{ Auth::user()->image }}" class="img-circle elevation-2" alt="User Image">
                 </div>
                 <div class="info">
-                    <a href="#" class="d-block">{{ Auth::user()->u_fname }} {{ Auth::user()->u_lname }}</a>
+                    <a href="#" class="d-block">{{ Auth::user()->fname }} {{ Auth::user()->lname }}</a>
                 </div>
             </div>
     
@@ -213,113 +160,145 @@
                 <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                 <!-- Add icons to the links using the .nav-icon class
                     with font-awesome or any other icon font library -->
-                <li class="nav-item has-treeview menu-open">
-                    <a href="#" class="nav-link active">
-                    <i class="nav-icon fas fa-tachometer-alt"></i>
-                    <p>
-                        Dashboard
-                        <i class="right fas fa-angle-left"></i>
-                    </p>
-                    </a>
-                    <ul class="nav nav-treeview">
+                @can('isAdmin', Auth::user()->role_id)
+                    <li class="nav-item has-treeview menu-open">
+                        <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-tachometer-alt"></i>
+                        <p>
+                            Dashboard
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="/home" class="nav-link {{ (request()->is('home')) ? 'active' : '' }}">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Administrator Dashboard</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/accountant" class="nav-link {{ (request()->is('accountant')) ? 'active' : '' }}">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Accountant Dashboard</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/merchant" class="nav-link {{ (request()->is('merchant')) ? 'active' : '' }}">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Merchandiser Dashboard</p>
+                            </a>
+                        </li>
+                        </ul>
+                    </li>
+                @elsecan('isAccountant', Auth::user()->role_id)
                     <li class="nav-item">
-                        <a href="./index.html" class="nav-link">
+                        <a href="/home" class="nav-link {{ (request()->is('home')) ? 'active' : '' }}">
                         <i class="far fa-circle nav-icon"></i>
-                        <p>Dashboard v1</p>
+                        <p>Accountant Dashboard</p>
                         </a>
                     </li>
+                @elsecan('isMerchant', Auth::user()->role_id)
                     <li class="nav-item">
-                        <a href="./index2.html" class="nav-link active">
+                        <a href="/home" class="nav-link {{ (request()->is('home')) ? 'active' : '' }}">
                         <i class="far fa-circle nav-icon"></i>
-                        <p>Dashboard v2</p>
+                        <p>Merchandizer Dashboard</p>
                         </a>
                     </li>
+                @endcan
+                
+                @can('isAdmin', Auth::user()->role_id)
                     <li class="nav-item">
-                        <a href="./index3.html" class="nav-link">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>Dashboard v3</p>
+                        <a href="pages/widgets.html" class="nav-link">
+                        <i class="nav-icon fab fa-product-hunt"></i>
+                        <p>
+                            Recomnended Product
+                            {{-- <span class="right badge badge-danger">New</span> --}}
+                        </p>
                         </a>
                     </li>
-                    </ul>
-                </li>
+                @elsecan('isAccountant', Auth::user()->role_id)
+                    <li class="nav-item">
+                        <a href="pages/widgets.html" class="nav-link">
+                        <i class="nav-icon fab fa-product-hunt"></i>
+                        <p>
+                            Recomnended Product
+                            {{-- <span class="right badge badge-danger">New</span> --}}
+                        </p>
+                        </a>
+                    </li>
+                @endcan
+                
+                @can('isAdmin', Auth::user()->role_id)
+                    <li class="nav-item">
+                        <a href="pages/widgets.html" class="nav-link">
+                        <i class="nav-icon fas fa-shopping-cart"></i>
+                        <p>
+                            Product Request
+                            {{-- <span class="right badge badge-danger">New</span> --}}
+                        </p>
+                        </a>
+                    </li>
+                @elsecan('isMerchant', Auth::user()->role_id)
+                    <li class="nav-item">
+                        <a href="pages/widgets.html" class="nav-link">
+                        <i class="nav-icon fas fa-shopping-cart"></i>
+                        <p>
+                            Product Request
+                            {{-- <span class="right badge badge-danger">New</span> --}}
+                        </p>
+                        </a>
+                    </li>
+                @endcan
+
+                @can('isAdmin', Auth::user()->role_id)
+                    <li class="nav-item">
+                        <a href="pages/widgets.html" class="nav-link">
+                        <i class="nav-icon fas fa-chart-line"></i>
+                        <p>
+                            Sales Report
+                            {{-- <span class="right badge badge-danger">New</span> --}}
+                        </p>
+                        </a>
+                    </li>
+                @elsecan('isMerchant', Auth::user()->role_id)
+                    <li class="nav-item">
+                        <a href="pages/widgets.html" class="nav-link">
+                        <i class="nav-icon fas fa-file-alt"></i>
+                        <p>
+                            Sales Report
+                            {{-- <span class="right badge badge-danger">New</span> --}}
+                        </p>
+                        </a>
+                    </li>
+                @endcan
+
+                @can('isAdmin', Auth::user()->role_id)
+                    <li class="nav-item">
+                        <a href="pages/widgets.html" class="nav-link">
+                        <i class="nav-icon fas fa-file-alt"></i>
+                        <p>
+                            Summary Report
+                            {{-- <span class="right badge badge-danger">New</span> --}}
+                        </p>
+                        </a>
+                    </li>
+                @endcan
+
+                <li class="nav-header">INFORMATIONAL LABELS</li>
                 <li class="nav-item">
-                    <a href="pages/widgets.html" class="nav-link">
-                    <i class="nav-icon fas fa-th"></i>
-                    <p>
-                        Widgets
-                        <span class="right badge badge-danger">New</span>
-                    </p>
-                    </a>
-                </li>
-                <li class="nav-item has-treeview">
-                    <a href="#" class="nav-link">
-                    <i class="nav-icon fas fa-copy"></i>
-                    <p>
-                        Layout Options
-                        <i class="fas fa-angle-left right"></i>
-                        <span class="badge badge-info right">6</span>
-                    </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                    <li class="nav-item">
-                        <a href="pages/layout/top-nav.html" class="nav-link">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>Top Navigation</p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="pages/layout/top-nav-sidebar.html" class="nav-link">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>Top Navigation + Sidebar</p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="pages/layout/boxed.html" class="nav-link">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>Boxed</p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="pages/layout/fixed-sidebar.html" class="nav-link">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>Fixed Sidebar</p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="pages/layout/fixed-topnav.html" class="nav-link">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>Fixed Navbar</p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="pages/layout/fixed-footer.html" class="nav-link">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>Fixed Footer</p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="pages/layout/collapsed-sidebar.html" class="nav-link">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>Collapsed Sidebar</p>
-                        </a>
-                    </li>
-                    </ul>
-                </li>
-                <li class="nav-header">LABELS</li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href="javascript:void(0)" class="nav-link">
                     <i class="nav-icon far fa-circle text-danger"></i>
                     <p class="text">Important</p>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
+                <li class="nav-item"> 
+                    <a href="javascript:void(0)" class="nav-link">
                     <i class="nav-icon far fa-circle text-warning"></i>
                     <p>Warning</p>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href="javascript:void(0)" class="nav-link">
                     <i class="nav-icon far fa-circle text-info"></i>
                     <p>Informational</p>
                     </a>
@@ -374,6 +353,8 @@
     <script src="{{asset('admin-lte/plugins/toastr/toastr.min.js')}}"></script>
     <!-- AdminLTE App -->
     <script src="{{asset('admin-lte/dist/js/adminlte.min.js')}}"></script>    
+    {{-- Chart --}}
+    <script src="{{asset('admin-lte/plugins/chart.js/Chart.min.js')}}"></script>    
     
 
 </body>

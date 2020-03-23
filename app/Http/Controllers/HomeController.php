@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Role;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Auth;
 
@@ -24,13 +23,18 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
-    {   
-        if (Gate::allows('isAdmin', Auth::user()->u_role)) {
+    public function index(Request $request)
+    {
+        if (Gate::allows('isAdmin', Auth::user()->role_id)) {
             return view('home');
-        }   
-        
-        return "not administrator";
+        } else if(Gate::allows('isAccountant', Auth::user()->role_id)) {
+            return view('accountant');
+        } else if(Gate::allows('isMerchant', Auth::user()->role_id)){
+            return view('merchant');
+        } else {
+            Auth::logout();
+        }
+
         
     }
 }

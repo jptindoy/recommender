@@ -16,11 +16,50 @@
 
   <!-- Main content -->
   <div class="content">
-    <div class="container-fluid">  
-     
-      
+    <div class="container-fluid">    
+    <div class="row">
+        <div class="col-8">
+            <profile-page :user-id={{ Auth::user()->id }}></profile-page>
+        </div>
+        <div class="col-4">
+            <div class="card card-secondary">
+                <div class="card-header">
+                    <h3 class="card-title">Actions</h3>
+
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body p-0">
+                    <ul class="nav nav-pills flex-column">
+                        <li class="nav-item active">
+                            <a href="#modal-profile-picture"  data-toggle="modal" class="nav-link">
+                                <i class="fas fa-user-circle"></i> Chage Profile Picture
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#modal-password" data-toggle="modal" class="nav-link">
+                                <i class="fas fa-key"></i> Change Password
+                            </a>
+                        </li>                        
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="fas fa-bell"></i> Notifications
+                                <span class="badge bg-danger float-right">65</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <!-- /.card-body -->
+            </div>
+            <change-profile :user-id={{ Auth::user()->id }}></change-profile>
+            <change-password :user-id={{ Auth::user()->id }}></change-password>
+        </div>
+    </div> 
     {{-- <h5 class="mb-2">Users Setting</h5> --}}
-		<show-profile :user-id={{ Auth::user()->u_id }}></show-profile>
+    
+        
     </div><!-- /.container-fluid -->
 </div>
 <!-- /.content -->

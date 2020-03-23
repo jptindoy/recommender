@@ -5,9 +5,13 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Module;
+use App\ModuleRight;
 use App\Http\Resources\Module as ModuleResource;
+use App\Http\Resources\ModuleRight as ModuleRightResource;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Auth;
 
-class APIModuleController extends Controller
+class ModuleController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -18,20 +22,20 @@ class APIModuleController extends Controller
     {
         $this->middleware('auth');
     }
+
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response 
+     * @return \Illuminate\Http\Response
      */
     public function index()
-    {
-        $modules = Module::join('roles', 'modules.m_category', '=', 'roles.r_id')
-                        ->join('module_names', 'modules.m_id', '=', 'module_names.id')
-                        ->select('modules.*', 'module_names.module_name', 'roles.r_category')
-                        ->groupBy('modules.m_category')
-                        ->paginate(5);
-        
-        return ModuleResource::collection($modules); 
+    {   
+         
+            $this->authorize('viewAny', [\App\ModuleRight::class, 'User Management']);
+            $module = Module::paginate(5);
+
+            return ModuleResource::collection($module);
+      
     }
 
     /**
@@ -52,22 +56,17 @@ class APIModuleController extends Controller
      */
     public function store(Request $request)
     {
-        $module = $request->isMethod('PUT') ? Module::findOrFail($request->input('m_id')) : New Module;
-        
-        $module->m_id = $request->input('m_id');
-        $module->m_category = $request->input('m_category');
-        $module->m_name = $request->input('m_name');
-        $module->m_view = $request->input('m_view');
-        $module->m_add = $request->input('m_add');
-        $module->m_edit = $request->input('m_edit');
-        $module->m_delete = $request->input('m_delete');
+        //return $request;
+        $this->authorize('create', [\App\ModuleRight::class, 'User Management']);
 
-        if($module->save()) {
-            return New ModuleResource($module);
+        $module_name = $request->isMethod('PUT') ? Module::findOrFail($request->input('id')) : new Module;
+
+        $module_name->id = $request->input('id');
+        $module_name->module = $request->input('module_name');
+
+        if($module_name->save()){
+            return new ModuleResource($module_name);
         }
-
-        //return $request->input('m_category');
-
     }
 
     /**
@@ -78,14 +77,7 @@ class APIModuleController extends Controller
      */
     public function show($id)
     {
-        $modules = Module::join('roles', 'modules.m_category', '=', 'roles.r_id')
-                        ->join('module_names', 'modules.m_id', '=', 'module_names.id')
-                        ->select('modules.*', 'module_names.module_name', 'roles.r_category')
-                        ->where('modules.m_category', $id)
-                        ->paginate(5);
-        
-        return new ModuleResource($modules);
-
+        //
     }
 
     /**
@@ -118,7 +110,14 @@ class APIModuleController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
-    {
-        //
+    {   
+        $this->authorize('delete', [\App\ModuleRight::class, 'User Management']);
+        $module = Module::findOrFail($id);
+        $moduleRight = ModuleRight::where('module_id', '=', $id);
+        $moduleRight->delete();
+
+        if($module->delete() ) {
+            return new ModuleResource($module);
+        }
     }
 }

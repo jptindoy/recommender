@@ -8,6 +8,8 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{ config('app.name', 'Laravel') }}</title>
+    {{-- icon --}}
+    <link rel="shortcut icon" href="{{asset('storage/img/aup-logo.png')}}" type="image/ico">
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <!-- Scripts -->

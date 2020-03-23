@@ -8,8 +8,6 @@ use App\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Http\Request;
-use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Str;
 
 class RegisterController extends Controller
@@ -28,20 +26,11 @@ class RegisterController extends Controller
     use RegistersUsers;
 
     /**
-     * Handle a registration request for the application.
+     * Where to redirect users after registration.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @var string
      */
-    public function register(Request $request)
-    {
-        $this->validator($request->all())->validate();
-
-        event(new Registered($user = $this->create($request->all())));
-
-        return $this->registered($request, $user)
-            ?: redirect($this->redirectPath());
-    }
+    protected $redirectTo = RouteServiceProvider::HOME;
 
     /**
      * Create a new controller instance.
@@ -50,7 +39,7 @@ class RegisterController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('guest');
     }
 
     /**
@@ -62,10 +51,10 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
+            'role_id' => ['required', 'string', 'max:255'],
             'fname' => ['required', 'string', 'max:255'],
-            'lname' => ['required', 'string', 'max:255'],            
+            'lname' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'role' => ['required', 'string', 'max:255'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
     }
@@ -79,11 +68,10 @@ class RegisterController extends Controller
     protected function create(array $data)
     {
         return User::create([
-            'u_fname' => $data['fname'],
-            'u_lname' => $data['lname'],            
+            'role_id' => $data['role_id'],
+            'fname' => $data['fname'],
+            'lname' => $data['lname'],
             'email' => $data['email'],
-            'u_role' => $data['role'],            
-            'u_image' => 'blank-img.png',            
             'password' => Hash::make($data['password']),
             'api_token' => Str::random(60),
         ]);
