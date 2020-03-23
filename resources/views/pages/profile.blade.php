@@ -18,7 +18,7 @@
   <div class="content">
     <div class="container-fluid">    
     <div class="row">
-        <div class="col-8">
+        <div class="col-8"> 
             <profile-page :user-id={{ Auth::user()->id }}></profile-page>
         </div>
         <div class="col-4">

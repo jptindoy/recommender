@@ -95,6 +95,7 @@
                             {{-- <span class="float-right text-muted text-sm">12 hours</span> --}}
                         </a>
                     @endcan
+                    
                     @can('isAdmin', User::class)
                         <div class="dropdown-divider"></div>
                         <a href="import-data" class="dropdown-item">
@@ -354,7 +355,7 @@
     <!-- AdminLTE App -->
     <script src="{{asset('admin-lte/dist/js/adminlte.min.js')}}"></script>    
     {{-- Chart --}}
-    <script src="{{asset('admin-lte/plugins/chart.js/Chart.min.js')}}"></script>    
+    {{-- <script src="{{asset('admin-lte/plugins/chart.js/Chart.min.js')}}"></script>     --}}
     
 
 </body>

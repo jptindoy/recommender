@@ -170,7 +170,7 @@
                         </tr>
                     </tbody>                  
                     </table>
-                    <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#modal-module-right"> Add new user</button>
+                    <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#modal-module-right"> Add new module</button>
                     <ul class="pagination pagination-sm m-0 float-right">
                         <li class="page-item" v-bind:class="[{disabled: !pagination.prev_page_url}]">
                         <a class="page-link" href="javascript:void(0)" aria-label="Previous" @click="getUserLog(pagination.prev_page_url)">
