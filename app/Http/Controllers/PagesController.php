@@ -56,4 +56,8 @@ class PagesController extends Controller
             return view('pages.import-data');
         }
     }
+
+    public function documentation() {
+        return view('welcome');
+    }
 }

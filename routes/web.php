@@ -25,8 +25,9 @@ Route::get('/', 'HomeController@index')->name('home');
 // Route::get('/profile/{id}', 'UserController@show')->name('users');
 
 // Pages Controller
-Route::get('/accountant', 'PagesController@accountant');
-Route::get('/merchant', 'PagesController@merchandizer');
-Route::get('/profile', 'PagesController@profile');
-Route::get('/users', 'PagesController@users');
-Route::get('/import-data', 'PagesController@importData');
+Route::get('/accountant', 'PagesController@accountant')->name('accountant');
+Route::get('/merchant', 'PagesController@merchandizer')->name('merchant');
+Route::get('/profile', 'PagesController@profile')->name('profile');
+Route::get('/users', 'PagesController@users')->name('users');
+Route::get('/import-data', 'PagesController@importData')->name('import-data');
+Route::get('/documentation', 'PagesController@documentation')->name('documentation');

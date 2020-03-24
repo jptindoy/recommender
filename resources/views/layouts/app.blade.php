@@ -82,7 +82,7 @@
                     <div class="dropdown-divider"></div>
 
                     @can('isAdmin', User::class)
-                        <a href="users" class="dropdown-item">
+                        <a href="{{route('users')}}" class="dropdown-item">
                             <i class="fas fa-cog mr-2"></i> System Management
                             {{-- <span class="float-right text-muted text-sm">3 mins</span> --}}
                         </a>
@@ -90,7 +90,7 @@
                     
                     @can('viewAny', [\App\ModuleRight::class, 'Profile Management'])
                         <div class="dropdown-divider"></div>
-                        <a href="profile" class="dropdown-item">
+                        <a href="{{route('profile')}}" class="dropdown-item">
                             <i class="fas fa-user mr-2"></i> Profile
                             {{-- <span class="float-right text-muted text-sm">12 hours</span> --}}
                         </a>
@@ -98,13 +98,13 @@
                     
                     @can('isAdmin', User::class)
                         <div class="dropdown-divider"></div>
-                        <a href="import-data" class="dropdown-item">
+                        <a href="{{route('import-data')}}" class="dropdown-item">
                             <i class="fas fa-file-import mr-2"></i> Import Data
                             {{-- <span class="float-right text-muted text-sm">3 mins</span> --}}
                         </a>
                     @elsecan('isMerchant', User::class)
                         <div class="dropdown-divider"></div>
-                        <a href="import-data" class="dropdown-item">
+                        <a href="{{route('import-data')}}" class="dropdown-item">
                             <i class="fas fa-file-import mr-2"></i> Import Data
                             {{-- <span class="float-right text-muted text-sm">3 mins</span> --}}
                         </a>
@@ -172,19 +172,19 @@
                         </a>
                         <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="/home" class="nav-link {{ (request()->is('home')) ? 'active' : '' }}">
+                            <a href="{{route('home')}}" class="nav-link {{ (request()->is('home')) ? 'active' : '' }}">
                             <i class="far fa-circle nav-icon"></i>
                             <p>Administrator Dashboard</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="/accountant" class="nav-link {{ (request()->is('accountant')) ? 'active' : '' }}">
+                            <a href="{{route('accountant')}}" class="nav-link {{ (request()->is('accountant')) ? 'active' : '' }}">
                             <i class="far fa-circle nav-icon"></i>
                             <p>Accountant Dashboard</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="/merchant" class="nav-link {{ (request()->is('merchant')) ? 'active' : '' }}">
+                            <a href="{{route('merchant')}}" class="nav-link {{ (request()->is('merchant')) ? 'active' : '' }}">
                             <i class="far fa-circle nav-icon"></i>
                             <p>Merchandiser Dashboard</p>
                             </a>
@@ -193,14 +193,14 @@
                     </li>
                 @elsecan('isAccountant', Auth::user()->role_id)
                     <li class="nav-item">
-                        <a href="/home" class="nav-link {{ (request()->is('home')) ? 'active' : '' }}">
+                        <a href="{{route('home')}}" class="nav-link {{ (request()->is('home')) ? 'active' : '' }}">
                         <i class="far fa-circle nav-icon"></i>
                         <p>Accountant Dashboard</p>
                         </a>
                     </li>
                 @elsecan('isMerchant', Auth::user()->role_id)
                     <li class="nav-item">
-                        <a href="/home" class="nav-link {{ (request()->is('home')) ? 'active' : '' }}">
+                        <a href="{{route('home')}}" class="nav-link {{ (request()->is('home')) ? 'active' : '' }}">
                         <i class="far fa-circle nav-icon"></i>
                         <p>Merchandizer Dashboard</p>
                         </a>
@@ -217,7 +217,7 @@
                         </p>
                         </a>
                     </li>
-                @elsecan('isAccountant', Auth::user()->role_id)
+                @elsecan('isMerchant', Auth::user()->role_id)
                     <li class="nav-item">
                         <a href="pages/widgets.html" class="nav-link">
                         <i class="nav-icon fab fa-product-hunt"></i>
@@ -240,6 +240,16 @@
                         </a>
                     </li>
                 @elsecan('isMerchant', Auth::user()->role_id)
+                    <li class="nav-item">
+                        <a href="pages/widgets.html" class="nav-link">
+                        <i class="nav-icon fas fa-shopping-cart"></i>
+                        <p>
+                            Product Request
+                            {{-- <span class="right badge badge-danger">New</span> --}}
+                        </p>
+                        </a>
+                    </li>
+                @elsecan('isAccountant', Auth::user()->role_id)
                     <li class="nav-item">
                         <a href="pages/widgets.html" class="nav-link">
                         <i class="nav-icon fas fa-shopping-cart"></i>
@@ -261,7 +271,7 @@
                         </p>
                         </a>
                     </li>
-                @elsecan('isMerchant', Auth::user()->role_id)
+                @elsecan('isAccountant', Auth::user()->role_id)
                     <li class="nav-item">
                         <a href="pages/widgets.html" class="nav-link">
                         <i class="nav-icon fas fa-file-alt"></i>
@@ -285,23 +295,29 @@
                     </li>
                 @endcan
 
-                <li class="nav-header">INFORMATIONAL LABELS</li>
+                <li class="nav-header">INFORMATIONAL</li>
+                <li class="nav-item">
+                    <a href="{{route('documentation')}}" class="nav-link">
+                    <i class="nav-icon fas fa-file"></i>
+                    <p class="text">Documentation</p>
+                    </a>
+                </li>
                 <li class="nav-item">
                     <a href="javascript:void(0)" class="nav-link">
                     <i class="nav-icon far fa-circle text-danger"></i>
-                    <p class="text">Important</p>
+                    <p class="text">Important (Red Color)</p>
                     </a>
                 </li>
                 <li class="nav-item"> 
                     <a href="javascript:void(0)" class="nav-link">
                     <i class="nav-icon far fa-circle text-warning"></i>
-                    <p>Warning</p>
+                    <p>Warning (Yellow Color)</p>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="javascript:void(0)" class="nav-link">
                     <i class="nav-icon far fa-circle text-info"></i>
-                    <p>Informational</p>
+                    <p>Informational (Blue Color)</p>
                     </a>
                 </li>
                 </ul>
