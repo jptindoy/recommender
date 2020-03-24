@@ -49,7 +49,7 @@
             </ul>
             <br><br>
             <table class="table table-bordered">
-                <thead>
+                <thead class="thead-dark">
                     <tr>
                         <td>Barcode</td>
                         <td>Name</td>

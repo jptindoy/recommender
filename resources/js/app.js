@@ -28,6 +28,8 @@ Vue.component('users-page', require('./components/Users.vue').default);
 Vue.component('module-page', require('./components/Modules.vue').default);
 Vue.component('import-data', require('./components/FileImport.vue').default);
 Vue.component('sales-report', require('./components/Sales.vue').default);
+Vue.component('top-sales', require('./components/TopSales.vue').default);
+Vue.component('yesterday-sales', require('./components/YesterdaySales.vue').default);
 
 
 /**

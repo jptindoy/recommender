@@ -66,3 +66,5 @@ Route::get('imported', 'API\PosDataController@index');
 
 // Chart Routes
 Route::get('month-sales', 'API\ChartController@getSalesPerMonth');
+Route::get('top-sales', 'API\ChartController@getTopSales');
+Route::get('total-sales', 'API\ChartController@getTotalSales');

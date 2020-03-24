@@ -28,12 +28,12 @@ class ChartController extends Controller
         foreach($months as $month) {
             $sumThisYear = PosData::whereMonth('file_date',$month)
                         ->whereYear('file_date',$year)
-                        ->sum('total');
+                        ->sum(DB::raw('replace(total, ",", "")'));
             $salesThisYear[] = number_format($sumThisYear, 2, '.', '');
 
             $sumLastYear = PosData::whereMonth('file_date',$month)
                         ->whereYear('file_date',$year-1)
-                        ->sum('total');
+                        ->sum(DB::raw('replace(total, ",", "")'));
             $salesLastYear[] = number_format($sumLastYear, 2, '.', '');
         }
 
@@ -60,4 +60,43 @@ class ChartController extends Controller
                 ]            
         ]);
     }
+
+    public function getTopSales() {
+
+        $today = date('Y-m-d');
+        $yesterday = date('Y-m-d', time() - 60 * 60 * 24);        
+        
+        $topSales = PosData::whereDate('file_date', '2020-03-22')
+                        ->orderBy(DB::raw('CAST(sales AS SIGNED)'),'desc')
+                        ->paginate(10);
+
+        return json_encode($topSales);
+    }
+
+    public function getTotalSales() {
+        
+        $year = date('Y');
+        $thisMonth = date('m');
+        $lastMonth = date('m', strtotime("previous month"));
+
+        $total = PosData::whereYear('file_date', $year)->sum(DB::raw('replace(total, ",", "")'));
+
+        $totalThisMonth = PosData::whereMonth('file_date', $thisMonth )->sum(DB::raw('replace(total, ",", "")'));
+        $totalLastMonth = PosData::whereMonth('file_date', $lastMonth )->sum(DB::raw('replace(total, ",", "")'));
+
+        $percentage = 0;
+        $percentage = (($totalThisMonth - $totalLastMonth) / $totalLastMonth) * 100;
+
+
+
+        return json_encode([
+            'data' => number_format($total, 2,),
+            'percentage' => number_format($percentage, 2,),
+        ]);
+
+        // return $percentage;
+
+    }
+
+   
 }

@@ -1,23 +1,69 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">Dashboard</div>
+<!-- Content Header (Page header) -->
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0 text-dark">Merchandiser Dashboard</h1>
+            </div><!-- /.col -->
+            
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+<!-- /.content-header -->
 
-                <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
-                    @endif
+<!-- Main content -->
+<div class="content">
+    <div class="container-fluid">    
+        <div class="row">
+            <div class="col-xs-12 col-md-4">
+               <!-- small box -->
+               <div class="small-box bg-info">
+                    <div class="inner">
+                        <h3>Pending Request</h3>
 
-                    Merchant Dashboard!
+                        <p>Product most frequently consumed</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-bag"></i>
+                    </div>
+                    <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                 </div>
             </div>
-        </div>
-    </div>
+            <div class="col-xs-12 col-md-4">
+                <!-- small box -->
+                <div class="small-box bg-info">
+                    <div class="inner">
+                        <h3>Approved Request</h3>
+
+                        <p>Product most frequently consumed</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-bag"></i>
+                    </div>
+                    <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+            <div class="col-xs-12 col-md-4">
+                <!-- small box -->
+                <div class="small-box bg-info">
+                    <div class="inner">
+                        <h3>Trend Product</h3>
+    
+                        <p>Product most frequently consumed</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-bag"></i>
+                    </div>
+                    <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
+            </div>                
+        </div>                     
+       
+        <yesterday-sales></yesterday-sales>
+    </div> 
 </div>
+<!-- /.content --> 
 @endsection
