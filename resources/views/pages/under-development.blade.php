@@ -21,7 +21,7 @@
             <div class="col text-center">
                 <img src="/storage/img/under-dev.gif" alt="" class="img-fluid">
                 <br><br>
-                <h3>This page is under development.</h3>
+                <h3>This page is under development. this pages is try</h3>
             </div>            
         </div>
     </div><!-- /.container-fluid -->
