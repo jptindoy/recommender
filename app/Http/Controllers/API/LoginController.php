@@ -48,7 +48,7 @@ class LoginController extends Controller
      */
     public function show($id)
     {
-        $emails = User::where('email', '=', $id)->get();
+        $emails = User::where('email', $id)->get();
         foreach($emails as $email){
             $msg_success = ['msg' => '', 'err' => false, 'img'=> $email->image];
         }

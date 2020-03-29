@@ -60,4 +60,14 @@ class PagesController extends Controller
     public function documentation() {
         return view('welcome');
     }
+
+    public function salesReport() {
+        if (Gate::allows('isAdmin', Auth::user()->role_id) || Gate::allows('isAccountant', Auth::user()->role_id)) {
+            return view('pages.sales-report');
+        }
+    }
+
+    public function underDev(){
+        return view('pages.under-development');
+    }
 }

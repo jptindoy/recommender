@@ -151,9 +151,11 @@
                 <div class="image">
                     <img src="storage/img/profile-img/{{ Auth::user()->image }}" class="img-circle elevation-2" alt="User Image">
                 </div>
-                <div class="info">
-                    <a href="#" class="d-block">{{ Auth::user()->fname }} {{ Auth::user()->lname }}</a>
-                </div>
+                @can('viewAny', [\App\ModuleRight::class, 'Profile Management'])
+                    <div class="info">
+                        <a href="{{route('profile')}}" class="d-block">{{ Auth::user()->fname }} {{ Auth::user()->lname }}</a>
+                    </div>
+                @endcan
             </div>
     
             <!-- Sidebar Menu -->
@@ -209,7 +211,7 @@
                 
                 @can('isAdmin', Auth::user()->role_id)
                     <li class="nav-item">
-                        <a href="pages/widgets.html" class="nav-link">
+                        <a href="{{route('under-dev')}}" class="nav-link">
                         <i class="nav-icon fab fa-product-hunt"></i>
                         <p>
                             Recomnended Product
@@ -219,7 +221,7 @@
                     </li>
                 @elsecan('isMerchant', Auth::user()->role_id)
                     <li class="nav-item">
-                        <a href="pages/widgets.html" class="nav-link">
+                        <a href="{{route('under-dev')}}" class="nav-link">
                         <i class="nav-icon fab fa-product-hunt"></i>
                         <p>
                             Recomnended Product
@@ -231,7 +233,7 @@
                 
                 @can('isAdmin', Auth::user()->role_id)
                     <li class="nav-item">
-                        <a href="pages/widgets.html" class="nav-link">
+                        <a href="{{route('under-dev')}}" class="nav-link">
                         <i class="nav-icon fas fa-shopping-cart"></i>
                         <p>
                             Product Request
@@ -241,7 +243,7 @@
                     </li>
                 @elsecan('isMerchant', Auth::user()->role_id)
                     <li class="nav-item">
-                        <a href="pages/widgets.html" class="nav-link">
+                        <a href="{{route('under-dev')}}" class="nav-link">
                         <i class="nav-icon fas fa-shopping-cart"></i>
                         <p>
                             Product Request
@@ -251,7 +253,7 @@
                     </li>
                 @elsecan('isAccountant', Auth::user()->role_id)
                     <li class="nav-item">
-                        <a href="pages/widgets.html" class="nav-link">
+                        <a href="{{route('under-dev')}}" class="nav-link">
                         <i class="nav-icon fas fa-shopping-cart"></i>
                         <p>
                             Product Request
@@ -263,7 +265,7 @@
 
                 @can('isAdmin', Auth::user()->role_id)
                     <li class="nav-item">
-                        <a href="pages/widgets.html" class="nav-link">
+                        <a href="{{route('sales-report')}}" class="nav-link {{ (request()->is('sale-report')) ? 'active' : '' }}">
                         <i class="nav-icon fas fa-chart-line"></i>
                         <p>
                             Sales Report
@@ -273,7 +275,7 @@
                     </li>
                 @elsecan('isAccountant', Auth::user()->role_id)
                     <li class="nav-item">
-                        <a href="pages/widgets.html" class="nav-link">
+                        <a href="{{route('sales-report')}}" class="nav-link {{ (request()->is('sales-report')) ? 'active' : '' }}">
                         <i class="nav-icon fas fa-file-alt"></i>
                         <p>
                             Sales Report
@@ -285,7 +287,7 @@
 
                 @can('isAdmin', Auth::user()->role_id)
                     <li class="nav-item">
-                        <a href="pages/widgets.html" class="nav-link">
+                        <a href="{{route('under-dev')}}" class="nav-link">
                         <i class="nav-icon fas fa-file-alt"></i>
                         <p>
                             Summary Report
@@ -305,19 +307,19 @@
                 <li class="nav-item">
                     <a href="javascript:void(0)" class="nav-link">
                     <i class="nav-icon far fa-circle text-danger"></i>
-                    <p class="text">Important (Red Color)</p>
+                    <p class="text">Important <small><i>(Red Color)</i></small></p>
                     </a>
                 </li>
                 <li class="nav-item"> 
                     <a href="javascript:void(0)" class="nav-link">
                     <i class="nav-icon far fa-circle text-warning"></i>
-                    <p>Warning (Yellow Color)</p>
+                    <p>Warning <small><i>(Yellow Color)</i></small></p>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="javascript:void(0)" class="nav-link">
                     <i class="nav-icon far fa-circle text-info"></i>
-                    <p>Informational (Blue Color)</p>
+                    <p>Informational <small><i>(Blue Color)</i></small></p>
                     </a>
                 </li>
                 </ul>

@@ -30,4 +30,6 @@ Route::get('/merchant', 'PagesController@merchandizer')->name('merchant');
 Route::get('/profile', 'PagesController@profile')->name('profile');
 Route::get('/users', 'PagesController@users')->name('users');
 Route::get('/import-data', 'PagesController@importData')->name('import-data');
+Route::get('/sales-report', 'PagesController@salesReport')->name('sales-report');
 Route::get('/documentation', 'PagesController@documentation')->name('documentation');
+Route::get('/under-dev', 'PagesController@underDev')->name('under-dev');
