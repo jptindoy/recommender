@@ -30,7 +30,7 @@ class PosDataController extends Controller
      */
     public function index()
     {
-        $data = PosData::select('barcode','name','sales', 'unit', 'total', 'file_date')->orderBy('file_date', 'desc')->paginate(50);
+        $data = PosData::orderBy('date', 'desc')->paginate(50);
         return PosDataResource::collection($data); 
     }
 
@@ -55,11 +55,11 @@ class PosDataController extends Controller
 
         if($request->hasFile('file')){
 
-            $date = new PosDataDate;
+            // $date = new PosDataDate;
 
-            $date->filename_uploaded = $request->file('file')->getClientOriginalName();
-            $date->date = $request->date;
-            $date->save();
+            // $date->filename_uploaded = $request->file('file')->getClientOriginalName();
+            // $date->date = $request->date;
+            // $date->save();
 
             Excel::import(new PosDataImport, $request->file('file'));
         }

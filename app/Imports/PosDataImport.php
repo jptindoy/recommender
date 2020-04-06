@@ -16,16 +16,13 @@ class PosDataImport implements ToModel, WithHeadingRow
     */
     public function model(array $row)
     {   
-        $lastItem = PosDataDate::orderBy('id', 'desc')->limit(1)->get();
-        foreach($lastItem as $val){}
-
         return new PosData([
-            'barcode'   => $row['barcode'],
-            'name'      => $row['name'],
-            'sales'     => $row['sales'],
-            'unit'      => $row['unit'],
-            'total'     => $row['total'],
-            'file_date' => $val->date,
+            'invoice'        => $row['orderid'],
+            'date'          => $row['orderdate'],
+            'barcode'       => $row['productid'],
+            'product_name'  => $row['productname'],
+            'sales'         => $row['sales'],
+            'qty'           => $row['quantity'],
         ]);
     }
 }

@@ -67,6 +67,18 @@ class PagesController extends Controller
         }
     }
 
+    public function recommendedProduct() {
+        if (Gate::allows('isAdmin', Auth::user()->role_id) || Gate::allows('isMerchant', Auth::user()->role_id)) {
+            return view('pages.recommended-product');
+        }
+    }
+
+    public function productRequest() {
+        if (Gate::allows('isAdmin', Auth::user()->role_id) || Gate::allows('isMerchant', Auth::user()->role_id) || Gate::allows('isAccountant', Auth::user()->role_id)) {
+            return view('pages.request-product');
+        }
+    }
+
     public function underDev(){
         return view('pages.under-development');
     }

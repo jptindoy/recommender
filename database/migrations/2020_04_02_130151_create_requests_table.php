@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePosDataTable extends Migration
+class CreateRequestsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,15 @@ class CreatePosDataTable extends Migration
      */
     public function up()
     {
-        Schema::create('pos_data', function (Blueprint $table) {
+        Schema::create('requests', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('invoice');
-            $table->date('date');
-            $table->string('barcode');
+            $table->integer('po_number')->nullable();
             $table->string('product_name');
-            $table->string('sales');
-            $table->string('qty');
+            $table->integer('qty')->default(0);
+            $table->string('variant')->nullable();
+            $table->date('date_needed')->nullable();
+            $table->string('action')->default('pending');
+            $table->string('status')->default('draft');
             $table->timestamps();
         });
     }
@@ -32,6 +33,6 @@ class CreatePosDataTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('pos_data');
+        Schema::dropIfExists('requests');
     }
 }

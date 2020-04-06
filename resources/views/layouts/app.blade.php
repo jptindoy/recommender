@@ -8,7 +8,8 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{ config('app.name', 'Laravel') }}</title>
-
+    {{-- icon --}}
+    <link rel="shortcut icon" href="{{asset('storage/img/aup-logo.png')}}" type="image/ico">
     <!-- Scripts -->
     {{-- icon --}}
     {{-- <link rel="shortcut icon" href="{{asset('storage/img/aup-logo.png')}}" type="image/ico"> --}}
@@ -211,7 +212,7 @@
                 
                 @can('isAdmin', Auth::user()->role_id)
                     <li class="nav-item">
-                        <a href="{{route('under-dev')}}" class="nav-link">
+                        <a href="{{route('recommended')}}" class="nav-link {{ (request()->is('recommended')) ? 'active' : '' }}">
                         <i class="nav-icon fab fa-product-hunt"></i>
                         <p>
                             Recomnended Product
@@ -221,7 +222,7 @@
                     </li>
                 @elsecan('isMerchant', Auth::user()->role_id)
                     <li class="nav-item">
-                        <a href="{{route('under-dev')}}" class="nav-link">
+                        <a href="{{route('recommended')}}" class="nav-link {{ (request()->is('recommended')) ? 'active' : '' }}">
                         <i class="nav-icon fab fa-product-hunt"></i>
                         <p>
                             Recomnended Product
@@ -233,7 +234,7 @@
                 
                 @can('isAdmin', Auth::user()->role_id)
                     <li class="nav-item">
-                        <a href="{{route('under-dev')}}" class="nav-link">
+                        <a href="{{route('request')}}" class="nav-link">
                         <i class="nav-icon fas fa-shopping-cart"></i>
                         <p>
                             Product Request
@@ -243,7 +244,7 @@
                     </li>
                 @elsecan('isMerchant', Auth::user()->role_id)
                     <li class="nav-item">
-                        <a href="{{route('under-dev')}}" class="nav-link">
+                        <a href="{{route('request')}}" class="nav-link">
                         <i class="nav-icon fas fa-shopping-cart"></i>
                         <p>
                             Product Request
@@ -253,7 +254,7 @@
                     </li>
                 @elsecan('isAccountant', Auth::user()->role_id)
                     <li class="nav-item">
-                        <a href="{{route('under-dev')}}" class="nav-link">
+                        <a href="{{route('request')}}" class="nav-link">
                         <i class="nav-icon fas fa-shopping-cart"></i>
                         <p>
                             Product Request

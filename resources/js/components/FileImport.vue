@@ -13,14 +13,18 @@
                         <p>Browse your computer:</p>
                         <input type="file" ref="file" @change="fileToImport" accept=".csv" required>
                     </div>
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                         <p>Date of Sales:</p>
                         <input type="date" class="form-control" v-model="fileImport.date" style="width: 50%;" required>
-                    </div>
-                    <div v-if="uploading" class="progress mb-2">
+                    </div> -->
+                    <!-- <div v-if="uploading" class="progress mb-2">
                         <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" :style="{width: progress +'%'}">{{progress}}%</div>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Import</button>
+                    </div> -->
+                    <button v-if="uploading" class="btn btn-primary" type="button" disabled>
+                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                        Importing...
+                    </button>
+                    <button v-else type="submit" class="btn btn-primary">Import</button>
                 </form>
                 
             </div>
@@ -51,22 +55,22 @@
             <table class="table table-bordered">
                 <thead class="thead-dark">
                     <tr>
-                        <td>Barcode</td>
-                        <td>Name</td>
-                        <td>QTY</td>
-                        <td>Unit Price</td>
-                        <td>Total</td>
+                        <td>Invoce No.</td>
                         <td>Date</td>
+                        <td>Barcode</td>
+                        <td>Product Name</td>
+                        <td>Sales</td>
+                        <td>Quantity</td>
                     </tr>
                 </thead>
                 <tbody>
                     <tr v-for="data in datas" :key="data.id">
+                        <td>{{data.invoice}}</td>
+                        <td>{{data.date}}</td>
                         <td>{{data.barcode}}</td>
-                        <td>{{data.name}}</td>
+                        <td>{{data.product_name}}</td>
                         <td>{{data.sales}}</td>
-                        <td>{{data.unit}}</td>
-                        <td>{{data.total}}</td>
-                        <td>{{data.file_date}}</td>
+                        <td>{{data.qty}}</td>
                     </tr>
                 </tbody>
             </table>
@@ -157,3 +161,4 @@
         }
     }
 </script>
+

@@ -4,20 +4,20 @@
             <h3 class="card-title">Yesterday Sales</h3>            
             <div class="card-tools">
                 <ul class="pagination pagination-sm float-right">
-                        <li class="page-item" v-bind:class="[{disabled: !pagination.prev_page_url}]">
-                        <a class="page-link" href="javascript:void(0)" aria-label="Previous" @click="getYesterdaySales(pagination.prev_page_url)">
-                            <span aria-hidden="true" style="color:black">&laquo;</span>
-                            <span class="sr-only">Previous</span>
-                        </a>
-                        </li>
-                        <li class="page-item disabled"><a class="page-link" href="#" style="color:black">{{pagination.current_page}} of {{pagination.last_page}}</a></li>
-                        <li class="page-item" v-bind:class="[{disabled: !pagination.next_page_url}]">
-                        <a class="page-link" href="javascript:void(0)" aria-label="Next" @click="getYesterdaySales(pagination.next_page_url)">
-                            <span aria-hidden="true" style="color:black">&raquo;</span> 
-                            <span class="sr-only">Next</span>
-                        </a>
-                        </li>
-                    </ul>   
+                    <li class="page-item" v-bind:class="[{disabled: !pagination.prev_page_url}]">
+                    <a class="page-link" href="javascript:void(0)" aria-label="Previous" @click="getYesterdaySales(pagination.prev_page_url)">
+                        <span aria-hidden="true" style="color:black">&laquo;</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    </li>
+                    <li class="page-item disabled"><a class="page-link" href="#" style="color:black">{{pagination.current_page}} of {{pagination.last_page}}</a></li>
+                    <li class="page-item" v-bind:class="[{disabled: !pagination.next_page_url}]">
+                    <a class="page-link" href="javascript:void(0)" aria-label="Next" @click="getYesterdaySales(pagination.next_page_url)">
+                        <span aria-hidden="true" style="color:black">&raquo;</span> 
+                        <span class="sr-only">Next</span>
+                    </a>
+                    </li>
+                </ul>   
             </div>
         </div>
         <div class="card-body p-0">
@@ -34,9 +34,9 @@
                 </thead>  
                 <tbody>                           
                     <tr v-for="item in yesterdaySales" :key="item.id">
-                        <td>{{item.name}}</td>
-                        <td>{{item.sales}} Sold</td>
-                        <td>{{item.total}}</td>
+                        <td>{{item.product_name}}</td>
+                        <td>{{item.qty}} Sold</td>
+                        <td>{{item.sales}}</td>
                     </tr>                
                 </tbody>             
             </table>

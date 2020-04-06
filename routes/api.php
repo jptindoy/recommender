@@ -69,3 +69,22 @@ Route::get('month-sales', 'API\ChartController@getSalesPerMonth');
 Route::get('top-sales', 'API\ChartController@getTopSales');
 Route::get('total-sales', 'API\ChartController@getTotalSales');
 Route::get('percentage', 'API\ChartController@getTotalSales');
+
+// Recommendation Routes
+Route::get('item-sets', 'API\RecommendationController@index');
+Route::get('item-set-today', 'API\RecommendationController@itemSetToday');
+Route::get('item-set-search/{id}', 'API\RecommendationController@searchItemSet');
+Route::get('salable-item/{id}', 'API\RecommendationController@salableForToday');
+Route::get('item-list', 'API\RecommendationController@itemList');
+Route::get('item-list/{id}', 'API\RecommendationController@itemListSearch');
+Route::post('predict-item', 'API\RecommendationController@predictItem');
+
+// Request Routes
+Route::post('request-draft', 'API\RequestController@draft');
+Route::get('draft-item', 'API\RequestController@draftItem');
+Route::get('delete-draft', 'API\RequestController@deleteDraft');
+Route::patch('qty/{id}', 'API\RequestController@updateQty');
+Route::patch('variant/{id}', 'API\RequestController@updateVariant');
+Route::delete('delete-item-list/{id}', 'API\RequestController@destroy');
+Route::post('save-request/', 'API\RequestController@saveRequest');
+Route::get('request-widget/', 'API\RequestController@requestWidget');

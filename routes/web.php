@@ -14,7 +14,7 @@
 // Route::get('/', function () {
 //     return view('auth.login');
 // });
-Auth::routes([
+Auth::routes(['register' => false,
                 'reset' => false,
                 'verify' => false,]);
 
@@ -33,3 +33,5 @@ Route::get('/import-data', 'PagesController@importData')->name('import-data');
 Route::get('/sales-report', 'PagesController@salesReport')->name('sales-report');
 Route::get('/documentation', 'PagesController@documentation')->name('documentation');
 Route::get('/under-dev', 'PagesController@underDev')->name('under-dev');
+Route::get('/recommended', 'PagesController@recommendedProduct')->name('recommended');
+Route::get('/request', 'PagesController@productRequest')->name('request');

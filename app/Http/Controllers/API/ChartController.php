@@ -26,14 +26,14 @@ class ChartController extends Controller
         $months = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'];
         $year = date('Y');
         foreach($months as $month) {
-            $sumThisYear = PosData::whereMonth('file_date',$month)
-                        ->whereYear('file_date',$year)
-                        ->sum(DB::raw('replace(total, ",", "")'));
+            $sumThisYear = PosData::whereMonth('date',$month)
+                        ->whereYear('date',$year)
+                        ->sum('sales');
             $salesThisYear[] = number_format($sumThisYear, 2, '.', '');
 
-            $sumLastYear = PosData::whereMonth('file_date',$month)
-                        ->whereYear('file_date',$year-1)
-                        ->sum(DB::raw('replace(total, ",", "")'));
+            $sumLastYear = PosData::whereMonth('date',$month)
+                        ->whereYear('date',$year-1)
+                        ->sum('sales');
             $salesLastYear[] = number_format($sumLastYear, 2, '.', '');
         }
 
@@ -54,7 +54,7 @@ class ChartController extends Controller
                         "pointBackgroundColor"=> '#ced4da',
                         "borderWidth"=> 1,
                         "pointBorderColor"=> '#249EBF',
-                        "data"=> $salesThisYear,
+                        "data"=> $salesLastYear,
                     ])
 
                 ]            
@@ -66,8 +66,8 @@ class ChartController extends Controller
         $today = date('Y-m-d');
         $yesterday = date('Y-m-d', time() - 60 * 60 * 24);        
         
-        $topSales = PosData::whereDate('file_date', '2020-03-22')
-                        ->orderBy(DB::raw('CAST(sales AS SIGNED)'),'desc')
+        $topSales = PosData::whereDate('date', $yesterday)
+                        ->orderBy(DB::raw('CAST(qty AS SIGNED)'),'desc')
                         ->paginate(10);
 
         return json_encode($topSales);
@@ -75,14 +75,18 @@ class ChartController extends Controller
 
     public function getTotalSales() {
         
-        $year = date('Y');
+        $thisYear = date('Y');
         $thisMonth = date('m');
         $lastMonth = date('m', strtotime("previous month"));
 
-        $total = PosData::whereYear('file_date', $year)->sum(DB::raw('replace(total, ",", "")'));
+        $total = PosData::whereYear('date', $thisYear)->sum('sales');
 
-        $totalThisMonth = PosData::whereMonth('file_date', $thisMonth )->sum(DB::raw('replace(total, ",", "")'));
-        $totalLastMonth = PosData::whereMonth('file_date', $lastMonth )->sum(DB::raw('replace(total, ",", "")'));
+        $totalThisMonth = PosData::whereMonth('date', $thisMonth )
+                                ->whereYear('date', $thisYear)
+                                ->sum('sales');
+        $totalLastMonth = PosData::whereMonth('date', $lastMonth )
+                                ->whereYear('date', $thisYear)
+                                ->sum('sales');
 
         $percentage = 0;
         $percentage = (($totalThisMonth - $totalLastMonth) / $totalLastMonth) * 100;

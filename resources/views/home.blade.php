@@ -17,6 +17,7 @@
     <!-- Main content -->
     <div class="content">
         <div class="container-fluid">    
+            <sales-report></sales-report>
             <div class="row">
                 <div class="col-xs-12 col-md-6">
                     <yesterday-sales></yesterday-sales>
@@ -41,10 +42,6 @@
                     </div>
                 </div>                
             </div>            
-                     
-            <sales-report></sales-report>
-            
-            
         </div> 
     </div>
     <!-- /.content --> 

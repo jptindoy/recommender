@@ -30,6 +30,12 @@ Vue.component('import-data', require('./components/FileImport.vue').default);
 Vue.component('sales-report', require('./components/Sales.vue').default);
 Vue.component('top-sales', require('./components/TopSales.vue').default);
 Vue.component('yesterday-sales', require('./components/YesterdaySales.vue').default);
+Vue.component('frequent-item-set', require('./components/FrequentItemSet.vue').default);
+Vue.component('salable-item', require('./components/SalableItem.vue').default);
+Vue.component('draft-item', require('./components/DraftItem.vue').default);
+Vue.component('predict-item', require('./components/PredictItem.vue').default);
+Vue.component('request-item', require('./components/RequestItem.vue').default);
+Vue.component('requested-item', require('./components/RequestedItem.vue').default);
 
 
 /**
