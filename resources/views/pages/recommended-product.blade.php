@@ -18,10 +18,10 @@
   <div class="content">
     <div class="container-fluid">    
         <div class="row">
-            <div class="col-xs-12 col-6">
+            {{-- <div class="col-xs-12 col-6">
                 <salable-item></salable-item>
-            </div>
-            <div class="col-xs-12 col-6">
+            </div> --}}
+            <div class="col-12">
                 <frequent-item-set></frequent-item-set>
             </div>
         </div>

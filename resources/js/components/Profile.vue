@@ -28,7 +28,7 @@
                             <label class="custom-control-label" :for="'status' + profile.active"></label>
                     </div>
                 </h5>
-                <span class="description-text">Satus</span>
+                <span class="description-text">Account Status</span>
                 </div>
                 <!-- /.description-block -->
             </div>

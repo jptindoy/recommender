@@ -79,6 +79,12 @@ class PagesController extends Controller
         }
     }
 
+    public function productRequested() {
+        if (Gate::allows('isAdmin', Auth::user()->role_id) || Gate::allows('isMerchant', Auth::user()->role_id) || Gate::allows('isAccountant', Auth::user()->role_id)) {
+            return view('pages.requested-product');
+        }
+    }
+
     public function underDev(){
         return view('pages.under-development');
     }

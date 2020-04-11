@@ -88,7 +88,7 @@
 
         created(){
             this.salableItemToday();
-             Event.$on('cancelled', (cancelled) => {
+            Event.$on('cancelled', (cancelled) => {
                 this.newRequest = false;
             });
         },

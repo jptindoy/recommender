@@ -68,7 +68,7 @@
 						},
 						gridLines: {
 							display: false
-						}
+						},
 					}]
 				},
 				legend: {

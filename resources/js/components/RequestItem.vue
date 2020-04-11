@@ -78,8 +78,8 @@
                                 <td>{{item.product_name}}</td>
                                 <td>
                                     <div class="row">
-                                        <input type="number" @change="changeQty(item)" class="form-control" v-model="item.qty" style="width: 20%;">
-                                        <select class="form-control" style="width: 30%;" @change="changeVariant(item)" v-model="item.variant">
+                                        <input type="number" @change="changeQty(item)" class="form-control" v-model="item.qty" style="width: 50%;">
+                                        <select class="form-control" style="width: 50%;" @change="changeVariant(item)" v-model="item.variant">
                                             <option value="box">box</option>
                                             <option value="Pcs">Pcs</option>
                                             <option value="Litter">Litter</option>
@@ -98,8 +98,10 @@
                 </div>
                 <div v-if="items != ''" class="card-footer">
                     <div class="float-right">
-                        <button @click="saveRequest" class="btn btn-primary">Save</button>
-                        <button @click="deleteDraft" class="btn btn-secondary">Cancel</button>
+                        <button v-if="edit" @click="updateItemList('approved')" class="btn btn-primary" data-dismiss="modal">Update & Approved</button>
+                        <button v-if="edit" @click="updateItemList('disapproved')" class="btn btn-primary" data-dismiss="modal">Disaproved</button>
+                        <button v-else @click="saveRequest" class="btn btn-primary">Save</button>
+                        <button @click="deleteDraft" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                     </div>
                 </div>
             
@@ -111,6 +113,7 @@
 
 <script>
     export default {
+
         data() {
             return {
                 itemList : [],
@@ -125,12 +128,23 @@
                 update: {
                     dateNeeded : null,
                     PO_number : null,
-                }
+                },
+                edit : false,
+                editId : null,
+                editAddItem : null,
             }
         },
         created() {
             this.getItemList();
             this.getDraftItem();
+            
+            Event.$on('editRequest', ($event) => {
+                this.edit = true;
+                this. editId = $event;
+                this.editItemList($event);
+            });
+            
+            
         },
 
         methods: {
@@ -214,28 +228,56 @@
                 })
                 .then(res => res.json())
                 .then(res => {
-                    this.update.PO_number = null;
-                    this.getDraftItem();
+                    if(this.edit === true){
+                        this.editItemList(this.editId);
+                    } else {
+                        this.update.PO_number = null;
+                        this.getDraftItem();
+                    }
+                    
                     toastr.success(res.msg);
                 })
                 .catch(err => toastr.error(err))
             },
 
             addItem(id) {
-                fetch('api/request-draft', {
-                    method:'POST',
-                    body: JSON.stringify(id),
-                    headers: {
-                        'Content-type' : 'Application/json'
+                if(this.edit === true) {
+                    this.editAddItem = {
+                        po: this.editId,
+                        name: id, 
                     }
-                })
-                .then(res => res.json())
-                .then(res => {            
-                    this.update.PO_number = null;
-                    this.getDraftItem();        
-                    toastr[res.type](res.msg);                    
-                })
-                .catch(err => toastr.error(err))
+                    fetch('api/edit-request-draft', {
+                        method:'POST',
+                        body: JSON.stringify(this.editAddItem),
+                        headers: {
+                            'Content-type' : 'Application/json'
+                        }
+                    })
+                    .then(res => res.json())
+                    .then(res => {                          
+                        this.editItemList(this.editId);                                               
+                        toastr[res.type](res.msg);                    
+                    })
+                    .catch(err => toastr.error(err))
+                } else {
+                    fetch('api/request-draft', {
+                        method:'POST',
+                        body: JSON.stringify(id),
+                        headers: {
+                            'Content-type' : 'Application/json'
+                        }
+                    })
+                    .then(res => res.json())
+                    .then(res => {   
+                       
+                        this.update.PO_number = null;
+                        this.getDraftItem();                        
+                        toastr[res.type](res.msg);                    
+                    })
+                    .catch(err => toastr.error(err))
+                }
+                
+                           
             },
 
             saveRequest() {
@@ -256,6 +298,40 @@
                     toastr[res.type](res.msg);                    
                 })
                 .catch(err => toastr.error(err))
+                }
+            },
+
+            editItemList(id) {
+                fetch(`api/edit-request/${id}`)
+                .then(res => res.json())
+                .then(res => {
+                   this.items = res.items;
+                   this.update.PO_number = id;
+                   this.update.dateNeeded = res.items[0].date_needed;
+                })
+               .catch(err => toastr.error(err))
+            },
+            
+            updateItemList(id) {
+                if(this.update.dateNeeded === null) {
+                    toastr.error('Don\'t leave the "Date Needed" empty!')
+                } else {
+                    this.update.action = id;
+                    fetch('api/update-request', {
+                        method:'POST',
+                        body: JSON.stringify(this.update),
+                        headers: {
+                            'Content-type' : 'Application/json'
+                        }
+                    })
+                    .then(res => res.json())
+                    .then(res => {            
+                        this.update.PO_number = null;
+                        this.getDraftItem();        
+                        toastr[res.type](res.msg);      
+                        Event.$emit('widget');              
+                    })
+                    .catch(err => toastr.error(err))
                 }
             }
         }

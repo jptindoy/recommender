@@ -67,10 +67,29 @@
                             
                         </div>
                         <div v-if="items.item1" class="card-footer">
-                            <button v-if="!predicting" @click="predictItems" class="btn btn-primary">Search</button>
-                            <button v-else class="btn btn-primary disabled">Seach</button>
-                            <button v-if="!predicting" @click="clearItems" class="btn btn-secondary">Clear</button>
-                            <button v-else class="btn btn-secondary disabled">Clear</button>
+                            <form @submit.prevent="predictItems">
+                                <div class="row">
+                                    <div class="form-group mr-2">
+                                        <label for="">Date From:</label>
+                                        <input type="date" class="form-control" v-model="date.from" required>
+                                    </div>  
+                                    <div class="form-group mr-2">
+                                        <label for="">Date To:</label>
+                                        <input type="date" class="form-control" v-model="date.to" required>
+                                    </div>                                                 
+                                    
+                                    <div class="form-group">      
+                                        <label for="">Action</label>    
+                                        <br>
+                                        <button v-if="!predicting" type="submit" class="btn btn-primary">Search</button>
+                                        <button v-else class="btn btn-primary disabled">Seach</button>
+                                        <a v-if="!predicting" type="input" @click="clearItems" class="btn btn-secondary" style="color:white;">Clear</a>
+                                        <button v-else class="btn btn-secondary disabled">Clear</button>
+                                    </div>
+                                </div>
+                            </form>
+                            
+                            
                         </div>
                     </div>                               
                     <div v-if="predicting" class="text-center mt-5">
@@ -112,6 +131,11 @@
                 isLoading: true,
                 itemLists : [],
                 itemToPredict : [],
+                date : {
+                    from: null,
+                    to : null,
+                },
+                itemToSearch: {},
                 items : {
                     item1 : null,
                     item2 : null,
@@ -186,9 +210,12 @@
 
             predictItems(){
                 this.predicting = true;
+                this.itemToSearch.itemToPredict = this.itemToPredict
+                this.itemToSearch.from = this.date.from
+                this.itemToSearch.to = this.date.to
                 fetch('api/predict-item',{
                     method: 'POST',
-                    body: JSON.stringify(this.itemToPredict),
+                    body: JSON.stringify(this.itemToSearch),
                     headers: {
                         'Content-type' : 'Application/json'
                     }

@@ -234,7 +234,7 @@
                 
                 @can('isAdmin', Auth::user()->role_id)
                     <li class="nav-item">
-                        <a href="{{route('request')}}" class="nav-link">
+                        <a href="{{route('requested')}}" class="nav-link {{ (request()->is('requested')) ? 'active' : '' }}">
                         <i class="nav-icon fas fa-shopping-cart"></i>
                         <p>
                             Product Request
@@ -244,7 +244,7 @@
                     </li>
                 @elsecan('isMerchant', Auth::user()->role_id)
                     <li class="nav-item">
-                        <a href="{{route('request')}}" class="nav-link">
+                        <a href="{{route('requested')}}" class="nav-link {{ (request()->is('requested')) ? 'active' : '' }}">
                         <i class="nav-icon fas fa-shopping-cart"></i>
                         <p>
                             Product Request
@@ -254,7 +254,7 @@
                     </li>
                 @elsecan('isAccountant', Auth::user()->role_id)
                     <li class="nav-item">
-                        <a href="{{route('request')}}" class="nav-link">
+                        <a href="{{route('requested')}}" class="nav-link {{ (request()->is('requested')) ? 'active' : '' }}">
                         <i class="nav-icon fas fa-shopping-cart"></i>
                         <p>
                             Product Request
@@ -286,17 +286,17 @@
                     </li>
                 @endcan
 
-                @can('isAdmin', Auth::user()->role_id)
+                {{-- @can('isAdmin', Auth::user()->role_id)
                     <li class="nav-item">
                         <a href="{{route('under-dev')}}" class="nav-link">
                         <i class="nav-icon fas fa-file-alt"></i>
                         <p>
                             Summary Report
-                            {{-- <span class="right badge badge-danger">New</span> --}}
+                            <span class="right badge badge-danger">New</span>
                         </p>
                         </a>
                     </li>
-                @endcan
+                @endcan --}}
 
                 <li class="nav-header">INFORMATIONAL</li>
                 <li class="nav-item">

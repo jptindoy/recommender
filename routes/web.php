@@ -35,3 +35,4 @@ Route::get('/documentation', 'PagesController@documentation')->name('documentati
 Route::get('/under-dev', 'PagesController@underDev')->name('under-dev');
 Route::get('/recommended', 'PagesController@recommendedProduct')->name('recommended');
 Route::get('/request', 'PagesController@productRequest')->name('request');
+Route::get('/requested', 'PagesController@productRequested')->name('requested');

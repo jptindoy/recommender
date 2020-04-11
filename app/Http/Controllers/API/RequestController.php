@@ -38,7 +38,7 @@ class RequestController extends Controller
 
     public function draft(Request $request)
     {   
-        $ifExist = RequestItem::where('product_name', $request->input('0'))
+        $ifExist = RequestItem::where('product_name', $request->input('name'))
                                 ->where('status', 'draft')
                                 ->get();
 
@@ -52,7 +52,8 @@ class RequestController extends Controller
                 // return $request->input('0');
             $item = new RequestItem;
 
-            $item->product_name = $request->input('0');;
+            $item->product_name = $request->input('name');;
+            $item->qty = $request->input('qty');;
             
             if($item->save()){
                 return json_encode([
@@ -107,6 +108,29 @@ class RequestController extends Controller
         }
     }
 
+    public function updateRequest(Request $request)
+    {   
+        try {
+            $updateRequest = RequestItem::where('po_number', $request->PO_number)
+                                        ->update(['date_needed' => $request->dateNeeded, 
+                                            'po_number' => $request->PO_number, 
+                                            'action' => $request->action,
+                                            'status' => 'requested']
+                                        );
+            return json_encode([
+                'msg' => 'Request updated!',
+                'type' => 'success',
+            ]);
+        } catch (Exception $e) {
+            return json_encode([
+                'msg' => $e->getMessage(),
+                'type' => 'error',
+            ]);
+        }
+        
+        
+    }
+
     /**
      * Remove the specified resource from storage.
      *
@@ -129,19 +153,19 @@ class RequestController extends Controller
 
     public function requestWidget()
     {
-        $allRequest = RequestItem::select('po_number', 'date_needed', 'action')
-                                ->where('status', 'requested')
-                                ->groupBy('po_number', 'date_needed', 'action')
+        $allRequest = RequestItem::select('po_number', 'date_needed', 'updated_at', 'action')
+                                ->where('action', 'pending')
+                                ->groupBy('po_number', 'date_needed', 'updated_at', 'action')
                                 ->get();
 
-        $cancelled = RequestItem::select('po_number', 'date_needed', 'action')
-                            ->where('action', 'cancelled')
-                            ->groupBy('po_number', 'date_needed', 'action')
+        $cancelled = RequestItem::select('po_number', 'date_needed', 'updated_at', 'action')
+                            ->where('action', 'disapproved')
+                            ->groupBy('po_number', 'date_needed', 'updated_at', 'action')
                             ->get();
 
-        $approved = RequestItem::select('po_number', 'date_needed', 'action')
+        $approved = RequestItem::select('po_number', 'date_needed', 'updated_at', 'action')
                             ->where('action', 'approved')
-                            ->groupBy('po_number', 'date_needed', 'action')
+                            ->groupBy('po_number', 'date_needed', 'updated_at', 'action')
                             ->get();
 
         return json_encode([
@@ -152,5 +176,56 @@ class RequestController extends Controller
             'cancelled' => $cancelled,
             'approved' => $approved,
         ]);
+    }
+
+    public function editRequest($id)
+    {       
+        $items = RequestItem::where('po_number', $id)->get();
+        
+        return json_encode([
+            'items' => $items,
+        ]);
+    }
+
+    public function editAddItem(Request $request)
+    {   
+        $ifExist = RequestItem::where('product_name', $request->input('name'))
+                                ->where('status', 'draft')
+                                ->get();
+
+        if(count($ifExist) > 0) {
+            return json_encode([
+                'item' => $ifExist,
+                'msg' => 'This item is already added!',
+                'type' => 'warning',
+            ]);
+        } else {
+                // return $request->input('0');
+            $item = new RequestItem;
+
+            $item->po_number = $request->input('po');
+            $item->product_name = $request->input('name');
+            
+            if($item->save()){
+                return json_encode([
+                    'item' => $item,
+                    'msg' => 'Item Added!',
+                    'type' => 'success',
+                ]);
+            }
+        }
+        
+    }
+
+    public function searchRequest($id)
+    {
+        $items = RequestItem::select('po_number')
+                            ->where('po_number', 'like', '%'.$id.'%')
+                            ->groupBy('po_number')
+                            ->get();
+
+        return json_encode([
+            'items' => $items,
+        ]); 
     }
 }

@@ -8,7 +8,7 @@
                     </div>
                     <hr>
                     <p>File to be upload is .csv format only. <br>
-                        A file's name must end in .[csv]. Example: .csv</p>
+                        A file's name must end in .[csv]. Example: SalesReport2020.csv</p>
                     <div class="form-group">
                         <p>Browse your computer:</p>
                         <input type="file" ref="file" @change="fileToImport" accept=".csv" required>
@@ -55,7 +55,7 @@
             <table class="table table-bordered">
                 <thead class="thead-dark">
                     <tr>
-                        <td>Invoce No.</td>
+                        <td>Invoice No.</td>
                         <td>Date</td>
                         <td>Barcode</td>
                         <td>Product Name</td>

@@ -2446,6 +2446,9 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _LineChart_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./LineChart.vue */ "./resources/js/components/LineChart.vue");
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_1__);
 //
 //
 //
@@ -2590,65 +2593,260 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
 /* harmony default export */ __webpack_exports__["default"] = ({
+  name: 'LineChartContainer',
+  components: {
+    LineChart: _LineChart_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
   data: function data() {
     return {
       isLoading: true,
       frequentItemSet: [],
       btnToday: true,
-      date: null,
-      searchDate: null
+      date: {
+        from: null,
+        to: null
+      },
+      item_qty: [],
+      newRequest: false,
+      rules: [],
+      loaded: true,
+      chartdata: {
+        labels: [],
+        datasets: [{
+          type: 'line',
+          data: [],
+          backgroundColor: 'transparent',
+          borderColor: '#007bff',
+          pointBorderColor: '#007bff',
+          pointBackgroundColor: '#007bff',
+          fill: false,
+          pointHoverBackgroundColor: '#007bff',
+          pointHoverBorderColor: '#007bff'
+        }]
+      },
+      options: {
+        maintainAspectRatio: false,
+        tooltips: {
+          mode: 'index',
+          intersect: true
+        },
+        hover: {
+          mode: 'index',
+          intersect: true
+        },
+        legend: {
+          display: false
+        }
+      }
     };
   },
   created: function created() {
+    var _this = this;
+
     this.getFrequentItemSet();
+    Event.$on('cancelled', function (cancelled) {
+      _this.newRequest = false;
+    });
   },
   methods: {
+    moment: moment__WEBPACK_IMPORTED_MODULE_1___default.a,
     getFrequentItemSet: function getFrequentItemSet() {
-      var _this = this;
+      var _this2 = this;
 
       this.isLoading = true;
       fetch('api/item-sets').then(function (res) {
         return res.json();
       }).then(function (res) {
-        _this.frequentItemSet = res;
-        _this.isLoading = false;
-        _this.btnToday = true;
-        _this.searchDate = null;
-      })["catch"](function (err) {
-        return toastr.error(err);
-      });
-    },
-    getFrequentItemToday: function getFrequentItemToday() {
-      var _this2 = this;
-
-      this.isLoading = true;
-      fetch('api/item-set-today').then(function (res) {
-        return res.json();
-      }).then(function (res) {
-        _this2.frequentItemSet = res;
+        _this2.frequentItemSet = res.itemset;
+        _this2.item_qty = res.qty;
+        _this2.rules = res.rules;
         _this2.isLoading = false;
-        _this2.btnToday = false;
+        _this2.btnToday = true;
         _this2.searchDate = null;
       })["catch"](function (err) {
         return toastr.error(err);
       });
     },
+    showDraft: function showDraft() {
+      Event.$emit('draft');
+      this.newRequest = true;
+    },
     searchFrequentitemSet: function searchFrequentitemSet() {
       var _this3 = this;
 
       this.isLoading = true;
-      this.searchDate = this.date;
-      fetch("api/item-set-search/".concat(this.date)).then(function (res) {
+      fetch('api/item-set-search', {
+        method: 'POST',
+        body: JSON.stringify(this.date),
+        headers: {
+          'Content-type': 'Application/json'
+        }
+      }).then(function (res) {
         return res.json();
       }).then(function (res) {
-        _this3.frequentItemSet = res;
+        _this3.frequentItemSet = res.itemset;
+        _this3.item_qty = res.qty;
         _this3.isLoading = false;
-        _this3.date = null;
+      })["catch"](function (err) {
+        return toastr.error(err);
+      });
+    },
+    addRequest: function addRequest(id) {
+      fetch('api/request-draft', {
+        method: 'POST',
+        body: JSON.stringify(id),
+        headers: {
+          'Content-type': 'Application/json'
+        }
+      }).then(function (res) {
+        return res.json();
+      }).then(function (res) {
+        toastr[res.type](res.msg);
+        Event.$emit('draft');
       })["catch"](function (err) {
         return toastr.error(err);
       });
     }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/LineChart.vue?vue&type=script&lang=js&":
+/*!********************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/LineChart.vue?vue&type=script&lang=js& ***!
+  \********************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vue_chartjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-chartjs */ "./node_modules/vue-chartjs/es/index.js");
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  "extends": vue_chartjs__WEBPACK_IMPORTED_MODULE_0__["Line"],
+  props: {
+    chartdata: {
+      type: Object,
+      "default": null
+    },
+    options: {
+      type: Object,
+      "default": null
+    }
+  },
+  mounted: function mounted() {
+    this.renderChart(this.chartdata, this.options);
   }
 });
 
@@ -3585,12 +3783,36 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       isLoading: true,
       itemLists: [],
       itemToPredict: [],
+      date: {
+        from: null,
+        to: null
+      },
+      itemToSearch: {},
       items: {
         item1: null,
         item2: null,
@@ -3667,9 +3889,12 @@ __webpack_require__.r(__webpack_exports__);
       var _this3 = this;
 
       this.predicting = true;
+      this.itemToSearch.itemToPredict = this.itemToPredict;
+      this.itemToSearch.from = this.date.from;
+      this.itemToSearch.to = this.date.to;
       fetch('api/predict-item', {
         method: 'POST',
-        body: JSON.stringify(this.itemToPredict),
+        body: JSON.stringify(this.itemToSearch),
         headers: {
           'Content-type': 'Application/json'
         }
@@ -4017,6 +4242,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -4031,31 +4258,29 @@ __webpack_require__.r(__webpack_exports__);
       update: {
         dateNeeded: null,
         PO_number: null
-      }
+      },
+      edit: false,
+      editId: null,
+      editAddItem: null
     };
   },
   created: function created() {
+    var _this = this;
+
     this.getItemList();
     this.getDraftItem();
+    Event.$on('editRequest', function ($event) {
+      _this.edit = true;
+      _this.editId = $event;
+
+      _this.editItemList($event);
+    });
   },
   methods: {
     getItemList: function getItemList() {
-      var _this = this;
-
-      fetch('api/item-list').then(function (res) {
-        return res.json();
-      }).then(function (res) {
-        _this.itemLists = res.itemlist;
-        _this.isLoading = false;
-      })["catch"](function (err) {
-        return toastr.error(err);
-      });
-    },
-    searchItem: function searchItem() {
       var _this2 = this;
 
-      this.isLoading = true;
-      fetch("api/item-list/".concat(this.search)).then(function (res) {
+      fetch('api/item-list').then(function (res) {
         return res.json();
       }).then(function (res) {
         _this2.itemLists = res.itemlist;
@@ -4064,27 +4289,40 @@ __webpack_require__.r(__webpack_exports__);
         return toastr.error(err);
       });
     },
-    getDraftItem: function getDraftItem() {
+    searchItem: function searchItem() {
       var _this3 = this;
+
+      this.isLoading = true;
+      fetch("api/item-list/".concat(this.search)).then(function (res) {
+        return res.json();
+      }).then(function (res) {
+        _this3.itemLists = res.itemlist;
+        _this3.isLoading = false;
+      })["catch"](function (err) {
+        return toastr.error(err);
+      });
+    },
+    getDraftItem: function getDraftItem() {
+      var _this4 = this;
 
       fetch('api/draft-item').then(function (res) {
         return res.json();
       }).then(function (res) {
-        _this3.items = res.items;
-        _this3.update.PO_number += parseInt(res.poNumber) + 1;
+        _this4.items = res.items;
+        _this4.update.PO_number += parseInt(res.poNumber) + 1;
       })["catch"](function (err) {
         return toastr.error(err);
       });
     },
     deleteDraft: function deleteDraft() {
-      var _this4 = this;
+      var _this5 = this;
 
       fetch('api/delete-draft').then(function (res) {
         return res.json();
       }).then(function (res) {
-        _this4.getDraftItem();
+        _this5.getDraftItem();
 
-        _this4.update.PO_number = null;
+        _this5.update.PO_number = null;
         toastr.success('Request cancelled!');
       })["catch"](function (err) {
         return toastr.error(err);
@@ -4119,16 +4357,20 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     removeItem: function removeItem(id) {
-      var _this5 = this;
+      var _this6 = this;
 
       fetch("api/delete-item-list/".concat(id), {
         method: 'DELETE'
       }).then(function (res) {
         return res.json();
       }).then(function (res) {
-        _this5.update.PO_number = null;
+        if (_this6.edit === true) {
+          _this6.editItemList(_this6.editId);
+        } else {
+          _this6.update.PO_number = null;
 
-        _this5.getDraftItem();
+          _this6.getDraftItem();
+        }
 
         toastr.success(res.msg);
       })["catch"](function (err) {
@@ -4136,28 +4378,50 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     addItem: function addItem(id) {
-      var _this6 = this;
+      var _this7 = this;
 
-      fetch('api/request-draft', {
-        method: 'POST',
-        body: JSON.stringify(id),
-        headers: {
-          'Content-type': 'Application/json'
-        }
-      }).then(function (res) {
-        return res.json();
-      }).then(function (res) {
-        _this6.update.PO_number = null;
+      if (this.edit === true) {
+        this.editAddItem = {
+          po: this.editId,
+          name: id
+        };
+        fetch('api/edit-request-draft', {
+          method: 'POST',
+          body: JSON.stringify(this.editAddItem),
+          headers: {
+            'Content-type': 'Application/json'
+          }
+        }).then(function (res) {
+          return res.json();
+        }).then(function (res) {
+          _this7.editItemList(_this7.editId);
 
-        _this6.getDraftItem();
+          toastr[res.type](res.msg);
+        })["catch"](function (err) {
+          return toastr.error(err);
+        });
+      } else {
+        fetch('api/request-draft', {
+          method: 'POST',
+          body: JSON.stringify(id),
+          headers: {
+            'Content-type': 'Application/json'
+          }
+        }).then(function (res) {
+          return res.json();
+        }).then(function (res) {
+          _this7.update.PO_number = null;
 
-        toastr[res.type](res.msg);
-      })["catch"](function (err) {
-        return toastr.error(err);
-      });
+          _this7.getDraftItem();
+
+          toastr[res.type](res.msg);
+        })["catch"](function (err) {
+          return toastr.error(err);
+        });
+      }
     },
     saveRequest: function saveRequest() {
-      var _this7 = this;
+      var _this8 = this;
 
       if (this.update.dateNeeded === null) {
         toastr.error('Don\'t leave the "Date Needed" empty!');
@@ -4171,11 +4435,51 @@ __webpack_require__.r(__webpack_exports__);
         }).then(function (res) {
           return res.json();
         }).then(function (res) {
-          _this7.update.PO_number = null;
+          _this8.update.PO_number = null;
 
-          _this7.getDraftItem();
+          _this8.getDraftItem();
 
           toastr[res.type](res.msg);
+        })["catch"](function (err) {
+          return toastr.error(err);
+        });
+      }
+    },
+    editItemList: function editItemList(id) {
+      var _this9 = this;
+
+      fetch("api/edit-request/".concat(id)).then(function (res) {
+        return res.json();
+      }).then(function (res) {
+        _this9.items = res.items;
+        _this9.update.PO_number = id;
+        _this9.update.dateNeeded = res.items[0].date_needed;
+      })["catch"](function (err) {
+        return toastr.error(err);
+      });
+    },
+    updateItemList: function updateItemList(id) {
+      var _this10 = this;
+
+      if (this.update.dateNeeded === null) {
+        toastr.error('Don\'t leave the "Date Needed" empty!');
+      } else {
+        this.update.action = id;
+        fetch('api/update-request', {
+          method: 'POST',
+          body: JSON.stringify(this.update),
+          headers: {
+            'Content-type': 'Application/json'
+          }
+        }).then(function (res) {
+          return res.json();
+        }).then(function (res) {
+          _this10.update.PO_number = null;
+
+          _this10.getDraftItem();
+
+          toastr[res.type](res.msg);
+          Event.$emit('widget');
         })["catch"](function (err) {
           return toastr.error(err);
         });
@@ -4345,26 +4649,141 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      widget: []
+      widget: [],
+      editId: null,
+      update: {},
+      searchItem: [],
+      po_number: null,
+      input: null
     };
   },
   created: function created() {
+    var _this = this;
+
+    Event.$on('widget', function (e) {
+      _this.getWidget();
+    });
     this.getWidget();
   },
   methods: {
     getWidget: function getWidget() {
-      var _this = this;
+      var _this2 = this;
 
       fetch('api/request-widget').then(function (res) {
         return res.json();
       }).then(function (res) {
-        _this.widget = res;
+        _this2.widget = res;
       })["catch"](function (err) {
         return toastr.err(err);
       });
+    },
+    editRequest: function editRequest(id) {
+      this.editId = id;
+      Event.$emit('editRequest', this.editId);
+    },
+    approvedRequest: function approvedRequest(id) {
+      var _this3 = this;
+
+      this.update.PO_number = id.po_number;
+      this.update.dateNeeded = id.date_needed;
+      this.update.action = 'approved';
+      fetch('api/update-request', {
+        method: 'POST',
+        body: JSON.stringify(this.update),
+        headers: {
+          'Content-type': 'Application/json'
+        }
+      }).then(function (res) {
+        return res.json();
+      }).then(function (res) {
+        _this3.getWidget();
+
+        toastr[res.type](res.msg);
+      })["catch"](function (err) {
+        return toastr.error(err);
+      });
+    },
+    disapprovedRequest: function disapprovedRequest(id) {
+      var _this4 = this;
+
+      this.update.PO_number = id.po_number;
+      this.update.dateNeeded = id.date_needed;
+      this.update.action = 'disapproved';
+      fetch('api/update-request', {
+        method: 'POST',
+        body: JSON.stringify(this.update),
+        headers: {
+          'Content-type': 'Application/json'
+        }
+      }).then(function (res) {
+        return res.json();
+      }).then(function (res) {
+        _this4.getWidget();
+
+        toastr[res.type](res.msg);
+      })["catch"](function (err) {
+        return toastr.error(err);
+      });
+    },
+    searchNumber: function searchNumber(event) {
+      var _this5 = this;
+
+      if (event.target.value != '') {
+        fetch("api/search-request/".concat(event.target.value)).then(function (res) {
+          return res.json();
+        }).then(function (res) {
+          _this5.searchItem = res.items;
+          _this5.po_number = event.target.value;
+        })["catch"](function (err) {
+          return toastr.err(err);
+        });
+      }
     }
   }
 });
@@ -59023,7 +59442,7 @@ var staticRenderFns = [
       _vm._v("File to be upload is .csv format only. "),
       _c("br"),
       _vm._v(
-        "\n                    A file's name must end in .[csv]. Example: .csv"
+        "\n                    A file's name must end in .[csv]. Example: SalesReport2020.csv"
       )
     ])
   },
@@ -59049,7 +59468,7 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("thead", { staticClass: "thead-dark" }, [
       _c("tr", [
-        _c("td", [_vm._v("Invoce No.")]),
+        _c("td", [_vm._v("Invoice No.")]),
         _vm._v(" "),
         _c("td", [_vm._v("Date")]),
         _vm._v(" "),
@@ -59090,6 +59509,27 @@ var render = function() {
       _vm._m(0),
       _vm._v(" "),
       _c("div", { staticClass: "card-body" }, [
+        _vm.date.from
+          ? _c("div", { staticClass: "text-center" }, [
+              _c("h3", [
+                _vm._v(
+                  "From " +
+                    _vm._s(_vm.moment(_vm.date.from).format("MMMM D")) +
+                    " to " +
+                    _vm._s(_vm.moment(_vm.date.to).format("MMMM D"))
+                )
+              ]),
+              _vm._v(" "),
+              _vm._m(1)
+            ])
+          : _c("div", { staticClass: "text-center" }, [
+              _c("h3", [_vm._v("Item set's for this Month")]),
+              _vm._v(" "),
+              _vm._m(2)
+            ]),
+        _vm._v(" "),
+        _vm._m(3),
+        _vm._v(" "),
         _c(
           "form",
           {
@@ -59102,391 +59542,544 @@ var render = function() {
             }
           },
           [
-            _vm.btnToday
-              ? _c("div", { staticClass: "form-group  float-right" }, [
-                  _c(
-                    "button",
-                    {
-                      staticClass: "btn btn-info float-right",
-                      on: { click: _vm.getFrequentItemToday }
-                    },
-                    [_vm._v("Show frequent items for today")]
-                  )
-                ])
-              : _c("div", { staticClass: "form-group  float-right" }, [
-                  _c(
-                    "button",
-                    {
-                      staticClass: "btn btn-info float-right",
-                      on: { click: _vm.getFrequentItemSet }
-                    },
-                    [_vm._v("Show frequent items for all records")]
-                  )
-                ]),
-            _vm._v(" "),
             _c("div", { staticClass: "row" }, [
               _c("div", { staticClass: "form-group mr-2" }, [
+                _c("label", { attrs: { for: "" } }, [_vm._v("Date From:")]),
+                _vm._v(" "),
                 _c("input", {
                   directives: [
                     {
                       name: "model",
                       rawName: "v-model",
-                      value: _vm.date,
-                      expression: "date"
+                      value: _vm.date.from,
+                      expression: "date.from"
                     }
                   ],
                   staticClass: "form-control",
                   attrs: { type: "date", required: "" },
-                  domProps: { value: _vm.date },
+                  domProps: { value: _vm.date.from },
                   on: {
                     input: function($event) {
                       if ($event.target.composing) {
                         return
                       }
-                      _vm.date = $event.target.value
+                      _vm.$set(_vm.date, "from", $event.target.value)
                     }
                   }
                 })
               ]),
               _vm._v(" "),
-              _vm._m(1)
-            ])
+              _c("div", { staticClass: "form-group mr-2" }, [
+                _c("label", { attrs: { for: "" } }, [_vm._v("Date To:")]),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.date.to,
+                      expression: "date.to"
+                    }
+                  ],
+                  staticClass: "form-control",
+                  attrs: { type: "date", required: "" },
+                  domProps: { value: _vm.date.to },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.date, "to", $event.target.value)
+                    }
+                  }
+                })
+              ]),
+              _vm._v(" "),
+              _vm._m(4)
+            ]),
+            _vm._v(" "),
+            _vm._m(5)
           ]
         ),
         _vm._v(" "),
-        _vm.searchDate
-          ? _c("div", { staticClass: "text-center" }, [
-              _c("h4", { staticClass: "text-warning" }, [
-                _vm._v("Search Date " + _vm._s(_vm.searchDate))
-              ]),
-              _vm._v(" "),
-              _vm._m(2)
-            ])
-          : _vm._e(),
-        _vm._v(" "),
-        _vm._m(3),
-        _vm._v(" "),
         _vm.isLoading
           ? _c("div", { staticClass: "text-center mt-5" }, [
-              _vm._m(4),
-              _vm._v(" "),
-              _vm._m(5)
-            ])
-          : _c("div", [
               _vm._m(6),
               _vm._v(" "),
-              _c(
-                "div",
-                {
-                  staticClass: "tab-content item-list",
-                  attrs: { id: "nav-tabContent" }
-                },
-                [
+              _vm._m(7)
+            ])
+          : _c("div", [
+              _c("div", { staticClass: "row" }, [
+                _c("div", { staticClass: "col" }, [
+                  _c("div", { staticClass: "form-group" }, [
+                    !_vm.newRequest
+                      ? _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-info",
+                            on: { click: _vm.showDraft }
+                          },
+                          [_vm._v("Create Request")]
+                        )
+                      : _c("button", { staticClass: "btn btn-info disabled" }, [
+                          _vm._v("Create Request")
+                        ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "item-list" }, [
+                    _c("table", { staticClass: "table table-bordered" }, [
+                      _c("thead", [
+                        _c("tr", [
+                          _c("th", [_vm._v("Product Name")]),
+                          _vm._v(" "),
+                          _c("th", [_vm._v("Estimated Qty")]),
+                          _vm._v(" "),
+                          _vm.newRequest
+                            ? _c("th", [_vm._v("Action")])
+                            : _vm._e()
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "tbody",
+                        _vm._l(_vm.item_qty, function(item) {
+                          return _c("tr", { key: item.id }, [
+                            _c("td", [_vm._v(_vm._s(item.name))]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v(_vm._s(item.qty))]),
+                            _vm._v(" "),
+                            _vm.newRequest
+                              ? _c("td", [
+                                  _c(
+                                    "button",
+                                    {
+                                      staticClass: "btn btn-primary",
+                                      attrs: { title: "Add to Request" },
+                                      on: {
+                                        click: function($event) {
+                                          return _vm.addRequest(item)
+                                        }
+                                      }
+                                    },
+                                    [
+                                      _c("i", {
+                                        staticClass: "fa fa-shopping-cart"
+                                      })
+                                    ]
+                                  )
+                                ])
+                              : _vm._e()
+                          ])
+                        }),
+                        0
+                      )
+                    ])
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "col" }, [
+                  _vm._m(8),
+                  _vm._v(" "),
                   _c(
                     "div",
                     {
-                      staticClass: "tab-pane fade  show active",
-                      attrs: {
-                        id: "nav-1",
-                        role: "tabpanel",
-                        "aria-labelledby": "nav-1-tab"
-                      }
+                      staticClass: "tab-content item-list",
+                      attrs: { id: "nav-tabContent" }
                     },
-                    _vm._l(_vm.frequentItemSet, function(item1) {
-                      return _c(
-                        "ol",
-                        { key: item1.id },
-                        _vm._l(item1[1], function(val) {
-                          return _c(
-                            "ul",
-                            { key: val.id },
-                            _vm._l(val, function(item2) {
-                              return _c("li", { key: item2.id }, [
-                                _vm._v(_vm._s(item2))
+                    [
+                      _c(
+                        "div",
+                        {
+                          staticClass: "tab-pane fade show active",
+                          attrs: {
+                            id: "nav-2",
+                            role: "tabpanel",
+                            "aria-labelledby": "nav-2-tab"
+                          }
+                        },
+                        [
+                          !_vm.frequentItemSet[2]
+                            ? _c("div", { staticClass: "text-center mt-5" }, [
+                                _c("h5", [
+                                  _vm._v("No set's of item on this tab")
+                                ])
                               ])
+                            : _vm._e(),
+                          _vm._v(" "),
+                          _c(
+                            "ol",
+                            _vm._l(_vm.frequentItemSet[2], function(item1) {
+                              return _c(
+                                "li",
+                                { key: item1.id, staticClass: "mb-3" },
+                                _vm._l(item1, function(val) {
+                                  return _c("ul", { key: val.id }, [
+                                    _c("li", [_vm._v(_vm._s(val))])
+                                  ])
+                                }),
+                                0
+                              )
                             }),
                             0
                           )
-                        }),
-                        0
-                      )
-                    }),
-                    0
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "div",
-                    {
-                      staticClass: "tab-pane fade",
-                      attrs: {
-                        id: "nav-2",
-                        role: "tabpanel",
-                        "aria-labelledby": "nav-2-tab"
-                      }
-                    },
-                    _vm._l(_vm.frequentItemSet, function(item1) {
-                      return _c(
-                        "ol",
-                        { key: item1.id },
-                        _vm._l(item1[2], function(val) {
-                          return _c("li", { key: val.id }, [
-                            _c(
-                              "ul",
-                              { staticClass: "mb-2" },
-                              _vm._l(val, function(item2) {
-                                return _c("li", { key: item2.id }, [
-                                  _vm._v(_vm._s(item2))
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        {
+                          staticClass: "tab-pane fade",
+                          attrs: {
+                            id: "nav-3",
+                            role: "tabpanel",
+                            "aria-labelledby": "nav-3-tab"
+                          }
+                        },
+                        [
+                          !_vm.frequentItemSet[3]
+                            ? _c("div", { staticClass: "text-center mt-5" }, [
+                                _c("h5", [
+                                  _vm._v("No set's of item on this tab")
                                 ])
-                              }),
-                              0
-                            )
-                          ])
-                        }),
-                        0
-                      )
-                    }),
-                    0
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "div",
-                    {
-                      staticClass: "tab-pane fade",
-                      attrs: {
-                        id: "nav-3",
-                        role: "tabpanel",
-                        "aria-labelledby": "nav-3-tab"
-                      }
-                    },
-                    _vm._l(_vm.frequentItemSet, function(item1) {
-                      return _c(
-                        "ol",
-                        { key: item1.id },
-                        _vm._l(item1[3], function(val) {
-                          return _c("li", { key: val.id }, [
-                            _c(
-                              "ul",
-                              { staticClass: "mb-2" },
-                              _vm._l(val, function(item2) {
-                                return _c("li", { key: item2.id }, [
-                                  _vm._v(_vm._s(item2))
+                              ])
+                            : _vm._e(),
+                          _vm._v(" "),
+                          _c(
+                            "ol",
+                            _vm._l(_vm.frequentItemSet[3], function(item1) {
+                              return _c(
+                                "li",
+                                { key: item1.id, staticClass: "mb-3" },
+                                _vm._l(item1, function(val) {
+                                  return _c("ul", { key: val.id }, [
+                                    _c("li", [_vm._v(_vm._s(val))])
+                                  ])
+                                }),
+                                0
+                              )
+                            }),
+                            0
+                          )
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        {
+                          staticClass: "tab-pane fade",
+                          attrs: {
+                            id: "nav-4",
+                            role: "tabpanel",
+                            "aria-labelledby": "nav-4-tab"
+                          }
+                        },
+                        [
+                          !_vm.frequentItemSet[4]
+                            ? _c("div", { staticClass: "text-center mt-5" }, [
+                                _c("h5", [
+                                  _vm._v("No set's of item on this tab")
                                 ])
-                              }),
-                              0
-                            )
-                          ])
-                        }),
-                        0
-                      )
-                    }),
-                    0
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "div",
-                    {
-                      staticClass: "tab-pane fade",
-                      attrs: {
-                        id: "nav-4",
-                        role: "tabpanel",
-                        "aria-labelledby": "nav-4-tab"
-                      }
-                    },
-                    _vm._l(_vm.frequentItemSet, function(item1) {
-                      return _c(
-                        "ol",
-                        { key: item1.id },
-                        _vm._l(item1[4], function(val) {
-                          return _c("li", { key: val.id }, [
-                            _c(
-                              "ul",
-                              { staticClass: "mb-2" },
-                              _vm._l(val, function(item2) {
-                                return _c("li", { key: item2.id }, [
-                                  _vm._v(_vm._s(item2))
+                              ])
+                            : _vm._e(),
+                          _vm._v(" "),
+                          _c(
+                            "ol",
+                            _vm._l(_vm.frequentItemSet[4], function(item1) {
+                              return _c(
+                                "li",
+                                { key: item1.id, staticClass: "mb-3" },
+                                _vm._l(item1, function(val) {
+                                  return _c("ul", { key: val.id }, [
+                                    _c("li", [_vm._v(_vm._s(val))])
+                                  ])
+                                }),
+                                0
+                              )
+                            }),
+                            0
+                          )
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        {
+                          staticClass: "tab-pane fade",
+                          attrs: {
+                            id: "nav-5",
+                            role: "tabpanel",
+                            "aria-labelledby": "nav-5-tab"
+                          }
+                        },
+                        [
+                          !_vm.frequentItemSet[5]
+                            ? _c("div", { staticClass: "text-center mt-5" }, [
+                                _c("h5", [
+                                  _vm._v("No set's of item on this tab")
                                 ])
-                              }),
-                              0
-                            )
-                          ])
-                        }),
-                        0
-                      )
-                    }),
-                    0
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "div",
-                    {
-                      staticClass: "tab-pane fade",
-                      attrs: {
-                        id: "nav-5",
-                        role: "tabpanel",
-                        "aria-labelledby": "nav-5-tab"
-                      }
-                    },
-                    _vm._l(_vm.frequentItemSet, function(item1) {
-                      return _c(
-                        "ol",
-                        { key: item1.id },
-                        _vm._l(item1[5], function(val) {
-                          return _c("li", { key: val.id }, [
-                            _c(
-                              "ul",
-                              { staticClass: "mb-2" },
-                              _vm._l(val, function(item2) {
-                                return _c("li", { key: item2.id }, [
-                                  _vm._v(_vm._s(item2))
+                              ])
+                            : _vm._e(),
+                          _vm._v(" "),
+                          _c(
+                            "ol",
+                            _vm._l(_vm.frequentItemSet[5], function(item1) {
+                              return _c(
+                                "li",
+                                { key: item1.id, staticClass: "mb-3" },
+                                _vm._l(item1, function(val) {
+                                  return _c("ul", { key: val.id }, [
+                                    _c("li", [_vm._v(_vm._s(val))])
+                                  ])
+                                }),
+                                0
+                              )
+                            }),
+                            0
+                          )
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        {
+                          staticClass: "tab-pane fade",
+                          attrs: {
+                            id: "nav-6",
+                            role: "tabpanel",
+                            "aria-labelledby": "nav-6-tab"
+                          }
+                        },
+                        [
+                          !_vm.frequentItemSet[6]
+                            ? _c("div", { staticClass: "text-center mt-5" }, [
+                                _c("h5", [
+                                  _vm._v("No set's of item on this tab")
                                 ])
-                              }),
-                              0
-                            )
-                          ])
-                        }),
-                        0
-                      )
-                    }),
-                    0
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "div",
-                    {
-                      staticClass: "tab-pane fade",
-                      attrs: {
-                        id: "nav-6",
-                        role: "tabpanel",
-                        "aria-labelledby": "nav-6-tab"
-                      }
-                    },
-                    _vm._l(_vm.frequentItemSet, function(item1) {
-                      return _c(
-                        "ol",
-                        { key: item1.id },
-                        _vm._l(item1[6], function(val) {
-                          return _c("li", { key: val.id }, [
-                            _c(
-                              "ul",
-                              { staticClass: "mb-2" },
-                              _vm._l(val, function(item2) {
-                                return _c("li", { key: item2.id }, [
-                                  _vm._v(_vm._s(item2))
+                              ])
+                            : _vm._e(),
+                          _vm._v(" "),
+                          _c(
+                            "ol",
+                            _vm._l(_vm.frequentItemSet[6], function(item1) {
+                              return _c(
+                                "li",
+                                { key: item1.id, staticClass: "mb-3" },
+                                _vm._l(item1, function(val) {
+                                  return _c("ul", { key: val.id }, [
+                                    _c("li", [_vm._v(_vm._s(val))])
+                                  ])
+                                }),
+                                0
+                              )
+                            }),
+                            0
+                          )
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        {
+                          staticClass: "tab-pane fade",
+                          attrs: {
+                            id: "nav-7",
+                            role: "tabpanel",
+                            "aria-labelledby": "nav-7-tab"
+                          }
+                        },
+                        [
+                          !_vm.frequentItemSet[7]
+                            ? _c("div", { staticClass: "text-center mt-5" }, [
+                                _c("h5", [
+                                  _vm._v("No set's of item on this tab")
                                 ])
-                              }),
-                              0
-                            )
-                          ])
-                        }),
-                        0
-                      )
-                    }),
-                    0
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "div",
-                    {
-                      staticClass: "tab-pane fade",
-                      attrs: {
-                        id: "nav-7",
-                        role: "tabpanel",
-                        "aria-labelledby": "nav-7-tab"
-                      }
-                    },
-                    _vm._l(_vm.frequentItemSet, function(item1) {
-                      return _c(
-                        "ol",
-                        { key: item1.id },
-                        _vm._l(item1[7], function(val) {
-                          return _c("li", { key: val.id }, [
-                            _c(
-                              "ul",
-                              { staticClass: "mb-2" },
-                              _vm._l(val, function(item2) {
-                                return _c("li", { key: item2.id }, [
-                                  _vm._v(_vm._s(item2))
+                              ])
+                            : _vm._e(),
+                          _vm._v(" "),
+                          _c(
+                            "ol",
+                            _vm._l(_vm.frequentItemSet[7], function(item1) {
+                              return _c(
+                                "li",
+                                { key: item1.id, staticClass: "mb-3" },
+                                _vm._l(item1, function(val) {
+                                  return _c("ul", { key: val.id }, [
+                                    _c("li", [_vm._v(_vm._s(val))])
+                                  ])
+                                }),
+                                0
+                              )
+                            }),
+                            0
+                          )
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        {
+                          staticClass: "tab-pane fade",
+                          attrs: {
+                            id: "nav-8",
+                            role: "tabpanel",
+                            "aria-labelledby": "nav-8-tab"
+                          }
+                        },
+                        [
+                          !_vm.frequentItemSet[8]
+                            ? _c("div", { staticClass: "text-center mt-5" }, [
+                                _c("h5", [
+                                  _vm._v("No set's of item on this tab")
                                 ])
-                              }),
-                              0
-                            )
-                          ])
-                        }),
-                        0
-                      )
-                    }),
-                    0
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "div",
-                    {
-                      staticClass: "tab-pane fade",
-                      attrs: {
-                        id: "nav-8",
-                        role: "tabpanel",
-                        "aria-labelledby": "nav-8-tab"
-                      }
-                    },
-                    _vm._l(_vm.frequentItemSet, function(item1) {
-                      return _c(
-                        "ol",
-                        { key: item1.id },
-                        _vm._l(item1[8], function(val) {
-                          return _c("li", { key: val.id }, [
-                            _c(
-                              "ul",
-                              { staticClass: "mb-2" },
-                              _vm._l(val, function(item2) {
-                                return _c("li", { key: item2.id }, [
-                                  _vm._v(_vm._s(item2))
+                              ])
+                            : _vm._e(),
+                          _vm._v(" "),
+                          _c(
+                            "ol",
+                            _vm._l(_vm.frequentItemSet[8], function(item1) {
+                              return _c(
+                                "li",
+                                { key: item1.id, staticClass: "mb-3" },
+                                _vm._l(item1, function(val) {
+                                  return _c("ul", { key: val.id }, [
+                                    _c("li", [_vm._v(_vm._s(val))])
+                                  ])
+                                }),
+                                0
+                              )
+                            }),
+                            0
+                          )
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        {
+                          staticClass: "tab-pane fade",
+                          attrs: {
+                            id: "nav-9",
+                            role: "tabpanel",
+                            "aria-labelledby": "nav-9-tab"
+                          }
+                        },
+                        [
+                          !_vm.frequentItemSet[9]
+                            ? _c("div", { staticClass: "text-center mt-5" }, [
+                                _c("h5", [
+                                  _vm._v("No set's of item on this tab")
                                 ])
-                              }),
-                              0
-                            )
-                          ])
-                        }),
-                        0
-                      )
-                    }),
-                    0
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "div",
-                    {
-                      staticClass: "tab-pane fade",
-                      attrs: {
-                        id: "nav-9",
-                        role: "tabpanel",
-                        "aria-labelledby": "nav-9-tab"
-                      }
-                    },
-                    _vm._l(_vm.frequentItemSet, function(item1) {
-                      return _c(
-                        "ol",
-                        { key: item1.id },
-                        _vm._l(item1[9], function(val) {
-                          return _c("li", { key: val.id }, [
-                            _c(
-                              "ul",
-                              { staticClass: "mb-2" },
-                              _vm._l(val, function(item2) {
-                                return _c("li", { key: item2.id }, [
-                                  _vm._v(_vm._s(item2))
+                              ])
+                            : _vm._e(),
+                          _vm._v(" "),
+                          _c(
+                            "ol",
+                            _vm._l(_vm.frequentItemSet[9], function(item1) {
+                              return _c(
+                                "li",
+                                { key: item1.id, staticClass: "mb-3" },
+                                _vm._l(item1, function(val) {
+                                  return _c("ul", { key: val.id }, [
+                                    _c("li", [_vm._v(_vm._s(val))])
+                                  ])
+                                }),
+                                0
+                              )
+                            }),
+                            0
+                          )
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        {
+                          staticClass: "tab-pane fade",
+                          attrs: {
+                            id: "nav-10",
+                            role: "tabpanel",
+                            "aria-labelledby": "nav-10-tab"
+                          }
+                        },
+                        [
+                          !_vm.frequentItemSet[10]
+                            ? _c("div", { staticClass: "text-center mt-5" }, [
+                                _c("h5", [
+                                  _vm._v("No set's of item on this tab")
                                 ])
-                              }),
-                              0
-                            )
-                          ])
-                        }),
-                        0
+                              ])
+                            : _vm._e(),
+                          _vm._v(" "),
+                          _c(
+                            "ol",
+                            _vm._l(_vm.frequentItemSet[10], function(item1) {
+                              return _c(
+                                "li",
+                                { key: item1.id, staticClass: "mb-3" },
+                                _vm._l(item1, function(val) {
+                                  return _c("ul", { key: val.id }, [
+                                    _c("li", [_vm._v(_vm._s(val))])
+                                  ])
+                                }),
+                                0
+                              )
+                            }),
+                            0
+                          )
+                        ]
                       )
-                    }),
-                    0
+                    ]
                   )
-                ]
-              )
+                ])
+              ]),
+              _vm._v(" "),
+              _c("hr"),
+              _vm._v(" "),
+              _c("div", { staticClass: "row" }, [
+                _c("div", { staticClass: "col" }, [
+                  _c("div", { staticClass: "item-list" }, [
+                    _c("table", { staticClass: "table table-bordered" }, [
+                      _vm._m(9),
+                      _vm._v(" "),
+                      _c(
+                        "tbody",
+                        _vm._l(_vm.rules, function(item) {
+                          return _c("tr", { key: item.id }, [
+                            _c("td", [
+                              _c(
+                                "ul",
+                                _vm._l(item.antecedent, function(val) {
+                                  return _c("li", { key: val.id }, [
+                                    _vm._v(_vm._s(val))
+                                  ])
+                                }),
+                                0
+                              )
+                            ]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _c(
+                                "ul",
+                                _vm._l(item.consequent, function(val) {
+                                  return _c("li", { key: val.id }, [
+                                    _vm._v(_vm._s(val))
+                                  ])
+                                }),
+                                0
+                              )
+                            ]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v(_vm._s(item.support))]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v(_vm._s(item.confidence))])
+                          ])
+                        }),
+                        0
+                      )
+                    ])
+                  ])
+                ])
+              ])
             ])
       ])
     ])
@@ -59498,19 +60091,7 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "card-header" }, [
-      _c("h5", [_vm._v("Frequent Set of Items")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "form-group" }, [
-      _c(
-        "button",
-        { staticClass: "btn btn-primary", attrs: { type: "submit" } },
-        [_vm._v("Search")]
-      )
+      _c("h5", { staticClass: "card-title" }, [_vm._v("Frequent Set of Items")])
     ])
   },
   function() {
@@ -59519,7 +60100,17 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("p", { staticClass: "text-danger" }, [
       _c("i", [
-        _vm._v("This would be most item set's to buy on the search date.")
+        _vm._v("This would be most item set's to buy on the search Date.")
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("p", { staticClass: "text-danger" }, [
+      _c("i", [
+        _vm._v("This would be most item set's to buy on the this month.")
       ])
     ])
   },
@@ -59535,6 +60126,31 @@ var staticRenderFns = [
           )
         ])
       ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "form-group" }, [
+      _c("label", { attrs: { for: "" } }, [_vm._v("Action")]),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-primary form-control",
+          attrs: { type: "submit" }
+        },
+        [_vm._v("Search")]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("p", [
+      _c("i", [_vm._v("Note: You can only search in one whole year")])
     ])
   },
   function() {
@@ -59561,7 +60177,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("nav", [
+    return _c("nav", { staticClass: "mt-3" }, [
       _c(
         "div",
         {
@@ -59588,23 +60204,7 @@ var staticRenderFns = [
           _c(
             "a",
             {
-              staticClass: "nav-item nav-link  active",
-              attrs: {
-                id: "nav-1-tab",
-                "data-toggle": "tab",
-                href: "#nav-1",
-                role: "tab",
-                "aria-controls": "nav-1",
-                "aria-selected": "true"
-              }
-            },
-            [_vm._v("1")]
-          ),
-          _vm._v(" "),
-          _c(
-            "a",
-            {
-              staticClass: "nav-item nav-link",
+              staticClass: "nav-item nav-link active",
               attrs: {
                 id: "nav-2-tab",
                 "data-toggle": "tab",
@@ -59727,9 +60327,41 @@ var staticRenderFns = [
               }
             },
             [_vm._v("9")]
+          ),
+          _vm._v(" "),
+          _c(
+            "a",
+            {
+              staticClass: "nav-item nav-link",
+              attrs: {
+                id: "nav-10-tab",
+                "data-toggle": "tab",
+                href: "#nav-10",
+                role: "tab",
+                "aria-controls": "nav-10",
+                "aria-selected": "false"
+              }
+            },
+            [_vm._v("10")]
           )
         ]
       )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", [_vm._v("Antecedent")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Consequent")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Support")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Confidence")])
+      ])
     ])
   }
 ]
@@ -61510,35 +62142,116 @@ var render = function() {
             _vm._v(" "),
             _vm.items.item1
               ? _c("div", { staticClass: "card-footer" }, [
-                  !_vm.predicting
-                    ? _c(
-                        "button",
-                        {
-                          staticClass: "btn btn-primary",
-                          on: { click: _vm.predictItems }
-                        },
-                        [_vm._v("Search")]
-                      )
-                    : _c(
-                        "button",
-                        { staticClass: "btn btn-primary disabled" },
-                        [_vm._v("Seach")]
-                      ),
-                  _vm._v(" "),
-                  !_vm.predicting
-                    ? _c(
-                        "button",
-                        {
-                          staticClass: "btn btn-secondary",
-                          on: { click: _vm.clearItems }
-                        },
-                        [_vm._v("Clear")]
-                      )
-                    : _c(
-                        "button",
-                        { staticClass: "btn btn-secondary disabled" },
-                        [_vm._v("Clear")]
-                      )
+                  _c(
+                    "form",
+                    {
+                      on: {
+                        submit: function($event) {
+                          $event.preventDefault()
+                          return _vm.predictItems($event)
+                        }
+                      }
+                    },
+                    [
+                      _c("div", { staticClass: "row" }, [
+                        _c("div", { staticClass: "form-group mr-2" }, [
+                          _c("label", { attrs: { for: "" } }, [
+                            _vm._v("Date From:")
+                          ]),
+                          _vm._v(" "),
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.date.from,
+                                expression: "date.from"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            attrs: { type: "date", required: "" },
+                            domProps: { value: _vm.date.from },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(_vm.date, "from", $event.target.value)
+                              }
+                            }
+                          })
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "form-group mr-2" }, [
+                          _c("label", { attrs: { for: "" } }, [
+                            _vm._v("Date To:")
+                          ]),
+                          _vm._v(" "),
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.date.to,
+                                expression: "date.to"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            attrs: { type: "date", required: "" },
+                            domProps: { value: _vm.date.to },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(_vm.date, "to", $event.target.value)
+                              }
+                            }
+                          })
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "form-group" }, [
+                          _c("label", { attrs: { for: "" } }, [
+                            _vm._v("Action")
+                          ]),
+                          _vm._v(" "),
+                          _c("br"),
+                          _vm._v(" "),
+                          !_vm.predicting
+                            ? _c(
+                                "button",
+                                {
+                                  staticClass: "btn btn-primary",
+                                  attrs: { type: "submit" }
+                                },
+                                [_vm._v("Search")]
+                              )
+                            : _c(
+                                "button",
+                                { staticClass: "btn btn-primary disabled" },
+                                [_vm._v("Seach")]
+                              ),
+                          _vm._v(" "),
+                          !_vm.predicting
+                            ? _c(
+                                "a",
+                                {
+                                  staticClass: "btn btn-secondary",
+                                  staticStyle: { color: "white" },
+                                  attrs: { type: "input" },
+                                  on: { click: _vm.clearItems }
+                                },
+                                [_vm._v("Clear")]
+                              )
+                            : _c(
+                                "button",
+                                { staticClass: "btn btn-secondary disabled" },
+                                [_vm._v("Clear")]
+                              )
+                        ])
+                      ])
+                    ]
+                  )
                 ])
               : _vm._e()
           ]),
@@ -61819,7 +62532,7 @@ var render = function() {
                 ]),
                 _vm._v(" "),
                 _c("span", { staticClass: "description-text" }, [
-                  _vm._v("Satus")
+                  _vm._v("Account Status")
                 ])
               ])
             ]),
@@ -62153,7 +62866,7 @@ var render = function() {
                               }
                             ],
                             staticClass: "form-control",
-                            staticStyle: { width: "20%" },
+                            staticStyle: { width: "50%" },
                             attrs: { type: "number" },
                             domProps: { value: item.qty },
                             on: {
@@ -62181,7 +62894,7 @@ var render = function() {
                                 }
                               ],
                               staticClass: "form-control",
-                              staticStyle: { width: "30%" },
+                              staticStyle: { width: "50%" },
                               on: {
                                 change: [
                                   function($event) {
@@ -62262,19 +62975,50 @@ var render = function() {
         _vm.items != ""
           ? _c("div", { staticClass: "card-footer" }, [
               _c("div", { staticClass: "float-right" }, [
-                _c(
-                  "button",
-                  {
-                    staticClass: "btn btn-primary",
-                    on: { click: _vm.saveRequest }
-                  },
-                  [_vm._v("Save")]
-                ),
+                _vm.edit
+                  ? _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-primary",
+                        attrs: { "data-dismiss": "modal" },
+                        on: {
+                          click: function($event) {
+                            return _vm.updateItemList("approved")
+                          }
+                        }
+                      },
+                      [_vm._v("Update & Approved")]
+                    )
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.edit
+                  ? _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-primary",
+                        attrs: { "data-dismiss": "modal" },
+                        on: {
+                          click: function($event) {
+                            return _vm.updateItemList("disapproved")
+                          }
+                        }
+                      },
+                      [_vm._v("Disaproved")]
+                    )
+                  : _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-primary",
+                        on: { click: _vm.saveRequest }
+                      },
+                      [_vm._v("Save")]
+                    ),
                 _vm._v(" "),
                 _c(
                   "button",
                   {
                     staticClass: "btn btn-secondary",
+                    attrs: { "data-dismiss": "modal" },
                     on: { click: _vm.deleteDraft }
                   },
                   [_vm._v("Cancel")]
@@ -62381,7 +63125,7 @@ var render = function() {
           _vm._v(" "),
           _c("div", { staticClass: "info-box-content" }, [
             _c("span", { staticClass: "info-box-text" }, [
-              _vm._v("All Request")
+              _vm._v("Pending Request")
             ]),
             _vm._v(" "),
             _c("span", { staticClass: "info-box-number" }, [
@@ -62392,46 +63136,16 @@ var render = function() {
               )
             ])
           ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "card card-secondary" }, [
-          _vm._m(1),
-          _vm._v(" "),
-          _c("div", { staticClass: "card-body" }, [
-            _vm.widget.allRequest == ""
-              ? _c("div", { staticClass: "text-center" }, [
-                  _c("h5", [_vm._v("No Records")])
-                ])
-              : _c("table", { staticClass: "table table-bordered" }, [
-                  _vm._m(2),
-                  _vm._v(" "),
-                  _c(
-                    "tbody",
-                    _vm._l(_vm.widget.allRequest, function(item) {
-                      return _c("tr", { key: item.id }, [
-                        _c("td", [_vm._v(_vm._s(item.po_number))]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v(_vm._s(item.date_needed))]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v(_vm._s(item.action))]),
-                        _vm._v(" "),
-                        _vm._m(3, true)
-                      ])
-                    }),
-                    0
-                  )
-                ])
-          ])
         ])
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "col-xs-12 col-md-4" }, [
         _c("div", { staticClass: "info-box" }, [
-          _vm._m(4),
+          _vm._m(1),
           _vm._v(" "),
           _c("div", { staticClass: "info-box-content" }, [
             _c("span", { staticClass: "info-box-text" }, [
-              _vm._v("Cancelled Request")
+              _vm._v("Disapproved Request")
             ]),
             _vm._v(" "),
             _c("span", { staticClass: "info-box-number" }, [
@@ -62442,40 +63156,12 @@ var render = function() {
               )
             ])
           ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "card card-secondary" }, [
-          _vm._m(5),
-          _vm._v(" "),
-          _c("div", { staticClass: "card-body" }, [
-            _vm.widget.cancelled == ""
-              ? _c("div", { staticClass: "text-center" }, [
-                  _c("h5", [_vm._v("No Records")])
-                ])
-              : _c("table", { staticClass: "table table-bordered" }, [
-                  _vm._m(6),
-                  _vm._v(" "),
-                  _c(
-                    "tbody",
-                    _vm._l(_vm.widget.cancelled, function(item) {
-                      return _c("tr", { key: item.id }, [
-                        _c("td", [_vm._v(_vm._s(item.po_number))]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v(_vm._s(item.date_needed))]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v(_vm._s(item.action))])
-                      ])
-                    }),
-                    0
-                  )
-                ])
-          ])
         ])
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "col-xs-12 col-md-4" }, [
         _c("div", { staticClass: "info-box" }, [
-          _vm._m(7),
+          _vm._m(2),
           _vm._v(" "),
           _c("div", { staticClass: "info-box-content" }, [
             _c("span", { staticClass: "info-box-text" }, [
@@ -62490,8 +63176,209 @@ var render = function() {
               )
             ])
           ])
-        ]),
+        ])
+      ])
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "row mb-5" }, [
+      _c("div", { staticClass: "col-3" }, [
+        _c("label", { attrs: { for: "search" } }, [_vm._v(" Search Request")]),
         _vm._v(" "),
+        _c(
+          "form",
+          {
+            on: {
+              submit: function($event) {
+                $event.preventDefault()
+                return _vm.editRequest(_vm.input)
+              }
+            }
+          },
+          [
+            _c("div", { staticClass: "input-group input-group-sm" }, [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.input,
+                    expression: "input"
+                  }
+                ],
+                staticClass: "form-control",
+                attrs: {
+                  type: "number",
+                  list: "po-number",
+                  name: "",
+                  placeholder: "search PO Number",
+                  required: ""
+                },
+                domProps: { value: _vm.input },
+                on: {
+                  input: [
+                    function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.input = $event.target.value
+                    },
+                    _vm.searchNumber
+                  ]
+                }
+              }),
+              _vm._v(" "),
+              _c(
+                "datalist",
+                { attrs: { id: "po-number" } },
+                _vm._l(_vm.searchItem, function(item) {
+                  return _c("option", { key: item.id }, [
+                    _vm._v(_vm._s(item.po_number))
+                  ])
+                }),
+                0
+              ),
+              _vm._v(" "),
+              _vm._m(3)
+            ]),
+            _vm._v(" "),
+            _c("br"),
+            _vm._v(" "),
+            _c(
+              "a",
+              { staticClass: "btn btn-primary", attrs: { href: "/request" } },
+              [_vm._v("Create Request")]
+            )
+          ]
+        )
+      ])
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "row" }, [
+      _c("div", { staticClass: "col-xs-12 col-md-4" }, [
+        _c("div", { staticClass: "card card-secondary" }, [
+          _vm._m(4),
+          _vm._v(" "),
+          _c("div", { staticClass: "card-body" }, [
+            _vm.widget.allRequest == ""
+              ? _c("div", { staticClass: "text-center" }, [
+                  _c("h5", [_vm._v("No Records")])
+                ])
+              : _c("table", { staticClass: "table table-bordered" }, [
+                  _vm._m(5),
+                  _vm._v(" "),
+                  _c(
+                    "tbody",
+                    _vm._l(_vm.widget.allRequest, function(item) {
+                      return _c("tr", { key: item.id }, [
+                        _c("td", [_vm._v(_vm._s(item.po_number))]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(item.updated_at))]),
+                        _vm._v(" "),
+                        _c("td", [
+                          _c(
+                            "button",
+                            {
+                              staticClass: "btn btn-info",
+                              attrs: {
+                                title: "Show this request!",
+                                "data-toggle": "modal",
+                                "data-target": "#showModal"
+                              },
+                              on: {
+                                click: function($event) {
+                                  return _vm.editRequest(item.po_number)
+                                }
+                              }
+                            },
+                            [_c("i", { staticClass: "fas fa-eye" })]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "button",
+                            {
+                              staticClass: "btn btn-primary",
+                              attrs: { title: "Aprove this request!" },
+                              on: {
+                                click: function($event) {
+                                  return _vm.disapprovedRequest(item)
+                                }
+                              }
+                            },
+                            [_c("i", { staticClass: "fas fa-check" })]
+                          )
+                        ])
+                      ])
+                    }),
+                    0
+                  )
+                ])
+          ])
+        ])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-xs-12 col-md-4" }, [
+        _c("div", { staticClass: "card card-secondary" }, [
+          _vm._m(6),
+          _vm._v(" "),
+          _c("div", { staticClass: "card-body" }, [
+            _vm.widget.cancelled == ""
+              ? _c("div", { staticClass: "text-center" }, [
+                  _c("h5", [_vm._v("No Records")])
+                ])
+              : _c("table", { staticClass: "table table-bordered" }, [
+                  _vm._m(7),
+                  _vm._v(" "),
+                  _c(
+                    "tbody",
+                    _vm._l(_vm.widget.cancelled, function(item) {
+                      return _c("tr", { key: item.id }, [
+                        _c("td", [_vm._v(_vm._s(item.po_number))]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(item.updated_at))]),
+                        _vm._v(" "),
+                        _c("td", [
+                          _c(
+                            "button",
+                            {
+                              staticClass: "btn btn-info",
+                              attrs: {
+                                title: "Show this request!",
+                                "data-toggle": "modal",
+                                "data-target": "#showModal"
+                              },
+                              on: {
+                                click: function($event) {
+                                  return _vm.editRequest(item.po_number)
+                                }
+                              }
+                            },
+                            [_c("i", { staticClass: "fas fa-eye" })]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "button",
+                            {
+                              staticClass: "btn btn-primary",
+                              attrs: { title: "Approve this request!" },
+                              on: {
+                                click: function($event) {
+                                  return _vm.approvedRequest(item)
+                                }
+                              }
+                            },
+                            [_c("i", { staticClass: "fas fa-check" })]
+                          )
+                        ])
+                      ])
+                    }),
+                    0
+                  )
+                ])
+          ])
+        ])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-xs-12 col-md-4" }, [
         _c("div", { staticClass: "card card-secondary" }, [
           _vm._m(8),
           _vm._v(" "),
@@ -62509,11 +63396,41 @@ var render = function() {
                       return _c("tr", { key: item.id }, [
                         _c("td", [_vm._v(_vm._s(item.po_number))]),
                         _vm._v(" "),
-                        _c("td", [_vm._v(_vm._s(item.date_needed))]),
+                        _c("td", [_vm._v(_vm._s(item.updated_at))]),
                         _vm._v(" "),
-                        _c("td", [_vm._v(_vm._s(item.action))]),
-                        _vm._v(" "),
-                        _vm._m(10, true)
+                        _c("td", [
+                          _c(
+                            "button",
+                            {
+                              staticClass: "btn btn-info",
+                              attrs: {
+                                title: "Show this request!",
+                                "data-toggle": "modal",
+                                "data-target": "#showModal"
+                              },
+                              on: {
+                                click: function($event) {
+                                  return _vm.editRequest(item.po_number)
+                                }
+                              }
+                            },
+                            [_c("i", { staticClass: "fas fa-eye" })]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "button",
+                            {
+                              staticClass: "btn btn-danger",
+                              attrs: { title: "Disapprove this request!" },
+                              on: {
+                                click: function($event) {
+                                  return _vm.disapprovedRequest(item)
+                                }
+                              }
+                            },
+                            [_c("i", { staticClass: "fas fa-times" })]
+                          )
+                        ])
                       ])
                     }),
                     0
@@ -62524,7 +63441,42 @@ var render = function() {
       ])
     ]),
     _vm._v(" "),
-    _c("div", { staticClass: "row" })
+    _c("div", { staticClass: "row" }, [
+      _c(
+        "div",
+        {
+          staticClass: "modal fade",
+          attrs: {
+            id: "showModal",
+            tabindex: "-1",
+            role: "dialog",
+            "aria-labelledby": "showModalTitle",
+            "aria-hidden": "true"
+          }
+        },
+        [
+          _c(
+            "div",
+            {
+              staticClass: "modal-dialog modal-dialog-centered modal-xl",
+              attrs: { role: "document" }
+            },
+            [
+              _c("div", { staticClass: "modal-content" }, [
+                _vm._m(10),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "modal-body" },
+                  [_c("request-item", { attrs: { editId: _vm.editId } })],
+                  1
+                )
+              ])
+            ]
+          )
+        ]
+      )
+    ])
   ])
 }
 var staticRenderFns = [
@@ -62540,40 +63492,8 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card-header" }, [
-      _c("h5", { staticClass: "card-title" }, [
-        _vm._v("\n                        All Request\n                    ")
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("thead", [
-      _c("tr", [
-        _c("td", [_vm._v("PO Number")]),
-        _vm._v(" "),
-        _c("td", [_vm._v("Date Needed")]),
-        _vm._v(" "),
-        _c("td", [_vm._v("Status")]),
-        _vm._v(" "),
-        _c("td", [_vm._v("Action")])
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("td", [
-      _c("button", { staticClass: "btn btn-info" }, [
-        _c("i", { staticClass: "fas fa-eye" })
-      ]),
-      _vm._v(" "),
-      _c("button", { staticClass: "btn btn-primary" }, [
-        _c("i", { staticClass: "fas fa-clipboard-check" })
-      ])
+    return _c("span", { staticClass: "info-box-icon bg-info elevation-1" }, [
+      _c("i", { staticClass: "fas fa-ban" })
     ])
   },
   function() {
@@ -62581,7 +63501,27 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("span", { staticClass: "info-box-icon bg-info elevation-1" }, [
-      _c("i", { staticClass: "fas fa-ban" })
+      _c("i", { staticClass: "fas fa-tags" })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("span", { staticClass: "input-group-append" }, [
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-info btn-flat",
+          attrs: {
+            type: "submit",
+            title: "Show this request!",
+            "data-toggle": "modal",
+            "data-target": "#showModal"
+          }
+        },
+        [_c("i", { staticClass: "fas fa-search" })]
+      )
     ])
   },
   function() {
@@ -62591,7 +63531,7 @@ var staticRenderFns = [
     return _c("div", { staticClass: "card-header" }, [
       _c("h5", { staticClass: "card-title" }, [
         _vm._v(
-          "\n                        Cancelled Request\n                    "
+          "\n                        Pending Request\n                    "
         )
       ])
     ])
@@ -62604,9 +63544,9 @@ var staticRenderFns = [
       _c("tr", [
         _c("td", [_vm._v("PO Number")]),
         _vm._v(" "),
-        _c("td", [_vm._v("Date Needed")]),
+        _c("td", [_vm._v("Date Created")]),
         _vm._v(" "),
-        _c("td", [_vm._v("Status")])
+        _c("td", [_vm._v("Action")])
       ])
     ])
   },
@@ -62614,8 +63554,26 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("span", { staticClass: "info-box-icon bg-info elevation-1" }, [
-      _c("i", { staticClass: "fas fa-tags" })
+    return _c("div", { staticClass: "card-header" }, [
+      _c("h5", { staticClass: "card-title" }, [
+        _vm._v(
+          "\n                        Disapproved Request\n                    "
+        )
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("td", [_vm._v("PO Number")]),
+        _vm._v(" "),
+        _c("td", [_vm._v("Date Update")]),
+        _vm._v(" "),
+        _c("td", [_vm._v("Action")])
+      ])
     ])
   },
   function() {
@@ -62638,9 +63596,7 @@ var staticRenderFns = [
       _c("tr", [
         _c("td", [_vm._v("PO Number")]),
         _vm._v(" "),
-        _c("td", [_vm._v("Date Needed")]),
-        _vm._v(" "),
-        _c("td", [_vm._v("Status")]),
+        _c("td", [_vm._v("Date Update")]),
         _vm._v(" "),
         _c("td", [_vm._v("Action")])
       ])
@@ -62650,14 +63606,25 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("td", [
-      _c("button", { staticClass: "btn btn-info" }, [
-        _c("i", { staticClass: "fas fa-eye" })
-      ]),
+    return _c("div", { staticClass: "modal-header" }, [
+      _c(
+        "h5",
+        { staticClass: "modal-title", attrs: { id: "exampleModalLongTitle" } },
+        [_vm._v("Modal title")]
+      ),
       _vm._v(" "),
-      _c("button", { staticClass: "btn btn-danger" }, [
-        _c("i", { staticClass: "fas fa-ban" })
-      ])
+      _c(
+        "button",
+        {
+          staticClass: "close",
+          attrs: {
+            type: "button",
+            "data-dismiss": "modal",
+            "aria-label": "Close"
+          }
+        },
+        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+      )
     ])
   }
 ]
@@ -76671,6 +77638,56 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_FrequentItemSet_vue_vue_type_template_id_6f308186_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
+
+/***/ }),
+
+/***/ "./resources/js/components/LineChart.vue":
+/*!***********************************************!*\
+  !*** ./resources/js/components/LineChart.vue ***!
+  \***********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _LineChart_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./LineChart.vue?vue&type=script&lang=js& */ "./resources/js/components/LineChart.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+var render, staticRenderFns
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_1__["default"])(
+  _LineChart_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"],
+  render,
+  staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/LineChart.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/LineChart.vue?vue&type=script&lang=js&":
+/*!************************************************************************!*\
+  !*** ./resources/js/components/LineChart.vue?vue&type=script&lang=js& ***!
+  \************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_LineChart_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./LineChart.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/LineChart.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_LineChart_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
