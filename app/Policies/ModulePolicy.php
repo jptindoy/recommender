@@ -40,9 +40,11 @@ class ModulePolicy
     public function view(User $user, $module)
     {
         
-        // if($user->role_id == 1){
-        //     if($module->module == 'Profile Management'){
-        //         return true;
+        // $modules = ModuleRight::where('role_id', '=', $user->role_id)->get();
+
+        // foreach($modules as $val){
+        //     if($val->module->module == $module){
+        //         return $val->view;
         //     }
         // }
     }

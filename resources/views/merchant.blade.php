@@ -18,51 +18,26 @@
 <div class="content">
     <div class="container-fluid">    
         <div class="row">
-            <div class="col-xs-12 col-md-4">
-               <!-- small box -->
-               <div class="small-box bg-info">
-                    <div class="inner">
-                        <h3>Pending Request</h3>
-
-                        <p>Product most frequently consumed</p>
-                    </div>
-                    <div class="icon">
-                        <i class="ion ion-bag"></i>
-                    </div>
-                    <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-                </div>
+            <div class="col-xs-12 col-md-6">
+                <yesterday-sales></yesterday-sales>              
             </div>
-            <div class="col-xs-12 col-md-4">
+            <div class="col-xs-12 col-md-6">
                 <!-- small box -->
                 <div class="small-box bg-info">
                     <div class="inner">
-                        <h3>Approved Request</h3>
+                        <h3>Request Progress</h3>
 
-                        <p>Product most frequently consumed</p>
+                        <p>Show the Progress of the created request</p>
                     </div>
                     <div class="icon">
                         <i class="ion ion-bag"></i>
                     </div>
-                    <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                    <a href="{{route('requested')}}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                 </div>
-            </div>
-            <div class="col-xs-12 col-md-4">
-                <!-- small box -->
-                <div class="small-box bg-info">
-                    <div class="inner">
-                        <h3>Trend Product</h3>
-    
-                        <p>Product most frequently consumed</p>
-                    </div>
-                    <div class="icon">
-                        <i class="ion ion-bag"></i>
-                    </div>
-                    <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-                </div>
-            </div>                
+            </div>       
         </div>                     
-       
-        <yesterday-sales></yesterday-sales>
+        <frequent-item-set></frequent-item-set>
+        <draft-item></draft-item>
     </div> 
 </div>
 <!-- /.content --> 

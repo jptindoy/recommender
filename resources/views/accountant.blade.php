@@ -1,79 +1,49 @@
 @extends('layouts.app')
 
 @section('content')
-<!-- Content Header (Page header) -->
-<div class="content-header">
-    <div class="container-fluid">
-        <div class="row mb-2">
-            <div class="col-sm-6">
-                <h1 class="m-0 text-dark">Accountant Dashboard</h1>
-            </div><!-- /.col -->
-            
-        </div><!-- /.row -->
-    </div><!-- /.container-fluid -->
-</div>
-<!-- /.content-header -->
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0 text-dark">Administrator Dashboard</h1>
+                </div><!-- /.col -->
+                
+            </div><!-- /.row -->
+        </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
 
-<!-- Main content -->
-<div class="content">
-    <div class="container-fluid">    
-        <div class="row">
-            <div class="col-xs-12 col-md-4">
-                <div class="info-box">
-                    <span class="info-box-icon bg-info elevation-1"><i class="fas fa-shopping-cart"></i></span>
-      
-                    <div class="info-box-content">
-                        <span class="info-box-text">Sales This Month</span>
-                        <span class="info-box-number">
-                            10
-                        <small>%</small>
-                        </span>
-                    </div>
-                    <!-- /.info-box-content -->
+    <!-- Main content -->
+    <div class="content">
+        <div class="container-fluid">    
+            <sales-report></sales-report>
+            <div class="row">
+                <div class="col-xs-12 col-md-6">
+                    <yesterday-sales></yesterday-sales>
                 </div>
-                <!-- /.info-box -->
-            </div>   
-            <div class="col-xs-12 col-md-4">
-                <div class="info-box">
-                    <span class="info-box-icon bg-info elevation-1"><i class="fas fa-tags"></i></span>
-      
-                    <div class="info-box-content">
-                        <span class="info-box-text">On Proccess Request</span>
-                        <span class="info-box-number">
-                            10
-                        <small>%</small>
-                        </span>
-                    </div>
-                    <!-- /.info-box-content -->
-                </div>
-                <!-- /.info-box -->
-            </div>   
-            <div class="col-xs-12 col-md-4">
-                <div class="info-box">
-                    <span class="info-box-icon bg-info elevation-1"><i class="fas fa-truck"></i></span>
-      
-                    <div class="info-box-content">
-                        <span class="info-box-text">Delivered Request</span>
-                        <span class="info-box-number">
-                            10
-                        <small>%</small>
-                        </span>
-                    </div>
-                    <!-- /.info-box-content -->
-                </div>
-                <!-- /.info-box -->
-            </div>    
-        </div>                     
-        <div class="row">
-            <div class="col-xs-12 col-md-6">
-                <sales-report></sales-report>
-            </div>
-            <div class="col-xs-12 col-md-6">
-                <sales-report></sales-report>
-            </div>
-        </div>
+                <div class="col-xs-12 col-md-6">
+                    <!-- small box -->
+                    <div class="small-box bg-info">
+                        <div class="inner">
+                            <h3>Trend Product</h3>
         
-    </div> 
-</div>
-<!-- /.content --> 
+                            <p>Product most frequently consumed</p>
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-bag"></i>
+                        </div>
+                        <a href="{{route('recommended')}}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                    </div>
+                    <div class="note">
+                        <p>The presentation of data on each window are base to the data of the POS Sytem of the University Store. The data that imported to the database are being proccess base to the need information to each window.</p>
+                        <label for="">Note:</label>
+                        <p><i>To maintain the accuracy of the graph and table, you need to import everyday the POS Sales Data to this System.</i> </p>
+                    </div>
+                </div>                
+            </div>            
+        </div> 
+    </div>
+    <!-- /.content --> 
+
 @endsection

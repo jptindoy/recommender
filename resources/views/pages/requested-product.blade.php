@@ -17,7 +17,7 @@
 <!-- Main content -->
 <div class="content">
     <div class="container-fluid">    
-        <requested-item></requested-item>        
+        <requested-item :user-role={{Auth::user()->role_id}} :user-id={{Auth::user()->id}}></requested-item>        
     </div><!-- /.container-fluid -->
 </div>
 <!-- /.content -->

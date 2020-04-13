@@ -5,6 +5,8 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Request as RequestItem;
+use App\Notification;
+use Illuminate\Support\Facades\Auth;
 
 class RequestController extends Controller
 {   
@@ -38,6 +40,7 @@ class RequestController extends Controller
 
     public function draft(Request $request)
     {   
+        $this->authorize('create', [\App\ModuleRight::class, 'Product Request']);
         $ifExist = RequestItem::where('product_name', $request->input('name'))
                                 ->where('status', 'draft')
                                 ->get();
@@ -49,11 +52,25 @@ class RequestController extends Controller
                 'type' => 'warning',
             ]);
         } else {
+
+            $getUnits = RequestItem::select('product_name','variant')
+                                    ->groupBy('product_name', 'variant')
+                                    ->where('product_name', $request->input('name'))
+                                    ->get();
+
+            if(count($getUnits) > 0){
+                foreach($getUnits as $item)
+                $units = $item->variant;
+
+            } else {
+                $units = null;
+            }
                 // return $request->input('0');
             $item = new RequestItem;
 
-            $item->product_name = $request->input('name');;
-            $item->qty = $request->input('qty');;
+            $item->product_name = $request->input('name');
+            $item->qty = $request->input('qty');
+            $item->variant = $units;
             
             if($item->save()){
                 return json_encode([
@@ -68,10 +85,20 @@ class RequestController extends Controller
 
     public function saveRequest(Request $request)
     {   
+        $this->authorize('create', [\App\ModuleRight::class, 'Product Request']);
         try {
             $saveRequest = RequestItem::where('status', 'draft')->update(
-                ['date_needed' => $request->dateNeeded, 'po_number' => $request->PO_number, 'status' => 'requested']
+                ['date_needed' => $request->dateNeeded, 'po_number' => $request->PO_number, 'status' => 'requested', 'action' => 'pending', 'created_by' => $request->user]
             );
+
+            $notify = new Notification;
+
+            $notify->po_number = $request->PO_number; 
+            $notify->sender = Auth::user()->id;
+            $notify->recipient = 2;
+            $notify->message = 'New Request Created';
+            $notify->save();
+
             return json_encode([
                 'msg' => 'Request created!',
                 'type' => 'success',
@@ -87,7 +114,8 @@ class RequestController extends Controller
     }
     
     public function updateQty(Request $request, $id)
-    {
+    {   
+        $this->authorize('create', [\App\ModuleRight::class, 'Product Request']);
         $qty = RequestItem::findOrFail($id);
 
         $qty->qty = $request->qty;
@@ -98,7 +126,8 @@ class RequestController extends Controller
     }
 
     public function updateVariant(Request $request, $id)
-    {
+    {   
+        $this->authorize('create', [\App\ModuleRight::class, 'Product Request']);
         $variant = RequestItem::findOrFail($id);
 
         $variant->variant = $request->variant;
@@ -109,14 +138,25 @@ class RequestController extends Controller
     }
 
     public function updateRequest(Request $request)
-    {   
+    {      
+        $this->authorize('update', [\App\ModuleRight::class, 'Product Request']);
         try {
             $updateRequest = RequestItem::where('po_number', $request->PO_number)
                                         ->update(['date_needed' => $request->dateNeeded, 
                                             'po_number' => $request->PO_number, 
                                             'action' => $request->action,
-                                            'status' => 'requested']
+                                            'status' => 'requested',
+                                            'updated_by' => $request->user]
                                         );
+
+            $notify = new Notification;
+
+            $notify->po_number = $request->PO_number;
+            $notify->sender = Auth::user()->id;
+            $notify->recipient = 3;
+            $notify->message = 'New request '.$request->action;
+            $notify->save();
+            
             return json_encode([
                 'msg' => 'Request updated!',
                 'type' => 'success',
@@ -138,7 +178,8 @@ class RequestController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
-    {
+    {   
+        
         $list = RequestItem::findOrFail($id)->delete();
         return json_encode([
             'msg' => 'Item Remove!',
@@ -147,25 +188,43 @@ class RequestController extends Controller
 
     public function deleteDraft()
     {   
-        $items = RequestItem::where('status','draft')->delete();        
-        return json_encode($items);
+        $items = RequestItem::where('status','draft')->delete();   
+        if($items > 0){
+            return json_encode([
+                'err' => false,
+                'msg' => 'Request List Cancelled!',
+            ]);
+        } else {
+            return json_encode($items);
+        }    
+        
     }
 
     public function requestWidget()
-    {
-        $allRequest = RequestItem::select('po_number', 'date_needed', 'updated_at', 'action')
+    {   
+        $this->authorize('viewAny', [\App\ModuleRight::class, 'Product Request']);
+        if(Auth::user()->role_id == 1){
+            $noti = Notification::where('admin_status', 'unread')
+                                ->update(['admin_status' => 'read']);
+        } else {
+            $noti = Notification::where('recipient', Auth::user()->role_id)
+                                ->where('status', 'unread')
+                                ->update(['status' => 'read']);
+        }
+
+        $allRequest = RequestItem::select('po_number', 'date_needed', 'action')
                                 ->where('action', 'pending')
-                                ->groupBy('po_number', 'date_needed', 'updated_at', 'action')
+                                ->groupBy('po_number', 'date_needed', 'action')
                                 ->get();
 
-        $cancelled = RequestItem::select('po_number', 'date_needed', 'updated_at', 'action')
+        $cancelled = RequestItem::select('po_number', 'date_needed', 'action')
                             ->where('action', 'disapproved')
-                            ->groupBy('po_number', 'date_needed', 'updated_at', 'action')
+                            ->groupBy('po_number', 'date_needed', 'action')
                             ->get();
 
-        $approved = RequestItem::select('po_number', 'date_needed', 'updated_at', 'action')
+        $approved = RequestItem::select('po_number', 'date_needed', 'action')
                             ->where('action', 'approved')
-                            ->groupBy('po_number', 'date_needed', 'updated_at', 'action')
+                            ->groupBy('po_number', 'date_needed', 'action')
                             ->get();
 
         return json_encode([
@@ -179,7 +238,17 @@ class RequestController extends Controller
     }
 
     public function editRequest($id)
-    {       
+    {   
+        if(Auth::user()->role_id == 1){
+            $noti = Notification::where('po_number', $id)
+                                ->where('admin_status', 'unread')
+                                ->update(['admin_status' => 'read']);
+        } else {
+            $noti = Notification::where('po_number', $id)
+                                ->where('recipient', Auth::user()->role_id)
+                                ->where('status', 'unread')
+                                ->update(['status' => 'read']);
+        }
         $items = RequestItem::where('po_number', $id)->get();
         
         return json_encode([
@@ -189,6 +258,7 @@ class RequestController extends Controller
 
     public function editAddItem(Request $request)
     {   
+        $this->authorize('create', [\App\ModuleRight::class, 'Product Request']);
         $ifExist = RequestItem::where('product_name', $request->input('name'))
                                 ->where('status', 'draft')
                                 ->get();
@@ -200,11 +270,25 @@ class RequestController extends Controller
                 'type' => 'warning',
             ]);
         } else {
+            $getUnits = RequestItem::select('product_name','variant')
+                                    ->groupBy('product_name', 'variant')
+                                    ->where('product_name', $request->input('name'))
+                                    ->get();
+
+            if(count($getUnits) > 0){
+                foreach($getUnits as $item)
+                $units = $item->variant;
+
+            } else {
+                $units = null;
+            }
+
                 // return $request->input('0');
             $item = new RequestItem;
 
             $item->po_number = $request->input('po');
             $item->product_name = $request->input('name');
+            $item->variant = $units;
             
             if($item->save()){
                 return json_encode([
@@ -228,4 +312,6 @@ class RequestController extends Controller
             'items' => $items,
         ]); 
     }
+    
+    
 }

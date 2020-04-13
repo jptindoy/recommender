@@ -221,61 +221,237 @@ class RecommendationController extends Controller
         ]);
     }
 
+    public function getItemGraph(Request $request)
+    {
+        $daily = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31];
+        $monthly = [1,2,3,4,5,6,7,8,9,10,11,12];
+        $yearly = [2017,2018,2019,2020];
+
+        $dailyItem = array();
+        $monthlyItem = array();
+        $yearlyItem = array();
+
+        
+        foreach($yearly as $year) {
+            $dailySets = array();
+            foreach($daily as $val) {
+                $items = PosData::where('product_name', $request->all())
+                                ->whereDay('date', $val)
+                                ->whereYear('date', $year)
+                                ->sum('qty');            
+                
+                $dailySets[] = $items;
+                     
+            }
+            $dailyItem[] = $dailySets;
+        }
+        
+
+        foreach($yearly as $year) {
+            $monthlySets = array();
+            foreach($monthly as $val) {
+                $items = PosData::where('product_name', $request->all())
+                                ->whereMonth('date', $val)
+                                ->whereYear('date', $year)
+                                ->sum('qty'); 
+                $monthlySets[] = $items;
+            }
+    
+            $monthlyItem[] = $monthlySets;
+        }
+
+        foreach($yearly as $val) {
+            $items = PosData::where('product_name', $request->all())
+                            ->whereYear('date', $val)->sum('qty');   
+                       
+            $yearlyItem[] = $items;
+            
+        }
+
+        return json_encode([
+            'dailyqty' => ([
+                    "labels" => $daily,
+                    'datasets' => [
+                        ([
+                            'label' => "2017",
+                            'backgroundColor' => "#003d4d",
+                            'data' => $dailyItem[0]
+                        ]),
+                        ([
+                            'label' => "2018",
+                            'backgroundColor' => "#008fb3",
+                            'data' => $dailyItem[1]
+                        ]),
+                        ([
+                            'label' => "2019",
+                            'data' => $dailyItem[2],
+                            'backgroundColor' => "#1ad1ff"
+                        ]),
+                        ([
+                            'label' => "2020",
+                            'data' => $dailyItem[3],
+                            'backgroundColor' => "#99ebff"
+                        ]),
+                    ]
+            ]),
+            
+            'monthlyqty' => ([
+                    "labels" => $monthly,
+                    'datasets' => [
+                        ([
+                            'label' => "2017",
+                            'backgroundColor' => "#003d4d",
+                            'data' => $monthlyItem[0]
+                        ]),
+                        ([
+                            'label' => "2018",
+                            'backgroundColor' => "#008fb3",
+                            'data' => $monthlyItem[1]
+                        ]),
+                        ([
+                            'label' => "2019",
+                            'data' => $monthlyItem[2],
+                            'backgroundColor' => "#1ad1ff"
+                        ]),
+                        ([
+                            'label' => "2020",
+                            'data' => $monthlyItem[3],
+                            'backgroundColor' => "#99ebff"
+                        ]),
+                    ]
+            ]),
+
+            'yearlyqty' => ([
+                    'labels' => $yearly,
+                    'datasets'=> [([
+                        'type'                => 'line',
+                        'data'                => $yearlyItem,
+                        'backgroundColor'     => 'transparent',
+                        'borderColor'         => '#007bff',
+                        'pointBorderColor'    => '#007bff',
+                        'pointBackgroundColor'=> '#007bff',
+                        'fill'                => false,
+                        'pointHoverBackgroundColor'=> '#007bff',
+                        'pointHoverBorderColor'    => '#007bff'
+                        ])]
+            ]),
+        ]);
+    }
+
     public function test()
     {
-        $month = date('m');
-        $listItem = array();
-        $listqty = array();
+        $daily = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31];
+        $monthly = [1,2,3,4,5,6,7,8,9,10,11,12];
+        $yearly = [2017,2018,2019,2020];
 
-        $invoice = PosData::select('invoice','id')
-                            ->groupBy('invoice', 'id')
-                            ->whereMonth('date', '04')
-                            ->orderBy('id', 'desc')
-                            ->limit(50)
-                            ->get();
-        return json_encode($invoice);
-        foreach($invoice as $val){   
-            $itemSet = array();        
-            $itemqty = array();        
-            $items = PosData::where('invoice', $val->invoice)->get();
-            foreach($items as $item){
-               $itemSet[] = $item->product_name;
-               $itemqty[] = ['name' =>  $item->product_name, 'qty' => $item->qty];
+        $dailyItem = array();
+        $monthlyItem = array();
+        $yearlyItem = array();
+
+        
+        foreach($yearly as $year) {
+            $dailySets = array();
+            foreach($daily as $val) {
+                $items = PosData::where('product_name', 'Staples')
+                                ->whereDay('date', $val)
+                                ->whereYear('date', $year)
+                                ->sum('qty');            
+                
+                $dailySets[] = $items;
+                     
             }
-            $listItem[] = $itemSet;
-            $listqty[] = $itemqty;
+            $dailyItem[] = $dailySets;
+        }
+        
+
+        foreach($yearly as $year) {
+            $monthlySets = array();
+            foreach($monthly as $val) {
+                $items = PosData::where('product_name', 'Staples')
+                                ->whereMonth('date', $val)
+                                ->whereYear('date', $year)
+                                ->sum('qty'); 
+                $monthlySets[] = $items;
+            }
+    
+            $monthlyItem[] = $monthlySets;
         }
 
-        $labels  = [];
-
-        $associator = new Apriori($support = 0, $confidence = 0);
-        $associator->train($listItem, $labels);
-
-        $items = $associator->apriori();
-        
-        $productqty = array();   
-
-        foreach ($items[1] as $item) {
-            $sum = 0;
-            for ($x=0; $x < count($listqty); $x++) {                
-                for ($y=0; $y < count($listqty[$x]); $y++) {
-                    if($item[0] === $listqty[$x][$y]['name']){
-                        $sum += $listqty[$x][$y]['qty'];
-                    }           
-                }          
-            } 
-            $productqty[] = ['name' => $item[0], 'qty' => $sum];
+        foreach($yearly as $val) {
+            $items = PosData::where('product_name', 'Staples')
+                            ->whereYear('date', $val)->sum('qty');   
+                       
+            $yearlyItem[] = $items;
+            
         }
 
-        
-        // return json_encode([
-        //     // 'qty' => $productqty,
-        //     // 'itemset' => $listqty,
-        //     // 'rules' => $associator->getRules(),
-        // ]);
+        return json_encode([
+            'dailyqty' => ([
+                    "labels" => $daily,
+                    'datasets' => [
+                        ([
+                            'label' => "2017",
+                            'backgroundColor' => "#f91642",
+                            'data' => $dailyItem[0]
+                        ]),
+                        ([
+                            'label' => "2018",
+                            'backgroundColor' => "#636e72",
+                            'data' => $dailyItem[1]
+                        ]),
+                        ([
+                            'label' => "2019",
+                            'data' => $dailyItem[2],
+                            'backgroundColor' => "#4b81f3"
+                        ]),
+                        ([
+                            'label' => "2020",
+                            'data' => $dailyItem[3],
+                            'backgroundColor' => "#4b8134"
+                        ]),
+                    ]
+            ]),
+            
+            'monthlyqty' => ([
+                    "labels" => $monthly,
+                    'datasets' => [
+                        ([
+                            'label' => "2017",
+                            'backgroundColor' => "#f91642",
+                            'data' => $monthlyItem[0]
+                        ]),
+                        ([
+                            'label' => "2018",
+                            'backgroundColor' => "#636e72",
+                            'data' => $monthlyItem[1]
+                        ]),
+                        ([
+                            'label' => "2019",
+                            'data' => $monthlyItem[2],
+                            'backgroundColor' => "#4b81f3"
+                        ]),
+                        ([
+                            'label' => "2020",
+                            'data' => $monthlyItem[3],
+                            'backgroundColor' => "#4b8134"
+                        ]),
+                    ]
+            ]),
 
-        
-
-        // return json_encode($listItem);
+            'yearlyqty' => ([
+                    'labels' => $yearly,
+                    'datasets'=> [([
+                        'type'                => 'line',
+                        'data'                => $yearlyItem,
+                        'backgroundColor'     => 'transparent',
+                        'borderColor'         => '#007bff',
+                        'pointBorderColor'    => '#007bff',
+                        'pointBackgroundColor'=> '#007bff',
+                        'fill'                => false,
+                        'pointHoverBackgroundColor'=> '#007bff',
+                        'pointHoverBorderColor'    => '#007bff'
+                        ])]
+            ]),
+        ]);
     }
 }   

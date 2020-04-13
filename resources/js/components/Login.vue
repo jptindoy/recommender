@@ -22,7 +22,8 @@
                         <input type="email" class="form-control" placeholder="@email" v-model="user_credential.email" v-bind:class="{ 'is-invalid': hasError }" required autofocus>
                         
                         <div class="input-group-append">
-                        <button type="submit" id="submit" class="btn"><i class="fas fa-arrow-right text-muted"></i></button>
+                        <button v-if="!loaded" type="submit" id="submit" class="btn"><i class="fas fa-arrow-right text-muted"></i></button>
+                        <button v-else type="submit" id="submit" class="btn diabled"><div class="spinner-border spinner-border-sm text-muted" role="status"></div></button>
                         </div>
                     </div>
                     
@@ -57,7 +58,8 @@
                         <input type="password" class="form-control" placeholder="password" id="password" v-model="user_credential.password" v-bind:class="{ 'is-invalid': hasError }" required autofocus>
                         
                         <div class="input-group-append">
-                        <button type="submit" class="btn"><i class="fas fa-arrow-right text-muted"></i></button>
+                        <button v-if="!loaded" type="submit" id="submit" class="btn"><i class="fas fa-arrow-right text-muted"></i></button>
+                        <button v-else type="submit" id="submit" class="btn diabled"><div class="spinner-border spinner-border-sm text-muted" role="status"></div></button>
                         </div>
                     </div>
                     
@@ -103,12 +105,14 @@
                     id:'',
                     token: '',
                 },
+                loaded: false,
                 
             }
         },
         
         methods: {
             fetchEmail() {
+                this.loaded = true;
                 fetch(`api/email/${this.user_credential.email}`, {
                     method: 'GET',
                     headers: {
@@ -127,6 +131,7 @@
                         this.show_pass_input = true;
                         this.user_credential.status = true;
                     }
+                    this.loaded = false;
                 })
                 .then(data => {
                     
@@ -135,6 +140,7 @@
             },
 
             login(){
+                this.loaded = true;
                 fetch('/login', {
                     method: 'POST',
                     body: JSON.stringify(this.user_credential),

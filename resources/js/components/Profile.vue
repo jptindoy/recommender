@@ -24,7 +24,8 @@
                 <div class="description-block">
                 <h5 class="description-header">
                     <div class="custom-control custom-switch custom-switch-on-success custom-switch-off-danger ">
-                        <input type="checkbox" class="custom-control-input" @change="updateUser(profile)" :id="'status' + profile.active"  v-model="profile.active" v-bind:value="profile.active" checked-value="true" unchecked-value="false">
+                        <input v-if="userRole === 1" type="checkbox" class="custom-control-input" @change="updateUser(profile)" :id="'status' + profile.active"  v-model="profile.active" v-bind:value="profile.active" checked-value="true" unchecked-value="false">
+                        <input v-else type="checkbox" class="custom-control-input" :id="'status' + profile.active"  v-model="profile.active" v-bind:value="profile.active" checked-value="true" unchecked-value="false" disabled>
                             <label class="custom-control-label" :for="'status' + profile.active"></label>
                     </div>
                 </h5>
@@ -55,7 +56,7 @@
             <thead>
             <tr>
                 <th style="width: 30%">Date</th>
-                <th>Sission ID</th>
+                <th>Session ID</th>
             </tr>
             </thead>
             <tbody>
@@ -91,6 +92,7 @@
     export default {
         props: {
             userId: Number,
+            userRole: Number,
         },
 
         data() {
@@ -102,12 +104,14 @@
                 status:{
                     active: null,
                 id: null,
+                rights : {},    
                 }               
-                             
+                         
             }
         },
 
         created(){
+            console.log(this.userRole)
             Event.$on('profile', (profile) => {
                this.fetchProfile(this.userId);
             })
@@ -193,6 +197,18 @@
                         toastr.success("Status updated!");
                     })
                     .catch(err => toastr.error(err));
+            },
+            getRights(){
+                fetch(`api/module-right/${this.userRole}`)
+                .then(res => res.json())
+                .then(res => {
+                    this.rights.view = res.data[2].view
+                    this.rights.create = res.data[2].create
+                    this.rights.update = res.data[2].update
+                    this.rights.delete = res.data[2].delete
+                    // console.log(this.rights.view)
+                })
+                .catch(err => toastr.error(err))
             },
         }
 

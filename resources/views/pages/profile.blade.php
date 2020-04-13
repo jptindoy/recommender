@@ -19,7 +19,7 @@
     <div class="container-fluid">    
     <div class="row">
         <div class="col-8"> 
-            <profile-page :user-id={{ Auth::user()->id }}></profile-page>
+            <profile-page :user-id={{ Auth::user()->id }} :user-role={{ Auth::user()->role_id }}></profile-page>
         </div>
         <div class="col-4">
             <div class="card card-secondary">
@@ -43,12 +43,7 @@
                                 <i class="fas fa-key"></i> Change Password
                             </a>
                         </li>                        
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="fas fa-bell"></i> Notifications
-                                <span class="badge bg-danger float-right">65</span>
-                            </a>
-                        </li>
+
                     </ul>
                 </div>
                 <!-- /.card-body -->

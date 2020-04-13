@@ -115,7 +115,7 @@
             <!-- /.card -->
         </div>
         <div class="col-8">
-            <profile-page :user-id="id"></profile-page>
+            <profile-page :user-id="id" :user-role="userRole"></profile-page>
         </div>
     </div>
     
@@ -134,6 +134,7 @@
 
         props: {
             userId: Number,
+            userRole: Number,
         },
 
         data() {

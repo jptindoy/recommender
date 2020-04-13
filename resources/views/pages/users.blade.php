@@ -18,7 +18,7 @@
     <div class="content">
         <div class="container-fluid">  
             <h5 class="mb-2">Users Setting</h5>
-            <users-page :user-id={{ Auth::user()->id }}></users-page>
+            <users-page :user-id={{ Auth::user()->id }} :user-role={{ Auth::user()->role_id }}></users-page>
         {{-- <div class="row">
             <div class="col-4">
                 <users-page></users-page>

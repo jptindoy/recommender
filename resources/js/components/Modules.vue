@@ -134,8 +134,8 @@
                         <tr>
                             <th style="width: 30%">Module</th>
                             <th class="text-center">View</th>
-                            <th class="text-center">Add</th>
-                            <th class="text-center">Edit</th>
+                            <th class="text-center">Create</th>
+                            <th class="text-center">Update</th>
                             <th class="text-center">Delete</th>
                         </tr>
                     </thead>
@@ -173,14 +173,14 @@
                     <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#modal-module-right"> Add new module</button>
                     <ul class="pagination pagination-sm m-0 float-right">
                         <li class="page-item" v-bind:class="[{disabled: !pagination.prev_page_url}]">
-                        <a class="page-link" href="javascript:void(0)" aria-label="Previous" @click="getUserLog(pagination.prev_page_url)">
+                        <a class="page-link" href="javascript:void(0)" aria-label="Previous" @click="showRole(pagination.prev_page_url)">
                             <span aria-hidden="true">&laquo;</span>
                             <span class="sr-only">Previous</span>
                         </a>
                         </li>
                         <li class="page-item disabled"><a class="page-link" href="#">{{pagination.current_page}} of {{pagination.last_page}}</a></li>
                         <li class="page-item" v-bind:class="[{disabled: !pagination.next_page_url}]">
-                        <a class="page-link" href="javascript:void(0)" aria-label="Next" @click="getUserLog(pagination.next_page_url)">
+                        <a class="page-link" href="javascript:void(0)" aria-label="Next" @click="showRole(pagination.next_page_url)">
                             <span aria-hidden="true">&raquo;</span> 
                             <span class="sr-only">Next</span>
                         </a>

@@ -36,6 +36,8 @@ Vue.component('draft-item', require('./components/DraftItem.vue').default);
 Vue.component('predict-item', require('./components/PredictItem.vue').default);
 Vue.component('request-item', require('./components/RequestItem.vue').default);
 Vue.component('requested-item', require('./components/RequestedItem.vue').default);
+Vue.component('item-chart', require('./components/ItemLineChart.vue').default);
+Vue.component('notification', require('./components/Notification.vue').default);
 
 
 /**

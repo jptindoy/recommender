@@ -114,7 +114,8 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    {
+    {   
+        
         $user = User::findOrFail($id);
 
         $user->active = $request->input('active');
@@ -126,7 +127,7 @@ class UserController extends Controller
 
     public function updateProfile(Request $request)
     {
-
+        $this->authorize('update', [\App\ModuleRight::class, 'Profile Management']);
         if($request->hasFile('file')){
             $originalFileName = $request->file('file')->getClientOriginalName();
 
@@ -155,7 +156,8 @@ class UserController extends Controller
     }
 
     public function updatePassword(Request $request)
-    {
+    {   
+        $this->authorize('update', [\App\ModuleRight::class, 'Profile Management']);
         if($request->password === $request->password_confirm){
             $password = User::findOrFail($request->id);
 

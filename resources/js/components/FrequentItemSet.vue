@@ -249,12 +249,11 @@
 </template>
 
 <script>
-    import LineChart from './LineChart.vue'
+    
     import moment from 'moment';
 
     export default {
-        name: 'LineChartContainer',
-        components: { LineChart },
+       
         data() {
             return {
                 isLoading : true,
@@ -267,37 +266,6 @@
                 item_qty : [],
                 newRequest : false,
                 rules : [],
-                loaded : true,
-                
-                chartdata: {
-                    labels  : [],
-                    datasets: [{
-                        type                : 'line',
-                        data                : [],
-                        backgroundColor     : 'transparent',
-                        borderColor         : '#007bff',
-                        pointBorderColor    : '#007bff',
-                        pointBackgroundColor: '#007bff',
-                        fill                : false,
-                        pointHoverBackgroundColor: '#007bff',
-                        pointHoverBorderColor    : '#007bff'
-                        }]
-                },
-                options: {
-                    maintainAspectRatio: false,
-                    tooltips           : {
-                        mode     : 'index',
-                        intersect: true
-                    },
-                    hover              : {
-                        mode     : 'index',
-                        intersect: true
-                    },
-                    legend             : {
-                        display: false
-                    },
-                    
-                }
             }
         },
         

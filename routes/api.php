@@ -77,6 +77,7 @@ Route::get('salable-item/{id}', 'API\RecommendationController@salableForToday');
 Route::get('item-list', 'API\RecommendationController@itemList');
 Route::get('item-list/{id}', 'API\RecommendationController@itemListSearch');
 Route::post('predict-item', 'API\RecommendationController@predictItem');
+Route::post('item-chart', 'API\RecommendationController@getItemGraph');
 
 // Request Routes
 Route::post('request-draft', 'API\RequestController@draft');
@@ -86,11 +87,13 @@ Route::get('delete-draft', 'API\RequestController@deleteDraft');
 Route::patch('qty/{id}', 'API\RequestController@updateQty');
 Route::patch('variant/{id}', 'API\RequestController@updateVariant');
 Route::delete('delete-item-list/{id}', 'API\RequestController@destroy');
-Route::post('save-request/', 'API\RequestController@saveRequest');
+Route::post('save-request/', 'API\RequestController@saveRequest'); 
 Route::get('request-widget/', 'API\RequestController@requestWidget');
 Route::get('edit-request/{id}', 'API\RequestController@editRequest');
 Route::post('update-request/', 'API\RequestController@updateRequest');
 Route::get('search-request/{id}', 'API\RequestController@searchRequest');
 
+// Notification
+Route::get('notification/{id}', 'API\NotificationController@getNotification');
 
 Route::get('test', 'API\RecommendationController@test');

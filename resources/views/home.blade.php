@@ -33,7 +33,7 @@
                         <div class="icon">
                             <i class="ion ion-bag"></i>
                         </div>
-                        <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                        <a href="{{route('recommended')}}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                     </div>
                     <div class="note">
                         <p>The presentation of data on each window are base to the data of the POS Sytem of the University Store. The data that imported to the database are being proccess base to the need information to each window.</p>

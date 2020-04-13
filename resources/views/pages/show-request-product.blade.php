@@ -22,7 +22,8 @@
 <!-- Main content -->
 <div class="content">
     <div class="container-fluid">            
-        <request-item :user-role={{Auth::user()->role_id}} :user-id={{Auth::user()->id}}></request-item>        
+        <request-item :request-id={{$_GET['id']}} :user-role={{Auth::user()->role_id }} :user-id={{Auth::user()->id }}></request-item>
+        
     </div><!-- /.container-fluid -->
 </div>
 <!-- /.content -->

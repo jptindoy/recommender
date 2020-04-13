@@ -53,6 +53,7 @@ class PagesController extends Controller
 
     public function importData() {
         if (Gate::allows('isAdmin', Auth::user()->role_id) || Gate::allows('isMerchant', Auth::user()->role_id)) {
+            // $this->authorize('viewAny', [\App\ModuleRight::class, 'User Management']);
             return view('pages.import-data');
         }
     }
@@ -63,25 +64,36 @@ class PagesController extends Controller
 
     public function salesReport() {
         if (Gate::allows('isAdmin', Auth::user()->role_id) || Gate::allows('isAccountant', Auth::user()->role_id)) {
+            $this->authorize('viewAny', [\App\ModuleRight::class, 'Sales Report']);
             return view('pages.sales-report');
         }
     }
 
     public function recommendedProduct() {
         if (Gate::allows('isAdmin', Auth::user()->role_id) || Gate::allows('isMerchant', Auth::user()->role_id)) {
+            $this->authorize('viewAny', [\App\ModuleRight::class, 'Recommended Product']);
             return view('pages.recommended-product');
         }
     }
 
     public function productRequest() {
         if (Gate::allows('isAdmin', Auth::user()->role_id) || Gate::allows('isMerchant', Auth::user()->role_id) || Gate::allows('isAccountant', Auth::user()->role_id)) {
+            $this->authorize('viewAny', [\App\ModuleRight::class, 'Product Request']);
             return view('pages.request-product');
         }
     }
 
     public function productRequested() {
         if (Gate::allows('isAdmin', Auth::user()->role_id) || Gate::allows('isMerchant', Auth::user()->role_id) || Gate::allows('isAccountant', Auth::user()->role_id)) {
+            $this->authorize('viewAny', [\App\ModuleRight::class, 'Product Request']);
             return view('pages.requested-product');
+        }
+    }
+
+    public function NotificaitonRequest() {
+        if (Gate::allows('isAdmin', Auth::user()->role_id) || Gate::allows('isMerchant', Auth::user()->role_id) || Gate::allows('isAccountant', Auth::user()->role_id)) {
+            $this->authorize('viewAny', [\App\ModuleRight::class, 'Product Request']);
+            return view('pages.show-request-product');
         }
     }
 
