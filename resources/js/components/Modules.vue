@@ -17,9 +17,9 @@
                                 <td>{{role.role}}</td>
                                 <td class="text-right py-0 align-middle">
                                     <div class="btn-group btn-group-sm">
-                                        <a href="javascript:void(0)" class="btn btn-info" @click="editRole(role)" title="click to update info..."><i class="fas fa-edit"></i></a>
-                                        <a href="javascript:void(0)" class="btn btn-dark" @click="showRole(role.id)" title="click to show info..."><i class="fas fa-eye"></i></a>
-                                        <a href="javascript:void(0)" class="btn btn-danger" @click="deleteRole(role.id)" title="click to delete..."><i class="fas fa-trash"></i></a>
+                                        <!-- <a href="javascript:void(0)" class="btn btn-info" @click="editRole(role)" title="click to update info..."><i class="fas fa-edit"></i></a> -->
+                                        <a href="javascript:void(0)" class="btn btn-info" @click="showRole(role.id)" title="click to show info..."><i class="fas fa-eye"></i></a>
+                                        <!-- <a href="javascript:void(0)" class="btn btn-danger" @click="deleteRole(role.id)" title="click to delete..."><i class="fas fa-trash"></i></a> -->
                                     </div>
                                 </td>
                             </tr>
@@ -45,14 +45,14 @@
                         </a>
                         </li>
                     </ul> 
-                    <form @submit.prevent="addRole()" role="form">       
+                    <!-- <form @submit.prevent="addRole()" role="form">       
                         <div class="input-group input-group-sm" style="width:70%;">
                             <input type="text" class="form-control" v-model="role.r_category" required>
                             <span class="input-group-append">
                                 <button type="submit" class="btn btn-info btn-flat">Save</button>
                             </span>
                         </div> 
-                    </form>            
+                    </form>             -->
                     
                 </div>
                 <!-- /.card-footer -->
@@ -73,11 +73,11 @@
                             <tr>
                                 <td>{{module_name.module}}</td>
                                 <td class="text-right py-0 align-middle">
-                                    <div class="btn-group btn-group-sm">
+                                    <!-- <div class="btn-group btn-group-sm">
                                         <a href="javascript:void(0)" class="btn btn-info" @click="editModuleName(module_name)" title="click to update info..."><i class="fas fa-edit"></i></a>
                                        
                                         <a href="javascript:void(0)" class="btn btn-danger" @click="deleteModuleName(module_name.id)" title="click to delete..."><i class="fas fa-trash"></i></a>
-                                    </div>
+                                    </div> -->
                                 </td>
                             </tr>
                         </tbody>
@@ -102,14 +102,14 @@
                         </a>
                         </li>
                     </ul> 
-                    <form @submit.prevent="addModuleName()" role="form">       
+                    <!-- <form @submit.prevent="addModuleName()" role="form">       
                         <div class="input-group input-group-sm" style="width:70%;">
                             <input type="text" class="form-control" v-model="module_name.module_name" required>
                             <span class="input-group-append">
                                 <button type="submit" class="btn btn-info btn-flat">Save</button>
                             </span>
                         </div> 
-                    </form>            
+                    </form>             -->
                     
                 </div>
                 <!-- /.card-footer -->
@@ -170,7 +170,7 @@
                         </tr>
                     </tbody>                  
                     </table>
-                    <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#modal-module-right"> Add new module</button>
+                    <!-- <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#modal-module-right"> Add new module</button> -->
                     <ul class="pagination pagination-sm m-0 float-right">
                         <li class="page-item" v-bind:class="[{disabled: !pagination.prev_page_url}]">
                         <a class="page-link" href="javascript:void(0)" aria-label="Previous" @click="showRole(pagination.prev_page_url)">

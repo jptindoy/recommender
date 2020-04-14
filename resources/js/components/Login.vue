@@ -151,15 +151,18 @@
                 .then(res => res.json())
                 .then(res =>{
                     if (res.data.err == false) {
+                        this.loaded = false;
                         // console.log(res.data.session.login_web_59ba36addc2b2f9401580f014c7f58ea4e30989d)
                         this.login_info.id = res.data.session.login_web_59ba36addc2b2f9401580f014c7f58ea4e30989d;
                         this.login_info.token = res.data.session._token;
                         this.logInfo();
                         window.location = '/home';
                     } else {
+                        this.loaded = false;
                         this.hasError = true;
                         this.msg = res.data.msg;
                     }
+                    
                 })
                 .then(data => {
                     

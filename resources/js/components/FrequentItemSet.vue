@@ -313,6 +313,7 @@
                 .then(res => {
                     this.frequentItemSet = res.itemset;
                     this.item_qty = res.qty;
+                    this.rules = res.rules;
                     this.isLoading = false;
                 })
                 .catch(err => toastr.error(err))

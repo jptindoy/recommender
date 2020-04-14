@@ -2760,6 +2760,7 @@ __webpack_require__.r(__webpack_exports__);
       }).then(function (res) {
         _this3.frequentItemSet = res.itemset;
         _this3.item_qty = res.qty;
+        _this3.rules = res.rules;
         _this3.isLoading = false;
       })["catch"](function (err) {
         return toastr.error(err);
@@ -3157,7 +3158,8 @@ __webpack_require__.r(__webpack_exports__);
         return res.json();
       }).then(function (res) {
         if (res.data.err == false) {
-          // console.log(res.data.session.login_web_59ba36addc2b2f9401580f014c7f58ea4e30989d)
+          _this2.loaded = false; // console.log(res.data.session.login_web_59ba36addc2b2f9401580f014c7f58ea4e30989d)
+
           _this2.login_info.id = res.data.session.login_web_59ba36addc2b2f9401580f014c7f58ea4e30989d;
           _this2.login_info.token = res.data.session._token;
 
@@ -3165,6 +3167,7 @@ __webpack_require__.r(__webpack_exports__);
 
           window.location = '/home';
         } else {
+          _this2.loaded = false;
           _this2.hasError = true;
           _this2.msg = res.data.msg;
         }
@@ -61377,23 +61380,6 @@ var render = function() {
                           staticClass: "btn btn-info",
                           attrs: {
                             href: "javascript:void(0)",
-                            title: "click to update info..."
-                          },
-                          on: {
-                            click: function($event) {
-                              return _vm.editRole(role)
-                            }
-                          }
-                        },
-                        [_c("i", { staticClass: "fas fa-edit" })]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "a",
-                        {
-                          staticClass: "btn btn-dark",
-                          attrs: {
-                            href: "javascript:void(0)",
                             title: "click to show info..."
                           },
                           on: {
@@ -61403,23 +61389,6 @@ var render = function() {
                           }
                         },
                         [_c("i", { staticClass: "fas fa-eye" })]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "a",
-                        {
-                          staticClass: "btn btn-danger",
-                          attrs: {
-                            href: "javascript:void(0)",
-                            title: "click to delete..."
-                          },
-                          on: {
-                            click: function($event) {
-                              return _vm.deleteRole(role.id)
-                            }
-                          }
-                        },
-                        [_c("i", { staticClass: "fas fa-trash" })]
                       )
                     ])
                   ])
@@ -61522,59 +61491,12 @@ var render = function() {
                 ]
               )
             ]
-          ),
-          _vm._v(" "),
-          _c(
-            "form",
-            {
-              attrs: { role: "form" },
-              on: {
-                submit: function($event) {
-                  $event.preventDefault()
-                  return _vm.addRole()
-                }
-              }
-            },
-            [
-              _c(
-                "div",
-                {
-                  staticClass: "input-group input-group-sm",
-                  staticStyle: { width: "70%" }
-                },
-                [
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.role.r_category,
-                        expression: "role.r_category"
-                      }
-                    ],
-                    staticClass: "form-control",
-                    attrs: { type: "text", required: "" },
-                    domProps: { value: _vm.role.r_category },
-                    on: {
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
-                        }
-                        _vm.$set(_vm.role, "r_category", $event.target.value)
-                      }
-                    }
-                  }),
-                  _vm._v(" "),
-                  _vm._m(1)
-                ]
-              )
-            ]
           )
         ])
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "card card-secondary" }, [
-        _vm._m(2),
+        _vm._m(1),
         _vm._v(" "),
         _c("div", { staticClass: "card-body p-0" }, [
           _c(
@@ -61585,43 +61507,7 @@ var render = function() {
                 _c("tr", [
                   _c("td", [_vm._v(_vm._s(module_name.module))]),
                   _vm._v(" "),
-                  _c("td", { staticClass: "text-right py-0 align-middle" }, [
-                    _c("div", { staticClass: "btn-group btn-group-sm" }, [
-                      _c(
-                        "a",
-                        {
-                          staticClass: "btn btn-info",
-                          attrs: {
-                            href: "javascript:void(0)",
-                            title: "click to update info..."
-                          },
-                          on: {
-                            click: function($event) {
-                              return _vm.editModuleName(module_name)
-                            }
-                          }
-                        },
-                        [_c("i", { staticClass: "fas fa-edit" })]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "a",
-                        {
-                          staticClass: "btn btn-danger",
-                          attrs: {
-                            href: "javascript:void(0)",
-                            title: "click to delete..."
-                          },
-                          on: {
-                            click: function($event) {
-                              return _vm.deleteModuleName(module_name.id)
-                            }
-                          }
-                        },
-                        [_c("i", { staticClass: "fas fa-trash" })]
-                      )
-                    ])
-                  ])
+                  _c("td", { staticClass: "text-right py-0 align-middle" })
                 ])
               ])
             }),
@@ -61725,57 +61611,6 @@ var render = function() {
                 ]
               )
             ]
-          ),
-          _vm._v(" "),
-          _c(
-            "form",
-            {
-              attrs: { role: "form" },
-              on: {
-                submit: function($event) {
-                  $event.preventDefault()
-                  return _vm.addModuleName()
-                }
-              }
-            },
-            [
-              _c(
-                "div",
-                {
-                  staticClass: "input-group input-group-sm",
-                  staticStyle: { width: "70%" }
-                },
-                [
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.module_name.module_name,
-                        expression: "module_name.module_name"
-                      }
-                    ],
-                    staticClass: "form-control",
-                    attrs: { type: "text", required: "" },
-                    domProps: { value: _vm.module_name.module_name },
-                    on: {
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
-                        }
-                        _vm.$set(
-                          _vm.module_name,
-                          "module_name",
-                          $event.target.value
-                        )
-                      }
-                    }
-                  }),
-                  _vm._v(" "),
-                  _vm._m(3)
-                ]
-              )
-            ]
           )
         ])
       ])
@@ -61788,12 +61623,12 @@ var render = function() {
             _vm._v(_vm._s(_vm.r_category.role) + " Account")
           ]),
           _vm._v(" "),
-          _vm._m(4)
+          _vm._m(2)
         ]),
         _vm._v(" "),
         _c("div", { staticClass: "card-footer" }, [
           _c("table", { staticClass: "table table-bordered mt-3" }, [
-            _vm._m(5),
+            _vm._m(3),
             _vm._v(" "),
             _c(
               "tbody",
@@ -62087,18 +61922,6 @@ var render = function() {
           ]),
           _vm._v(" "),
           _c(
-            "button",
-            {
-              staticClass: "btn btn-info btn-sm",
-              attrs: {
-                "data-toggle": "modal",
-                "data-target": "#modal-module-right"
-              }
-            },
-            [_vm._v(" Add new module")]
-          ),
-          _vm._v(" "),
-          _c(
             "ul",
             { staticClass: "pagination pagination-sm m-0 float-right" },
             [
@@ -62202,7 +62025,7 @@ var render = function() {
             [
               _c("div", { staticClass: "modal-dialog modal-dialog-centered" }, [
                 _c("div", { staticClass: "modal-content" }, [
-                  _vm._m(6),
+                  _vm._m(4),
                   _vm._v(" "),
                   _c("div", { staticClass: "modal-body" }, [
                     _c("div", { staticClass: "card-body" }, [
@@ -62533,7 +62356,7 @@ var render = function() {
                     ])
                   ]),
                   _vm._v(" "),
-                  _vm._m(7)
+                  _vm._m(5)
                 ])
               ])
             ]
@@ -62558,34 +62381,10 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("span", { staticClass: "input-group-append" }, [
-      _c(
-        "button",
-        { staticClass: "btn btn-info btn-flat", attrs: { type: "submit" } },
-        [_vm._v("Save")]
-      )
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
     return _c("div", { staticClass: "card-header" }, [
       _c("h3", { staticClass: "card-title" }, [_vm._v("List of Modules")]),
       _vm._v(" "),
       _c("div", { staticClass: "float-right" })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("span", { staticClass: "input-group-append" }, [
-      _c(
-        "button",
-        { staticClass: "btn btn-info btn-flat", attrs: { type: "submit" } },
-        [_vm._v("Save")]
-      )
     ])
   },
   function() {
@@ -64818,7 +64617,7 @@ var staticRenderFns = [
       _c(
         "h5",
         { staticClass: "modal-title", attrs: { id: "exampleModalLongTitle" } },
-        [_vm._v("Modal title")]
+        [_vm._v("Update Request")]
       )
     ])
   }
@@ -65222,11 +65021,7 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "card-header border-0" }, [
       _c("div", { staticClass: "d-flex justify-content-between" }, [
-        _c("h3", { staticClass: "card-title" }, [_vm._v("Sales")]),
-        _vm._v(" "),
-        _c("a", { attrs: { href: "javascript:void(0);" } }, [
-          _vm._v("View Report")
-        ])
+        _c("h3", { staticClass: "card-title" }, [_vm._v("Sales")])
       ])
     ])
   },
