@@ -1,10 +1,10 @@
 <template>
-    <div>
-        <div class="text-center mt-5 mb-4">
-            <h4>Daily, Monthly and Yearly Sales Quantity of this "{{items}}" item.</h4>
+    <div v-if="loaded">
+        <div class="text-center mb-4">
+            <h4>Daily, Monthly and Yearly Sales Quantity of this <span class="text-danger">"{{items}}"</span> item.</h4>
         </div>
         <div class="row">        
-            <div class="col">
+            <div class="col-4">
                 <div class="card">
                     <div class="card-header border-0">
                         <div class="d-flex justify-content-between">
@@ -16,7 +16,7 @@
                         <!-- /.d-flex -->
 
                         <div class="position-relative mb-4">
-                        <bar-chart v-if="loaded" :datacollection="barChartDataDaily" :options="barChartOption" @getChart="lineChartData = lineChartData" id="sales-chart"></bar-chart>
+                        <bar-chart v-if="loaded" :datacollection="barChartDataDaily" :options="barChartOption" id="sales-chart"></bar-chart>
                         </div>
                         <div class="d-flex flex-row justify-content-end">
                         <span class="mr-2">
@@ -27,7 +27,7 @@
                     </div>
                 </div>
             </div>    
-            <div class="col">
+            <div class="col-4">
                 <div class="card">
                     <div class="card-header border-0">
                         <div class="d-flex justify-content-between">
@@ -39,7 +39,7 @@
                         <!-- /.d-flex -->
 
                         <div class="position-relative mb-4">
-                        <bar-chart v-if="loaded" :datacollection="barChartDataMonth" :options="barChartOption" @getChart="lineChartData = lineChartData" id="sales-chart"></bar-chart>
+                        <bar-chart v-if="loaded" :datacollection="barChartDataMonth" :options="barChartOption" id="sales-chart"></bar-chart>
                         </div>
                         <div class="d-flex flex-row justify-content-end">
                         <span class="mr-2">
@@ -50,7 +50,7 @@
                     </div>
                 </div>
             </div>          
-            <div class="col">
+            <div class="col-4">
                 <div class="card">
                     <div class="card-header border-0">
                         <div class="d-flex justify-content-between">
@@ -66,7 +66,7 @@
                             v-if="loaded"
                             :chartdata="lineChartData"
                             :options="lineChartOptions"
-                            @getChart="lineChartData = lineChartData"/>
+                            />
                         </div>
 
                         <div class="d-flex flex-row justify-content-end">
@@ -89,12 +89,10 @@
     import BarChart from './Chart.vue'
     export default {
         components: { LineChart, BarChart },
-        props: {
-            items: String
-        },
 
         data() {
             return {
+                items: null,
                 loaded : false,
                 barChartDataDaily : null,
                 barChartDataMonth :null,
@@ -141,8 +139,10 @@
         },
         
         created(){
-           Event.$on('get-chart', (e) => {    
-                this.getChart();
+            
+           Event.$on('get-chart', ($event) => {    
+                this.items = $event;
+                this.getChart();               
             });
         },
 

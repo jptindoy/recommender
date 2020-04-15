@@ -126,7 +126,7 @@
 
         </div>
     </div> 
-    <item-chart v-if="chartItem != null" :items='chartItem' @showGraph='chartItem = chartItem'></item-chart>
+    <item-chart></item-chart>
 </div>
     
 </template>
@@ -142,6 +142,7 @@
         },
         data() {
             return {
+                chartItem : null,
                 itemList : [],
                 isLoading: true,
                 search : '',                
@@ -229,8 +230,7 @@
                .then(res => res.json())
                .then(res => {
                     this.items = res.items;
-                    this.update.PO_number += parseInt(res.poNumber) + 1 
-                    Event.$emit('get-chart');             
+                    this.update.PO_number += parseInt(res.poNumber) + 1        
                })
                .catch(err => toastr.error(err))
             },
@@ -246,7 +246,7 @@
                     if(res.err == false){
                         toastr.success(res.msg);
                     }                    
-                    Event.$emit('get-chart');      
+                    
                 })
                 .catch(err => toastr.error(err))
             },
@@ -302,7 +302,7 @@
             },
 
             addItem(id) {
-                this.showGraph(id);
+                
                 if(this.edit === true) {
                     this.editAddItem = {
                         po: this.editId,
@@ -319,7 +319,7 @@
                     .then(res => {                          
                         this.editItemList(this.editId);                                               
                         toastr[res.type](res.msg); 
-                        Event.$emit('get-chart');                                        
+                        this.showGraph(id);                                        
                     })
                     .catch(err => toastr.error(err))
                 } else {
@@ -337,7 +337,7 @@
                         this.update.PO_number = null;
                         this.getDraftItem();                        
                         toastr[res.type](res.msg);  
-                        Event.$emit('get-chart');              
+                        this.showGraph(id);             
                     })
                     .catch(err => toastr.error(err))
                 }               
@@ -346,10 +346,7 @@
 
             showGraph(id) {
                 this.chartItem = id;
-                Event.$emit('get-chart');
-                if(this.chartItem != null){
-                    Event.$emit('get-chart');
-                }
+                Event.$emit('get-chart', this.chartItem);
             },
             saveRequest() {
                 if(this.update.dateNeeded === null) {

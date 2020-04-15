@@ -189,7 +189,7 @@
                         <a href="{{route('recommended')}}" class="nav-link {{ (request()->is('recommended')) ? 'active' : '' }}">
                         <i class="nav-icon fab fa-product-hunt"></i>
                         <p>
-                            Recomnended Product
+                            Recommended Product
                             {{-- <span class="right badge badge-danger">New</span> --}}
                         </p>
                         </a>
@@ -199,7 +199,7 @@
                         <a href="{{route('recommended')}}" class="nav-link {{ (request()->is('recommended')) ? 'active' : '' }}">
                         <i class="nav-icon fab fa-product-hunt"></i>
                         <p>
-                            Recomnended Product
+                            Recommended Product
                             {{-- <span class="right badge badge-danger">New</span> --}}
                         </p>
                         </a>

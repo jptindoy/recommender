@@ -78,7 +78,7 @@ class PagesController extends Controller
 
     public function productRequest() {
         if (Gate::allows('isAdmin', Auth::user()->role_id) || Gate::allows('isMerchant', Auth::user()->role_id) || Gate::allows('isAccountant', Auth::user()->role_id)) {
-            $this->authorize('viewAny', [\App\ModuleRight::class, 'Product Request']);
+            $this->authorize('create', [\App\ModuleRight::class, 'Product Request']);
             return view('pages.request-product');
         }
     }

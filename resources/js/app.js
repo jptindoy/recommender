@@ -38,6 +38,9 @@ Vue.component('request-item', require('./components/RequestItem.vue').default);
 Vue.component('requested-item', require('./components/RequestedItem.vue').default);
 Vue.component('item-chart', require('./components/ItemLineChart.vue').default);
 Vue.component('notification', require('./components/Notification.vue').default);
+Vue.component('sales-per-date', require('./components/SalesPerDate.vue').default);
+Vue.component('chart-per-item', require('./components/ChartPerItem.vue').default);
+Vue.component('request-item-chart', require('./components/RequestedItemChart.vue').default);
 
 
 /**
