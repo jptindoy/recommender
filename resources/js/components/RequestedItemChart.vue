@@ -12,7 +12,7 @@
                 <p class="text-danger"><i>The graph show's of how many times the item requested on selected dates. Only in approved request</i></p>
             </div>
             <div v-else class="text-center">
-                    <h3>Requested Item for this Month</h3>
+                    <h3>Requested Item Over This Year</h3>
                 <p class="text-danger"><i>The graph show's of how many times the item requested this year. Only in approved request.</i></p>
             </div>
                     
@@ -34,7 +34,7 @@
                     <div class="form-group float-right">    
                         <label for="">Export This Report</label>  
                         <br>             
-                        <a class="btn btn-success text-white">Export to Excel <i class="fas fa-file-export"></i></a>
+                        <a :href="'api/export-request?from='+ date.from +'&&to='+ date.to" target="_blank" class="btn btn-success text-white">Export to Excel <i class="fas fa-file-export"></i></a>
                     </div>
                     
                 </div>          

@@ -72,6 +72,8 @@ Route::get('percentage', 'API\ChartController@getTotalSales');
 Route::post('sales', 'API\ChartController@getMonthlySales');
 Route::post('requested', 'API\ChartController@getMostRequest');
 Route::post('item-chart', 'API\ChartController@getItemGraph');
+Route::get('export-sales', 'API\ChartController@eportSales');
+Route::get('export-request', 'API\ChartController@exportRequest');
 
 // Recommendation Routes
 Route::get('item-sets', 'API\RecommendationController@index');

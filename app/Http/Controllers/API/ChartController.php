@@ -7,6 +7,9 @@ use Illuminate\Http\Request;
 use App\PosData;
 use App\Request as RequestItem;
 use Illuminate\Support\Facades\DB;
+use App\Exports\SalesExport;
+use App\Exports\RequestExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ChartController extends Controller
 {   
@@ -319,5 +322,31 @@ class ChartController extends Controller
                         ])]
             ]),
         ]);
+    }
+
+    public function eportSales(Request $request)
+    {   
+        
+        if($request->from == 'null' && $request->to == 'null'){
+            $timestamp    = date('Y-m');
+            $first_second = date('Y-m-01', strtotime($timestamp));
+            $last_second  = date('Y-m-t', strtotime($timestamp));
+            return (new SalesExport)->from($first_second)->to($last_second)->download('Sales Report From '.$first_second.' To '.$last_second.'.csv');
+        } else {
+            return (new SalesExport)->from($request->from)->to($request->to)->download('Sales Report From '.$request->from.' To '.$request->to.'.csv');
+        }
+        
+    }
+    
+    public function exportRequest(Request $request)
+    {
+        if($request->from == 'null' && $request->to == 'null'){
+            $timestamp    = date('Y');
+            $first_second = date('Y-m-01', strtotime($timestamp));
+            $last_second  = date('Y-m-t', strtotime($timestamp));
+            return (new RequestExport)->from($first_second)->to($last_second)->download('Request Report From '.$first_second.' To '.$last_second.'.csv');
+        } else {
+            return (new RequestExport)->from($request->from)->to($request->to)->download('Request Report From '.$request->from.' To '.$request->to.'.csv');
+        }
     }
 }

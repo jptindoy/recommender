@@ -2,7 +2,7 @@
     <div class="card card-secondary">
         <div class="card-header border-0">
             <div class="d-flex justify-content-between">
-                <h3 class="card-title">Sales Report With Corresponding </h3>
+                <h3 class="card-title">Sales Report With Corresponding Products</h3>
             
             </div>
         </div>
@@ -34,7 +34,7 @@
                     <div class="form-group float-right">    
                         <label for="">Export This Report</label>  
                         <br>             
-                        <a class="btn btn-success text-white">Export to Excel <i class="fas fa-file-export"></i></a>
+                        <a :href="'api/export-sales?from='+ date.from +'&&to='+ date.to" target="_blank" class="btn btn-success text-white">Export to Excel <i class="fas fa-file-export"></i></a>
                     </div>
                     
                 </div>          
@@ -153,6 +153,40 @@
                 } else {
                     this.getChart();
                 }
+            },
+
+            exportSales(){
+                axios.post('api/export-sales', {
+                    body: JSON.stringify(this.date),
+                }, {
+                    responseType: 'blob'
+                }).then((response) => {
+                    const url = URL.createObjectURL(new Blob([response], {
+                        type: 'application/vnd.ms-excel'
+                    }))
+                    const link = document.createElement('a')
+                    link.href = url
+                    link.setAttribute('download', 'user.csv')
+                    document.body.appendChild(link)
+                    link.click()
+                });
+
+                // fetch('api/export-sales',{
+                //     method: 'POST',
+                //     body: JSON.stringify(this.date),
+                //     headers: {
+                //         'Content-type' : 'Application/text/csvjson'
+                //     }
+                // })
+                // .then(res => {
+                //     const blob = new Blob([res], { type: 'text/csv' })
+                //     const link = document.createElement('a')
+                //     link.href = URL.createObjectURL(blob)
+                //     link.download = 'sales.csv'
+                //     link.click()
+                //     URL.revokeObjectURL(link.href)
+                // })
+                // .catch(err => toastr.error(err))
             },
         }
     }

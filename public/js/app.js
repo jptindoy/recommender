@@ -6062,6 +6062,37 @@ __webpack_require__.r(__webpack_exports__);
       } else {
         this.getChart();
       }
+    },
+    exportSales: function exportSales() {
+      axios.post('api/export-sales', {
+        body: JSON.stringify(this.date)
+      }, {
+        responseType: 'blob'
+      }).then(function (response) {
+        var url = URL.createObjectURL(new Blob([response], {
+          type: 'application/vnd.ms-excel'
+        }));
+        var link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', 'user.csv');
+        document.body.appendChild(link);
+        link.click();
+      }); // fetch('api/export-sales',{
+      //     method: 'POST',
+      //     body: JSON.stringify(this.date),
+      //     headers: {
+      //         'Content-type' : 'Application/text/csvjson'
+      //     }
+      // })
+      // .then(res => {
+      //     const blob = new Blob([res], { type: 'text/csv' })
+      //     const link = document.createElement('a')
+      //     link.href = URL.createObjectURL(blob)
+      //     link.download = 'sales.csv'
+      //     link.click()
+      //     URL.revokeObjectURL(link.href)
+      // })
+      // .catch(err => toastr.error(err))
     }
   }
 });
@@ -65428,7 +65459,7 @@ var render = function() {
             _vm._m(1)
           ])
         : _c("div", { staticClass: "text-center" }, [
-            _c("h3", [_vm._v("Requested Item for this Month")]),
+            _c("h3", [_vm._v("Requested Item Over This Year")]),
             _vm._v(" "),
             _vm._m(2)
           ]),
@@ -65500,14 +65531,39 @@ var render = function() {
             _vm._v(" "),
             _vm._m(3),
             _vm._v(" "),
-            _vm._m(4)
+            _c("div", { staticClass: "form-group float-right" }, [
+              _c("label", { attrs: { for: "" } }, [
+                _vm._v("Export This Report")
+              ]),
+              _vm._v(" "),
+              _c("br"),
+              _vm._v(" "),
+              _c(
+                "a",
+                {
+                  staticClass: "btn btn-success text-white",
+                  attrs: {
+                    href:
+                      "api/export-request?from=" +
+                      _vm.date.from +
+                      "&&to=" +
+                      _vm.date.to,
+                    target: "_blank"
+                  }
+                },
+                [
+                  _vm._v("Export to Excel "),
+                  _c("i", { staticClass: "fas fa-file-export" })
+                ]
+              )
+            ])
           ])
         ]
       ),
       _vm._v(" "),
       _vm.searching
         ? _c("div", { staticClass: "text-center mt-5" }, [
-            _vm._m(5),
+            _vm._m(4),
             _vm._v(" "),
             _c("p", [_vm._v("Loading items...")])
           ])
@@ -65582,21 +65638,6 @@ var staticRenderFns = [
         },
         [_vm._v("Search")]
       )
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "form-group float-right" }, [
-      _c("label", { attrs: { for: "" } }, [_vm._v("Export This Report")]),
-      _vm._v(" "),
-      _c("br"),
-      _vm._v(" "),
-      _c("a", { staticClass: "btn btn-success text-white" }, [
-        _vm._v("Export to Excel "),
-        _c("i", { staticClass: "fas fa-file-export" })
-      ])
     ])
   },
   function() {
@@ -66141,14 +66182,39 @@ var render = function() {
             _vm._v(" "),
             _vm._m(3),
             _vm._v(" "),
-            _vm._m(4)
+            _c("div", { staticClass: "form-group float-right" }, [
+              _c("label", { attrs: { for: "" } }, [
+                _vm._v("Export This Report")
+              ]),
+              _vm._v(" "),
+              _c("br"),
+              _vm._v(" "),
+              _c(
+                "a",
+                {
+                  staticClass: "btn btn-success text-white",
+                  attrs: {
+                    href:
+                      "api/export-sales?from=" +
+                      _vm.date.from +
+                      "&&to=" +
+                      _vm.date.to,
+                    target: "_blank"
+                  }
+                },
+                [
+                  _vm._v("Export to Excel "),
+                  _c("i", { staticClass: "fas fa-file-export" })
+                ]
+              )
+            ])
           ])
         ]
       ),
       _vm._v(" "),
       _vm.searching
         ? _c("div", { staticClass: "text-center mt-5" }, [
-            _vm._m(5),
+            _vm._m(4),
             _vm._v(" "),
             _c("p", [_vm._v("Loading items...")])
           ])
@@ -66176,7 +66242,7 @@ var render = function() {
             _vm._v(" "),
             _c("div", { staticClass: "height mt-5" }, [
               _c("table", { staticClass: "table table-bordered" }, [
-                _vm._m(6),
+                _vm._m(5),
                 _vm._v(" "),
                 _c(
                   "tbody",
@@ -66205,7 +66271,7 @@ var staticRenderFns = [
     return _c("div", { staticClass: "card-header border-0" }, [
       _c("div", { staticClass: "d-flex justify-content-between" }, [
         _c("h3", { staticClass: "card-title" }, [
-          _vm._v("Sales Report With Corresponding ")
+          _vm._v("Sales Report With Corresponding Products")
         ])
       ])
     ])
@@ -66245,21 +66311,6 @@ var staticRenderFns = [
         },
         [_vm._v("Search")]
       )
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "form-group float-right" }, [
-      _c("label", { attrs: { for: "" } }, [_vm._v("Export This Report")]),
-      _vm._v(" "),
-      _c("br"),
-      _vm._v(" "),
-      _c("a", { staticClass: "btn btn-success text-white" }, [
-        _vm._v("Export to Excel "),
-        _c("i", { staticClass: "fas fa-file-export" })
-      ])
     ])
   },
   function() {
