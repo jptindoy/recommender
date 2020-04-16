@@ -40,7 +40,7 @@
         <div v-if="show_pass_input" class="form" id="pass">
             <!-- User name -->
             <div class="lockscreen-name">{{user_credential.email}}</div>
-            <div class="lockscreen-name mb-4"><small><a href="javasrcipt:void(0)" @click="changeEmail">use deffirent account</a></small></div>
+            <div class="lockscreen-name mb-4"><small><a href="javasrcipt:void(0)" @click="changeEmail">Use different account</a></small></div>
               
 
             <!-- START LOCK SCREEN ITEM -->

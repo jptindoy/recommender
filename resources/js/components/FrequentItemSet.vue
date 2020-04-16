@@ -8,11 +8,11 @@
             </div>            
             <div class="card-body">
                 <div v-if="date.from" class="text-center">
-                    <h3>From {{moment(date.from).format('MMMM D')}} to {{moment(date.to).format('MMMM D')}}</h3>
-                    <p class="text-danger"><i>This would be most item set's to buy on the search Date.</i></p>
+                    <h3>Items Sets for {{moment(date.from).format('MMMM D')}} to {{moment(date.to).format('MMMM D')}}</h3>
+                    <p class="text-danger"><i>This would be most item set's to buy on the search date.</i></p>
                 </div>
                 <div v-else class="text-center">
-                     <h3>Item set's for this Month</h3>
+                     <h3>Item Sets for this Period</h3>
                     <p class="text-danger"><i>This would be most item set's to buy on the this month.</i></p>
                 </div>
                
@@ -50,10 +50,17 @@
                 <div v-else >
                     <div class="row">
                         <div class="col">
-                            <div class="form-group">                           
-                                <button v-if="!newRequest" @click="showDraft" class="btn btn-info">Create Request</button>
-                                <button v-else class="btn btn-info disabled">Create Request</button>  
+                            <div class="row">
+                                <div class="form-group mr-2">                           
+                                    <button v-if="!newRequest" @click="showDraft" class="btn btn-info">Create Request</button>
+                                    <button v-else class="btn btn-info disabled">Create Request</button>  
+                                </div>
+                                <div class="form-group">                           
+                                    <button v-if="!seeMore" @click="seeMore = true" class="btn btn-info">More Information About this Item Sets</button>
+                                    <button v-else class="btn btn-info disabled">More Information About this Item Sets</button>  
+                                </div>
                             </div>
+                            
                             <div class="item-list">
                                 <table class="table table-bordered">
                                     <thead>
@@ -208,8 +215,11 @@
                         </div>
                     </div>
                     <hr>
-                    <div class="row">
-                        <div class="col">
+                    <div v-if="seeMore" class="row">                        
+                        <div class="col mt-3">
+                            <div class="text-center mb-3">
+                                <h5>Measurement of the Item Sets Using Association Rules analysis Technique</h5>
+                            </div>
                             <div class="item-list">
                                 <table class="table table-bordered">
                                     <thead>
@@ -266,6 +276,7 @@
                 item_qty : [],
                 newRequest : false,
                 rules : [],
+                seeMore: false,
             }
         },
         
@@ -301,22 +312,26 @@
             },
             
             searchFrequentitemSet() {     
-                this.isLoading = true;                 
-                fetch('api/item-set-search',{
-                    method: 'POST',
-                    body: JSON.stringify(this.date),
-                    headers :{
-                        'Content-type' : 'Application/json'
-                    }
-                })
-                .then(res => res.json())
-                .then(res => {
-                    this.frequentItemSet = res.itemset;
-                    this.item_qty = res.qty;
-                    this.rules = res.rules;
-                    this.isLoading = false;
-                })
-                .catch(err => toastr.error(err))
+                if(this.date.from > this.date.to){
+                    toastr.error('Error Date Selection! <br> "Date To" must be ahead in "Date From"');
+                } else {
+                    this.isLoading = true;                 
+                    fetch('api/item-set-search',{
+                        method: 'POST',
+                        body: JSON.stringify(this.date),
+                        headers :{
+                            'Content-type' : 'Application/json'
+                        }
+                    })
+                    .then(res => res.json())
+                    .then(res => {
+                        this.frequentItemSet = res.itemset;
+                        this.item_qty = res.qty;
+                        this.rules = res.rules;
+                        this.isLoading = false;
+                    })
+                    .catch(err => toastr.error(err))
+                }
             },
 
             addRequest(id) {

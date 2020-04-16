@@ -53,7 +53,7 @@ class LoginController extends Controller
             $msg_success = ['msg' => '', 'err' => false, 'img'=> $email->image];
         }
 
-        $msg_inactive =  ['msg' => 'It looks like this email is inactive acount!', 'err' => true];
+        $msg_inactive =  ['msg' => 'It looks like this account is inactive!', 'err' => true];
         $msg_err =  ['msg' => 'Email does not exist!', 'err' => true];
         if(count($emails) > 0) {
             if($email->active){

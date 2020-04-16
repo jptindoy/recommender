@@ -97,6 +97,7 @@
                                         <thead>
                                             <tr>
                                                 <td>PO Number</td>
+                                                <td>Date Created</td>
                                                 <td>Date Needed</td>
                                                 <td>Action</td>
                                             </tr>
@@ -104,7 +105,8 @@
                                         <tbody>
                                             <tr v-for="item in widget.allRequest" :key="item.id">
                                                 <td>{{item.po_number}}</td>
-                                                <td>{{item.date_needed}}</td>
+                                                <td>{{moment(item.updated_at).format('MMMM D, YYYY')}}</td>
+                                                <td>{{moment(item.date_needed).format('MMMM D, YYYY')}}</td>
                                                 <td>
                                                     <button @click="editRequest(item.po_number)" class="btn btn-info" title="Show this request!" data-toggle="modal" data-target="#showModal"><i class="fas fa-eye"></i></button>
                                                     <button v-if="rights.update" @click="approvedRequest(item)" class="btn btn-primary" title="Aprove this request!"><i class="fas fa-check"></i></button>
@@ -124,6 +126,7 @@
                                         <thead>
                                             <tr>
                                                 <td>PO Number</td>
+                                                <td>Date Created</td> 
                                                 <td>Date Needed</td> 
                                                 <td>Action</td>
                                             </tr>
@@ -131,7 +134,8 @@
                                         <tbody>
                                             <tr v-for="item in widget.cancelled" :key="item.id">
                                                 <td>{{item.po_number}}</td>
-                                                <td>{{item.date_needed}}</td>
+                                                <td>{{moment(item.updated_at).format('MMMM D, YYYY')}}</td>
+                                                <td>{{moment(item.date_needed).format('MMMM D, YYYY')}}</td>
                                                 <td>
                                                     <button @click="editRequest(item.po_number)" class="btn btn-info" title="Show this request!" data-toggle="modal" data-target="#showModal"><i class="fas fa-eye"></i></button>
                                                     <button  v-if="rights.update" @click="approvedRequest(item)" class="btn btn-primary" title="Approve this request!"><i class="fas fa-check"></i></button>
@@ -151,6 +155,7 @@
                                         <thead>
                                             <tr>
                                                 <td>PO Number</td>
+                                                <td>Date Created</td>
                                                 <td>Date Needed</td>
                                                 <td>Action</td>
                                             </tr>
@@ -158,7 +163,8 @@
                                         <tbody>
                                             <tr v-for="item in widget.approved" :key="item.id">
                                                 <td>{{item.po_number}}</td>
-                                                <td>{{item.date_needed}}</td>
+                                                <td>{{moment(item.updated_at).format('MMMM D, YYYY')}}</td>
+                                                <td>{{moment(item.date_needed).format('MMMM D, YYYY')}}</td>
                                                 <td>
                                                     <button @click="editRequest(item.po_number)" class="btn btn-info" title="Show this request!" data-toggle="modal" data-target="#showModal"><i class="fas fa-eye"></i></button>
                                                     <button  v-if="rights.update" @click="disapprovedRequest(item)" class="btn btn-danger" title="Disapprove this request!"><i class="fas fa-times"></i></button>
@@ -189,7 +195,7 @@
                     <a href="/request" class="small-box-footer">Create <i class="fas fa-arrow-circle-right"></i></a>
                 </div>
                 <div class="mt-3">
-                    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ipsa odio suscipit quis eius fuga alias recusandae voluptatem autem, totam neque quae consequuntur soluta. Exercitationem animi vero dolore qui earum magnam.</p>
+                   
                 </div>
             </div>
         </div> 
@@ -216,7 +222,7 @@
 </template>
 
 <script>
-
+    import moment from 'moment';
     export default {
         props : {
             userId: Number,
@@ -245,10 +251,10 @@
             });
             this.getWidget();
             this.getRights();
-            this.getRights();
         },
 
         methods: {
+            moment,
             getWidget() {
                 fetch('api/request-widget')
                 .then(res => res.json())

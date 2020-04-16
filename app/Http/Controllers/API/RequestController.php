@@ -212,19 +212,19 @@ class RequestController extends Controller
                                 ->update(['status' => 'read']);
         }
 
-        $allRequest = RequestItem::select('po_number', 'date_needed', 'action')
+        $allRequest = RequestItem::select('updated_at', 'date_needed', 'action','po_number')
                                 ->where('action', 'pending')
-                                ->groupBy('po_number', 'date_needed', 'action')
+                                ->groupBy('po_number')
                                 ->get();
 
-        $cancelled = RequestItem::select('po_number', 'date_needed', 'action')
+        $cancelled = RequestItem::select('updated_at', 'date_needed', 'action','po_number')
                             ->where('action', 'disapproved')
-                            ->groupBy('po_number', 'date_needed', 'action')
+                            ->groupBy('po_number')
                             ->get();
 
-        $approved = RequestItem::select('po_number', 'date_needed', 'action')
+        $approved = RequestItem::select('updated_at', 'date_needed', 'action','po_number')
                             ->where('action', 'approved')
-                            ->groupBy('po_number', 'date_needed', 'action')
+                            ->groupBy('po_number')
                             ->get();
 
         return json_encode([

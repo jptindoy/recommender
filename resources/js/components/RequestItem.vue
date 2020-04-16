@@ -84,9 +84,9 @@
                                     <div class="row">
                                         <input type="number" @change="changeQty(item)" class="form-control" v-model="item.qty" style="width: 50%;">
                                         <select class="form-control" style="width: 50%;" @change="changeVariant(item)" v-model="item.variant">
-                                            <option value="box">box</option>
-                                            <option value="Pcs">Pcs</option>
-                                            <option value="Litter">Litter</option>
+                                            <option value="box">Box</option>
+                                            <option value="Pcs">Pieces</option>
+                                            <option value="Litter">Liter</option>
                                             <option value="Bottle">Bottle</option>
                                             <option value="Pack">Pack</option>
                                             <option value="Kilo">Kilo</option>
@@ -111,8 +111,8 @@
                 <div v-if="items != ''" class="card-footer">
                    
                     <div v-if="rights.update" class="float-right">                        
-                        <button v-if="edit" @click="updateItemList('approved')" class="btn btn-primary" data-dismiss="modal">Update & Approved</button>
-                        <button v-if="edit" @click="updateItemList('disapproved')" class="btn btn-primary" data-dismiss="modal">Disaproved</button>
+                        <button v-if="edit" @click="updateItemList('approved')" class="btn btn-primary" data-dismiss="modal">Update & Approve</button>
+                        <button v-if="edit" @click="updateItemList('disapproved')" class="btn btn-primary" data-dismiss="modal">Disaprove</button>
                         <button v-else @click="saveRequest" class="btn btn-primary">Save</button>
                         <button @click="deleteDraft" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                     </div>

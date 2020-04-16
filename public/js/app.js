@@ -2830,6 +2830,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -2843,7 +2853,8 @@ __webpack_require__.r(__webpack_exports__);
       },
       item_qty: [],
       newRequest: false,
-      rules: []
+      rules: [],
+      seeMore: false
     };
   },
   created: function created() {
@@ -2880,23 +2891,27 @@ __webpack_require__.r(__webpack_exports__);
     searchFrequentitemSet: function searchFrequentitemSet() {
       var _this3 = this;
 
-      this.isLoading = true;
-      fetch('api/item-set-search', {
-        method: 'POST',
-        body: JSON.stringify(this.date),
-        headers: {
-          'Content-type': 'Application/json'
-        }
-      }).then(function (res) {
-        return res.json();
-      }).then(function (res) {
-        _this3.frequentItemSet = res.itemset;
-        _this3.item_qty = res.qty;
-        _this3.rules = res.rules;
-        _this3.isLoading = false;
-      })["catch"](function (err) {
-        return toastr.error(err);
-      });
+      if (this.date.from > this.date.to) {
+        toastr.error('Error Date Selection! <br> "Date To" must be ahead in "Date From"');
+      } else {
+        this.isLoading = true;
+        fetch('api/item-set-search', {
+          method: 'POST',
+          body: JSON.stringify(this.date),
+          headers: {
+            'Content-type': 'Application/json'
+          }
+        }).then(function (res) {
+          return res.json();
+        }).then(function (res) {
+          _this3.frequentItemSet = res.itemset;
+          _this3.item_qty = res.qty;
+          _this3.rules = res.rules;
+          _this3.isLoading = false;
+        })["catch"](function (err) {
+          return toastr.error(err);
+        });
+      }
     },
     addRequest: function addRequest(id) {
       fetch('api/request-draft', {
@@ -5039,6 +5054,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_0__);
 //
 //
 //
@@ -5256,6 +5273,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     userId: Number,
@@ -5285,9 +5309,9 @@ __webpack_require__.r(__webpack_exports__);
     });
     this.getWidget();
     this.getRights();
-    this.getRights();
   },
   methods: {
+    moment: moment__WEBPACK_IMPORTED_MODULE_0___default.a,
     getWidget: function getWidget() {
       var _this2 = this;
 
@@ -60817,7 +60841,7 @@ var render = function() {
           ? _c("div", { staticClass: "text-center" }, [
               _c("h3", [
                 _vm._v(
-                  "From " +
+                  "Items Sets for " +
                     _vm._s(_vm.moment(_vm.date.from).format("MMMM D")) +
                     " to " +
                     _vm._s(_vm.moment(_vm.date.to).format("MMMM D"))
@@ -60827,7 +60851,7 @@ var render = function() {
               _vm._m(1)
             ])
           : _c("div", { staticClass: "text-center" }, [
-              _c("h3", [_vm._v("Item set's for this Month")]),
+              _c("h3", [_vm._v("Item Sets for this Period")]),
               _vm._v(" "),
               _vm._m(2)
             ]),
@@ -60915,19 +60939,44 @@ var render = function() {
           : _c("div", [
               _c("div", { staticClass: "row" }, [
                 _c("div", { staticClass: "col" }, [
-                  _c("div", { staticClass: "form-group" }, [
-                    !_vm.newRequest
-                      ? _c(
-                          "button",
-                          {
-                            staticClass: "btn btn-info",
-                            on: { click: _vm.showDraft }
-                          },
-                          [_vm._v("Create Request")]
-                        )
-                      : _c("button", { staticClass: "btn btn-info disabled" }, [
-                          _vm._v("Create Request")
-                        ])
+                  _c("div", { staticClass: "row" }, [
+                    _c("div", { staticClass: "form-group mr-2" }, [
+                      !_vm.newRequest
+                        ? _c(
+                            "button",
+                            {
+                              staticClass: "btn btn-info",
+                              on: { click: _vm.showDraft }
+                            },
+                            [_vm._v("Create Request")]
+                          )
+                        : _c(
+                            "button",
+                            { staticClass: "btn btn-info disabled" },
+                            [_vm._v("Create Request")]
+                          )
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "form-group" }, [
+                      !_vm.seeMore
+                        ? _c(
+                            "button",
+                            {
+                              staticClass: "btn btn-info",
+                              on: {
+                                click: function($event) {
+                                  _vm.seeMore = true
+                                }
+                              }
+                            },
+                            [_vm._v("More Information About this Item Sets")]
+                          )
+                        : _c(
+                            "button",
+                            { staticClass: "btn btn-info disabled" },
+                            [_vm._v("More Information About this Item Sets")]
+                          )
+                    ])
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "item-list" }, [
@@ -61339,51 +61388,55 @@ var render = function() {
               _vm._v(" "),
               _c("hr"),
               _vm._v(" "),
-              _c("div", { staticClass: "row" }, [
-                _c("div", { staticClass: "col" }, [
-                  _c("div", { staticClass: "item-list" }, [
-                    _c("table", { staticClass: "table table-bordered" }, [
+              _vm.seeMore
+                ? _c("div", { staticClass: "row" }, [
+                    _c("div", { staticClass: "col mt-3" }, [
                       _vm._m(9),
                       _vm._v(" "),
-                      _c(
-                        "tbody",
-                        _vm._l(_vm.rules, function(item) {
-                          return _c("tr", { key: item.id }, [
-                            _c("td", [
-                              _c(
-                                "ul",
-                                _vm._l(item.antecedent, function(val) {
-                                  return _c("li", { key: val.id }, [
-                                    _vm._v(_vm._s(val))
-                                  ])
-                                }),
-                                0
-                              )
-                            ]),
-                            _vm._v(" "),
-                            _c("td", [
-                              _c(
-                                "ul",
-                                _vm._l(item.consequent, function(val) {
-                                  return _c("li", { key: val.id }, [
-                                    _vm._v(_vm._s(val))
-                                  ])
-                                }),
-                                0
-                              )
-                            ]),
-                            _vm._v(" "),
-                            _c("td", [_vm._v(_vm._s(item.support))]),
-                            _vm._v(" "),
-                            _c("td", [_vm._v(_vm._s(item.confidence))])
-                          ])
-                        }),
-                        0
-                      )
+                      _c("div", { staticClass: "item-list" }, [
+                        _c("table", { staticClass: "table table-bordered" }, [
+                          _vm._m(10),
+                          _vm._v(" "),
+                          _c(
+                            "tbody",
+                            _vm._l(_vm.rules, function(item) {
+                              return _c("tr", { key: item.id }, [
+                                _c("td", [
+                                  _c(
+                                    "ul",
+                                    _vm._l(item.antecedent, function(val) {
+                                      return _c("li", { key: val.id }, [
+                                        _vm._v(_vm._s(val))
+                                      ])
+                                    }),
+                                    0
+                                  )
+                                ]),
+                                _vm._v(" "),
+                                _c("td", [
+                                  _c(
+                                    "ul",
+                                    _vm._l(item.consequent, function(val) {
+                                      return _c("li", { key: val.id }, [
+                                        _vm._v(_vm._s(val))
+                                      ])
+                                    }),
+                                    0
+                                  )
+                                ]),
+                                _vm._v(" "),
+                                _c("td", [_vm._v(_vm._s(item.support))]),
+                                _vm._v(" "),
+                                _c("td", [_vm._v(_vm._s(item.confidence))])
+                              ])
+                            }),
+                            0
+                          )
+                        ])
+                      ])
                     ])
                   ])
-                ])
-              ])
+                : _vm._e()
             ])
       ])
     ])
@@ -61404,7 +61457,7 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("p", { staticClass: "text-danger" }, [
       _c("i", [
-        _vm._v("This would be most item set's to buy on the search Date.")
+        _vm._v("This would be most item set's to buy on the search date.")
       ])
     ])
   },
@@ -61650,6 +61703,18 @@ var staticRenderFns = [
           )
         ]
       )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "text-center mb-3" }, [
+      _c("h5", [
+        _vm._v(
+          "Measurement of the Item Sets Using Association Rules analysis Technique"
+        )
+      ])
     ])
   },
   function() {
@@ -61989,7 +62054,7 @@ var render = function() {
                   attrs: { href: "javasrcipt:void(0)" },
                   on: { click: _vm.changeEmail }
                 },
-                [_vm._v("use deffirent account")]
+                [_vm._v("Use different account")]
               )
             ])
           ]),
@@ -64445,19 +64510,19 @@ var render = function() {
                                       _c(
                                         "option",
                                         { attrs: { value: "box" } },
-                                        [_vm._v("box")]
+                                        [_vm._v("Box")]
                                       ),
                                       _vm._v(" "),
                                       _c(
                                         "option",
                                         { attrs: { value: "Pcs" } },
-                                        [_vm._v("Pcs")]
+                                        [_vm._v("Pieces")]
                                       ),
                                       _vm._v(" "),
                                       _c(
                                         "option",
                                         { attrs: { value: "Litter" } },
-                                        [_vm._v("Litter")]
+                                        [_vm._v("Liter")]
                                       ),
                                       _vm._v(" "),
                                       _c(
@@ -64617,7 +64682,7 @@ var render = function() {
                                   }
                                 }
                               },
-                              [_vm._v("Update & Approved")]
+                              [_vm._v("Update & Approve")]
                             )
                           : _vm._e(),
                         _vm._v(" "),
@@ -64633,7 +64698,7 @@ var render = function() {
                                   }
                                 }
                               },
-                              [_vm._v("Disaproved")]
+                              [_vm._v("Disaprove")]
                             )
                           : _c(
                               "button",
@@ -64944,7 +65009,25 @@ var render = function() {
                                 return _c("tr", { key: item.id }, [
                                   _c("td", [_vm._v(_vm._s(item.po_number))]),
                                   _vm._v(" "),
-                                  _c("td", [_vm._v(_vm._s(item.date_needed))]),
+                                  _c("td", [
+                                    _vm._v(
+                                      _vm._s(
+                                        _vm
+                                          .moment(item.updated_at)
+                                          .format("MMMM D, YYYY")
+                                      )
+                                    )
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("td", [
+                                    _vm._v(
+                                      _vm._s(
+                                        _vm
+                                          .moment(item.date_needed)
+                                          .format("MMMM D, YYYY")
+                                      )
+                                    )
+                                  ]),
                                   _vm._v(" "),
                                   _c("td", [
                                     _c(
@@ -65023,7 +65106,25 @@ var render = function() {
                                 return _c("tr", { key: item.id }, [
                                   _c("td", [_vm._v(_vm._s(item.po_number))]),
                                   _vm._v(" "),
-                                  _c("td", [_vm._v(_vm._s(item.date_needed))]),
+                                  _c("td", [
+                                    _vm._v(
+                                      _vm._s(
+                                        _vm
+                                          .moment(item.updated_at)
+                                          .format("MMMM D, YYYY")
+                                      )
+                                    )
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("td", [
+                                    _vm._v(
+                                      _vm._s(
+                                        _vm
+                                          .moment(item.date_needed)
+                                          .format("MMMM D, YYYY")
+                                      )
+                                    )
+                                  ]),
                                   _vm._v(" "),
                                   _c("td", [
                                     _c(
@@ -65102,7 +65203,25 @@ var render = function() {
                                 return _c("tr", { key: item.id }, [
                                   _c("td", [_vm._v(_vm._s(item.po_number))]),
                                   _vm._v(" "),
-                                  _c("td", [_vm._v(_vm._s(item.date_needed))]),
+                                  _c("td", [
+                                    _vm._v(
+                                      _vm._s(
+                                        _vm
+                                          .moment(item.updated_at)
+                                          .format("MMMM D, YYYY")
+                                      )
+                                    )
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("td", [
+                                    _vm._v(
+                                      _vm._s(
+                                        _vm
+                                          .moment(item.date_needed)
+                                          .format("MMMM D, YYYY")
+                                      )
+                                    )
+                                  ]),
                                   _vm._v(" "),
                                   _c("td", [
                                     _c(
@@ -65338,19 +65457,7 @@ var staticRenderFns = [
       _c("tr", [
         _c("td", [_vm._v("PO Number")]),
         _vm._v(" "),
-        _c("td", [_vm._v("Date Needed")]),
-        _vm._v(" "),
-        _c("td", [_vm._v("Action")])
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("thead", [
-      _c("tr", [
-        _c("td", [_vm._v("PO Number")]),
+        _c("td", [_vm._v("Date Created")]),
         _vm._v(" "),
         _c("td", [_vm._v("Date Needed")]),
         _vm._v(" "),
@@ -65365,6 +65472,24 @@ var staticRenderFns = [
     return _c("thead", [
       _c("tr", [
         _c("td", [_vm._v("PO Number")]),
+        _vm._v(" "),
+        _c("td", [_vm._v("Date Created")]),
+        _vm._v(" "),
+        _c("td", [_vm._v("Date Needed")]),
+        _vm._v(" "),
+        _c("td", [_vm._v("Action")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("td", [_vm._v("PO Number")]),
+        _vm._v(" "),
+        _c("td", [_vm._v("Date Created")]),
         _vm._v(" "),
         _c("td", [_vm._v("Date Needed")]),
         _vm._v(" "),
@@ -65398,13 +65523,7 @@ var staticRenderFns = [
         )
       ]),
       _vm._v(" "),
-      _c("div", { staticClass: "mt-3" }, [
-        _c("p", [
-          _vm._v(
-            "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ipsa odio suscipit quis eius fuga alias recusandae voluptatem autem, totam neque quae consequuntur soluta. Exercitationem animi vero dolore qui earum magnam."
-          )
-        ])
-      ])
+      _c("div", { staticClass: "mt-3" })
     ])
   },
   function() {
